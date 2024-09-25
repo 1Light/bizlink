@@ -1,0 +1,80 @@
+{% extends "core/owner/owner-base.html" %}
+
+{% load static %}
+
+{% block title %}
+Account
+{% endblock %}
+
+{% block content %}
+
+<section class="owner_account_intro_section">
+    <div class="container">
+        <div class="d-flex align-items-start account-intro-box">
+            <div class="nav flex-column nav-pills me-3 tab" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+              <button class="nav-link active tab-btn" id="v-pills-dashboard-tab" data-bs-toggle="pill" data-bs-target="#v-pills-dashboard" type="button" role="tab" aria-controls="v-pills-dashboard" aria-selected="true">Dashboard</button>
+              <button class="nav-link tab-btn" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</button>
+              <button class="nav-link tab-btn" id="v-pills-detail-tab" data-bs-toggle="pill" data-bs-target="#v-pills-detail" type="button" role="tab" aria-controls="v-pills-detail" aria-selected="false">Detail</button>
+              <a class="nav-link btn tab-btn" href="{% url 'userauth:user_logout' %}" type="button" role="tab" aria-controls="v-pills-logout" aria-selected="false">Logout</a>
+            </div>
+            <div class="tab-content" id="v-pills-tabContent">
+              <div class="tab-pane fade show active" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab" tabindex="0">
+
+                <h3>Hello, {{ user.first_name|title }}</h3>
+                <p>From your account dashboard. You can easily check and view your recent orders, <br>manage your shipping and billing addresses and edit your password and account details</p>
+              
+              </div>
+
+              <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
+              </div>
+
+              <div class="tab-pane fade" id="v-pills-detail" role="tabpanel" aria-labelledby="v-pills-detail-tab" tabindex="0">
+
+                <div class="account-detail">
+                    <h3>Account Details</h3>
+
+                    <div class="account-detail-box">
+                        <div class="name">
+                            <div class="field first-name">
+                                <label for="first-name">First Name</label>
+                                <input type="text" id="first-name" value="{{ user.first_name|title }}" readonly>
+                            </div>
+                            <div class="field last-name">
+                                <label for="last-name">Last Name</label>
+                                <input type="text" id="last-name" value = "{{ user.last_name|title }}" readonly>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="display-name">Display Name</label>
+                        </div>
+                        <div>
+                            <input type="text" id="display-name" value="Fix me" readonly>
+                        </div>
+                        <div>
+                            <label for="email-address">Email Address</label>
+                        </div>
+                        <div>
+                            <input type="email" id="email-address" value="{{ user.email|lower }}" readonly>
+                        </div>
+                        <div>
+                            <label for="phone-number">Phone Number</label>
+                        </div>
+                        <div>
+                            <input type="text" id="phone-number" value="{{ user.mobile }}" readonly>
+                        </div>
+                        <div>
+                            <label for="address">Address</label>
+                        </div>
+                        <div>
+                            <input type="text" id="address" value="{{ user.address }}" readonly>
+                        </div>
+                    </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+    </div>
+</section>
+
+{% endblock %}

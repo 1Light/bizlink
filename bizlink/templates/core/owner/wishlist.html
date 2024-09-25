@@ -1,0 +1,51 @@
+{% extends "core/owner/owner-base.html" %}
+
+{% load static %}
+
+{% block title %}
+Product({{ product.name }})
+{% endblock %}
+
+{% block content %}
+<section class="wishlist_intro_section">
+    <div class="container">
+        <div class="wishlist-intro-box">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">
+                        #
+                    </th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Stock Status</th>
+                    <th scope="col">Remove</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% if wishlist_products %}
+                    {% for wishlist in wishlist_products %}
+
+                        <tr>
+                            <th scope="row">
+                                <input type="checkbox">
+                            </th>
+                            <td>{{ wishlist.product.name }}</td>
+                            <td>{{ wishlist.product.product_status }}</td>
+                            <td>{{ wishlist.product.check_stock_status }}</td>
+                            <td><i class="fa-solid fa-trash"></i></td>
+                        </tr>
+
+                    {% endfor %}
+                {% else %}
+                    <tr>No wishlist products. Click here to go back.</tr>
+                {% endif %}
+                </tbody>
+
+
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,77 @@
+@use '../../../custom' as *;
+
+.owner_submenu_section {
+    border: 2px solid $black;
+    margin: 2rem 0 2rem 0;
+
+    .owner-submenu-section-box {
+        min-height: 3.3rem;
+        position: relative;
+
+        .submenu {
+            list-style-type: none;
+            display: flex;
+            align-items: center;
+            column-gap: 3rem;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+
+            li {
+
+                a {
+                    text-decoration: none;
+                    color: $black;
+                }
+            }
+
+            .home-dropdown {
+                padding-right: 20px;
+                position: relative;
+
+                .home-btn {
+                    border: none;
+                }
+
+                .dropdown-toggle::after {
+                    position: absolute;
+                    top: 50%;
+                    left: 65%;
+                }
+            }
+
+            .category-dropdown {
+                padding-right: 20px;
+                position: relative;
+
+                .category-btn {
+                    border: none;
+                }
+
+                .dropdown-toggle::after {
+                    position: absolute;
+                    top: 50%;
+                    left: 71%;
+                }
+
+                .custom-dropdown-menu {
+                    
+                    .category-row {
+                        display: flex;
+                        flex-wrap: wrap;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* Styles for the Error and Success Message */
+
+.owner_submenu_message_box_section {
+    
+    .message-box {
+        min-height: 3.3rem;
+    }
+
+}

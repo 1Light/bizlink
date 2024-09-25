@@ -1,0 +1,37 @@
+@use '../../../custom' as *;
+
+.customer_submenu_section {
+    border: 2px solid $black;
+    margin: 2rem 0 2rem 0;
+
+    .customer-submenu-section-box {
+        min-height: 3.3rem;
+        position: relative;
+
+        .submenu {
+            list-style-type: none;
+            display: flex;
+            align-items: center;
+            column-gap: 3rem;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+
+            a {
+                text-decoration: none;
+                color: $black;
+            }
+
+        }
+    }
+}
+
+/* Styles for the Error and Success Message */
+
+.customer_submenu_message_box_section {
+    
+    .message-box {
+        min-height: 3.3rem;
+    }
+
+}

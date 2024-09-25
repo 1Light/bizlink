@@ -1,0 +1,78 @@
+{% extends 'core/base.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% load static %}
+
+<!-- Space to Display Error & Success Messages -->
+
+{% block message %}
+
+<section class="login_message_box_section">
+
+  {% if messages %}
+    {% for message in messages %}
+
+      <div class="alert alert-{{ message.tags }} message-box alert-dismissible fade show" role="alert">
+          <strong>{{ message }}</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+
+    {% endfor %}
+  {% endif %}
+
+</section>
+
+{% endblock %}
+
+<!-- Login Form -->
+
+{% block content %}
+<section class="login_form">
+
+  <!-- Login Image -->
+  <div class="login-image">
+    <img src="{% static 'img/blog/b1.jpg' %}" alt="login image">
+  </div>
+
+  <!-- Login Form Labels & Input -->
+  <form method="POST" action=".">
+    {% csrf_token %}
+
+    <!-- Login Intro Text -->
+    <h3>Login</h3>
+    <p>Don't have an account? <a href="{% url 'userauth:signup' %}">Create here</a></p>
+
+    <div class="login-form-box">
+
+      {% for field in form %}
+
+        <label for="{{ field.id_for_label }}">
+          {{ field.label }}
+        </label>
+
+        <div class="field-input">
+          {{ field }}
+
+          {% if field.errors %}
+            <div class="field-error">
+              {{ field.errors }}
+            </div>
+          {% endif %}
+
+        </div>
+
+      {% endfor %}
+
+      {% if form.non_field_errors %}
+        <div class="non-field-errors">
+          {{ form.non_field_errors }}
+        </div>
+      {% endif %}
+
+      <!-- Login Button -->
+      <button class="btn btn-next">Log In</button>
+    <div>
+  </form>
+</section>
+{% endblock %}

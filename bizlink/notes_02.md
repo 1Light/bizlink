@@ -1,0 +1,24 @@
+- If one product can have many videos, but each video is associated with only one product, you should use a ForeignKey relationship. This creates a one-to-many relationship where one product can have multiple videos, but each video belongs to only one product.
+- if a video can be shared by multiple products, you should use a ManyToMany relationship. This would allow a video to be associated with more than one product.
+- never pass default and upload to on a foreign key.
+- on a scroll bar, the height of the thumb is based in the size of content, you can change the width inside the ::-webkit-scrollbar but the height will always be based on the content.
+- TaggableManger() doesn't accept null=True, it only takes blank=True
+- The correct syntax for URL parameters in Django is <converter:name>, where converter is the type of the variable (e.g., slug, int, etc.), and name is the variable itself.
+- n Django, two underscores (**) are used as a separator in query lookups to perform operations across relationships or to specify query conditions. For instance "Product.objects.filter(tags**name='fresh')"
+- To make taggit, case insenstive, just use "TAGGIT_CASE_INSENSITIVE = True" in the settigns.py, this si set to false, by default.
+  - Note that doing so will give the same sluggify to the same tag passed or input in either lowercase, uppercase or both. The name however, will be stored exactly how it is passed. Hence, when u do {{ tag.name }}, it will be displayed on teh webpage exactly how they are input first. Hence, you will need to fix that too by doing {{ tag.name|lower }}
+- when u copy a code on ur code editor and paste it else where specially on word document, the code line up gets messed up. to fix that you can go to unminify, paste ur code there and it will arrange it properly. then you can copy and paste it on ur word document.
+- If you are goint o let the user use ckeditor, let's say for a description. then remeber to render the description by passign the safe attribtue like this {{ description|safe }}, this will tell django that whatever the user is apssing is safe so render it as it is cosntructed. If you don't use this, django will render the description as a normal text without the chnages made like (font style, indentation, color, ...)
+- CKEditor does not inherently require prism.css and prism.js, but you might want to include them if you are using the Code Snippet plugin, which allows for syntax highlighting in code blocks.
+- Ckeditor-4 has security issue and u will keep seeing errors like "ModuleNotFoundError: No module named 'ckeditor'" if you use it. It is better to set up the django-ckeditor-5. Note that pip install django-ckeditor will install the evrsion that has the ckeditor-4 bundle as well. This is true even if teh bundle is recent version and you have updated or upgraded it by doing pip install django-ckeditor --upgrade.
+  - pip install django-ckeditor-5 - Use this, it will only install teh version 5 which is the best working version. It doesn't incldue teh version 4. More on how to set it up is present on "https://pypi.org/project/django-ckeditor-5/"
+- Note that teh prims.css and js and the highlight css for the cdn for highlight css and js are input there for displaying the input of the ckeditor as designed.
+- CKEditor, being a rich text editor, generates HTML tags like <p>, <br>, and others to format the content, so when you save data using CKEditor, it often wraps paragraphs in <p> tags. So if u are using it and u are calleing it like {{ product.description|safe }}, not that it has tags of its own. You can remove the "|safe" to see them
+- |safe allows HTML tags in a string and render them as HTML. whereas |striptags removes any HTML tags from a string and display only the plain text.
+- &nbsp; stands for "non-breaking space," which is a character entity in HTML that creates a space that will not break into a new line.
+- You can't set teh width and height on an inline element.
+- Checkbox elements are designed to be square by default, so the width and height should be the same to maintain this square shape. When customizing their size, it's best to ensure the values are equal. If you want a rectangular checkbox, you better make your own using js and css and html
+- In an input tag, if a placehodler and value attribute are present, teh value attribute taes precendence and is displayed.
+- The |title filter in Django converts the first character of each word in a string to uppercase and the rest to lowercase. 
+  - user|title does the same as user.first_name|title
+- when an item can't be centered by teh usual means, teh best possible solution is display flex and setting the align-items and jsutify-content to center. 

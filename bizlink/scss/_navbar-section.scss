@@ -1,0 +1,146 @@
+@use 'custom' as *;
+@use 'components/mixins' as *;
+
+.navbar_section {
+
+    .navbar {
+        background: $gray-200;
+        min-height: 5rem;
+        padding: 0 3rem 0 3rem;
+        border: 2px solid $black;
+        
+    
+        .company-logo {
+            position: relative;
+    
+            svg {
+                height: 2.7rem;
+                width: 2.7rem;
+            }
+    
+            .company-name {
+                position: absolute;
+                top: 7px;
+                left: 50px;
+                margin-left: 5px;
+        
+            }
+        }
+    
+        .menu-list-items {
+            display: flex;
+            justify-content: space-between;
+            column-gap: 3rem;
+    
+            .search {
+                margin-left: 11rem;
+                width: 30rem;
+            }
+    
+            ul.icon-list {
+                display: flex;
+                justify-content: space-between;
+                margin-right: 3rem;
+                width: 27%;
+
+                li:nth-child(2) {
+                    margin-left: 2rem;
+                }
+    
+                li {
+
+                    .nav-link {
+                        position: relative;
+
+                        i {
+                            font-size: 1.3rem;
+                        }
+
+                        i::after {
+                            content: attr(data-title);
+                            text-transform: lowercase;
+                            position: absolute;
+                            bottom: 10%;
+                            left: 87%;
+                            font-size: 0.7rem;
+                            color: $black;
+                        }
+
+                        .num-of-wishlist {
+                            position: absolute;
+                            width: 25px;
+                            height: 25px;
+                            border-radius: 50%;
+                            background-color: $primary;
+                            color: $white;
+                            top: 0%;
+                            left: 50%;
+                            text-align: center;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+
+                            p {
+                                margin: 0;
+                            }
+
+                        }
+                    }
+                }
+
+                li.account-item {
+                    position: relative;
+                    cursor: pointer;
+                    
+                    ul.account-submenu {
+                        display: none;
+                        margin-top: 10px;
+                        position: absolute;
+                        top: 17%;
+                        min-width: 9rem;
+                        min-height: 9rem;
+                        padding-top: 3rem;
+                        padding-left: 0;
+                        transition: 0.3s ease;
+                        z-index: 999;
+
+                        li:nth-child(2) {
+                            margin-left: 0rem;
+                        }
+                  
+                        li {
+                            list-style-type: none;
+                            font-size: 1rem;
+                            text-align: left;
+                            display: block;
+                            padding: 5px 0;
+                    
+                            a {
+                                text-transform: capitalize;
+                                text-decoration: none;
+                                color: $black;
+                                padding-top: 8px; 
+                                padding-bottom: 8px; 
+
+                                i {
+                                    margin-right: 10px;
+                                }
+                    
+                                &:hover {
+                                    background-color: #000;
+                                    color: #fff; 
+                                }
+                            }
+                        }
+                    }
+                    
+                    &:hover .account-submenu {
+                        display: block;
+                        transform-origin: top;
+                        animation: dropdown-animate 0.5s;
+                    }
+                }                  
+            }
+        }
+    }
+}

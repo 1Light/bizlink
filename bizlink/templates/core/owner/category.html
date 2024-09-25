@@ -1,0 +1,72 @@
+{% extends "core/owner/owner-base.html" %}
+
+{% block title %}
+Products
+{% endblock %}
+
+{% block content %}
+
+<!-- Product Intro Section -->
+<section class="category_intro_section">
+    <div class="container">
+        <div class="intro-section-box">
+            <div class="intro-banner">
+                <h3>Categories</h3>
+
+                <div class="breadcrumb-box">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'core:owner_home' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Categories</li>
+                      </ol>
+                </div>
+
+            </div>
+            <div class="category-collection">
+
+                {% if categories %}
+
+                    <h3>
+
+                        {% if categories.count  == 1 %}
+                            1 Category
+                        {% else %}
+                            {{ categories.count  }} Category
+                        {% endif %}
+
+                    </h3>
+                        
+                        <div class="category-collection-box">
+
+                            {% for category in categories %}
+
+                                <div class="category-box">
+                                    
+                                        <div class="category-image">
+                                            <a href="{% url 'core:category_detail' category.categoryId %}"><img src="{{ category.image.url }}" alt="{{ category.name }} image"></a>
+                                        </div>
+
+                                    <h4>{{ category.name }}</h4>
+                                    <p>By {{ category.shop.name }}</p>
+                                    <p>
+
+                                        {% if category.category_products.count == 1 %}
+                                            1 Product
+                                        {% else %}
+                                            {{ category.category_products.count }} Products
+                                        {% endif %}
+
+                                    </p>
+                                </div>
+
+                            {% endfor %}
+                        </div>
+
+                {% else %}
+                    <p>No categories available. <a href="#">Click here</a> to create categories</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

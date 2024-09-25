@@ -1,0 +1,164 @@
+@use '../../../custom' as *;
+
+.admin_featured_products_section {
+    height: 200vh;
+    padding: 7rem 4rem 4rem 4rem;
+
+    .featured-product-box {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: start;
+        flex-direction: column;
+        gap: 3rem;
+
+        ul {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 1.7rem;
+
+            li {
+                border: 2px solid $black;
+                border-radius: 15px;
+                width: 16rem;
+                padding: 0;
+                position: relative;
+
+                input {
+                    position: absolute;
+                    top: 3%;
+                    left: 3%;
+                }
+
+                label {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    
+                    .featured-product {
+                        width: 100%;
+                        position: relative;
+                        padding: 0.7rem 1.5rem 1.5rem 1.5rem;
+
+                        .product-image {
+                            width: 13rem;
+                            height: 15rem;
+                            margin: 0  auto 1rem auto;
+                            border-radius: 1rem;
+                            border: 2px solid $black;
+        
+                            img {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                border-radius: 1rem;
+                            }
+                        }
+            
+                        .product-description {
+                            width: 100%;
+    
+                            p {
+                                margin-bottom: 5px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        #delete-featured-btn {
+            width: 90px;
+            height: 35px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+
+    .featured-product-modal {
+        max-width: 80%;
+
+        .modal-content {
+            height: 100%;
+            padding: 2rem;
+
+            .modal-header {
+                display: flex;
+                justify-content: space-between;
+
+                .header-btn {
+                    display: flex;
+                    column-gap: 3rem;
+                    justify-content: center;
+                    align-items: center;
+
+                    .add-featured-btn {
+                        width: 90px;
+                        height: 35px;
+                    }
+                }
+            }
+
+            .product-box {
+        
+                ul {
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    justify-content: space-between;
+                    row-gap: 2rem;
+        
+                    li {
+                        border: 2px solid $black;
+                        border-radius: 15px;
+                        width: 16rem;
+                        padding: 0;
+                        position: relative;
+        
+                        input {
+                            position: absolute;
+                            top: 3%;
+                            left: 3%;
+                        }
+        
+                        label {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            
+                            .product {
+                                width: 100%;
+                                position: relative;
+                                padding: 0.7rem 1.5rem 1.5rem 1.5rem;
+        
+                                &-image {
+                                    width: 13rem;
+                                    height: 15rem;
+                                    margin: 0  auto 1rem auto;
+                                    border-radius: 1rem;
+                                    border: 2px solid $black;
+                
+                                    img {
+                                        width: 100%;
+                                        height: 100%;
+                                        object-fit: cover;
+                                        border-radius: 1rem;
+                                    }
+                                }
+                    
+                                &-description {
+                                    width: 100%;
+            
+                                    p {
+                                        margin-bottom: 5px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,123 @@
+@use '../../custom' as *;
+@use '../../components/mixins' as *;
+
+.signup_form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 4rem;
+    padding-top: 4rem;
+    height: 105vh;
+
+    .signup-form-box {
+        min-width: 20rem;
+
+        p {
+
+            a {
+                text-decoration: none;
+            }
+        }
+
+        .progressbar {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            counter-reset: step;
+
+            .progress {
+                content: "";
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                height: 4px;
+                width: 0%;
+                background-color: $primary;
+                z-index: -1;
+                transition: 0.3s ease;
+            }
+
+            .progress-step {
+
+                width: 2.1875rem;
+                height: 2.1875rem;
+                background-color: #dcdcdc;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                &-active {
+                    background-color: $primary;
+                    color: #f3f3f3;
+                }
+            }
+
+            .progress-step::before {
+
+                counter-increment: step;
+                content: counter(step);
+            }
+
+            .progress-step::after {
+                content: attr(data-title);
+                position: absolute;
+                top: 50%;
+                font-size: 0.85rem;
+                color: #666;
+                margin: 2rem 0 4rem;
+            }
+        }
+
+        .progressbar::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 4px;
+            width: 100%;
+            background-color: #dcdcdc;
+            z-index: -1;
+        }
+
+        .signup-form-content {
+            margin-top: 3rem;
+
+            .form-step {
+                display: none;
+                transform-origin: top;
+                animation: dropdown-animate 0.5s;
+
+                &-active {
+                    display: block;
+                }
+
+                .btns-group {
+                    display: flex;
+                    justify-content: space-between;
+
+                    .btn {
+                        padding: 5px;
+                        background-color: $primary;
+                        color: $white;
+                        width: 110px;
+                    }
+                }
+            }
+        }
+
+        .input-box {
+            margin-bottom: 15px;
+            margin-top: 5px;
+        }
+    }
+}
+
+/* Styles for the Error and Success Message */
+
+.signup_message_box_section {
+    
+    .message-box {
+        min-height: 3.3rem;
+    }
+}

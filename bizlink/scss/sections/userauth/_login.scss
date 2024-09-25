@@ -1,0 +1,61 @@
+@use '../../custom' as *;
+@use '../../components/mixins' as *;
+
+.login_form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 4rem;
+    height: 105vh;
+
+    .login-image {
+
+        width: 350px;
+        height: 350px;
+        border-radius: 3rem;
+        transform-origin: top;
+        animation: animate-signup 0.5s;
+
+        img {
+            width: 100%;
+            object-fit: cover;
+            border-radius: 3rem;
+        }
+    }
+
+    form {
+        width: 30%;
+        padding-top: 50px;
+
+        a {
+            text-decoration: none;
+        }
+
+        .login-form-box {
+            transform-origin: top;
+            animation: dropdown-animate 0.5s;
+
+            /* This style is used in the forms.py */
+            .input-box {
+                margin-bottom: 15px;
+                margin-top: 5px;
+            }
+
+            button {
+                padding: 5px;
+                background-color: $primary;
+                color: $white;
+                width: 110px;
+            }
+        }
+    }
+}
+
+/* Styles for the Error and Success Message */
+
+.login_message_box_section {
+
+    .message-box {
+        min-height: 3.3rem;
+    }
+}

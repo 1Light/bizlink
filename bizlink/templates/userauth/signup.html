@@ -1,0 +1,192 @@
+{% extends 'core/base.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+<!-- Space to Display Error & Success Messages -->
+
+{% block message %}
+
+<section class="login_message_box_section">
+
+  {% if messages %}
+    {% for message in messages %}
+
+      <div class="alert alert-{{ message.tags }} message-box alert-dismissible fade show" role="alert">
+          <strong>{{ message }}</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+
+    {% endfor %}
+  {% endif %}
+
+</section>
+
+{% endblock %}
+
+<!-- Signup Form -->
+
+{% block content %}
+<section class="signup_form">
+
+  <!-- Signup Form Labels & Input -->
+  <form method="POST" action="." class="signup-form-box">
+    {% csrf_token %}
+    <h1 class="mb-3">Create an Account</h1>
+    <p>Already have an account? <a href="{% url 'userauth:user_login' %}">Login</a></p>
+
+    <!-- Progress bar -->
+    <div class="progressbar">
+
+      <!-- This is the line that goes from 1 to 2 -->
+      <div class="progress" id="progress"></div>
+
+      <div
+        class="progress-step progress-step-active"
+        data-title="Account">
+      </div>
+      <div class="progress-step" data-title="Security"></div>
+      <div class="progress-step" data-title="Personal"></div>
+      <div class="progress-step" data-title="Contact"></div>
+    </div>
+
+    <div class="signup-form-content">
+
+      <!-- Fieldsets -->
+
+      <!-- Fieldset 1 (Account Information) -->
+      <div class="account-information form-step form-step-active">
+        <h2 class="fs-title">Account Information</h2>
+
+        {% for field in form %}
+        {% if field.label == "Email" or field.label == "Username" or field.label == "User Type" %}
+
+        <fieldset>
+          <label for="{{ field.id_for_label }}">
+            {{ field.label }}
+          </label>
+
+          <div class="field-input">
+            {{ field }}
+
+            {% if field.errors %}
+            <div class="field-error">
+              {{ field.errors }}
+            </div>
+            {% endif %}
+          </div>
+        </fieldset>
+
+        {% endif %}
+        {% endfor %}
+        
+        <div class="btns-group">
+          <a href="#" class="btn btn-next">Next</a>
+        </div>
+      </div>
+
+      <!-- Fieldset 2 (Secure Your Account) -->
+      <div class="secure-account form-step">
+        <h2 class="fs-title">Secure Your Account</h2>
+
+        {% for field in form %}
+        {% if field.label == "Password" or field.label == "Confirm Password" %}
+
+        <fieldset>
+          <label for="{{ field.id_for_label }}">
+            {{ field.label }}
+          </label>
+
+          <div class="field-input">
+            {{ field }}
+
+            {% if field.errors %}
+            <div class="field-error">
+              {{ field.errors }}
+            </div>
+            {% endif %}
+          </div>
+        </fieldset>
+
+        {% endif %}
+        {% endfor %}
+        
+        <div class="btns-group">
+          <a href="#" class="btn btn-prev">Previous</a>
+          <a href="#" class="btn btn-next">Next</a>
+        </div>
+      </div>
+
+      <!-- Fieldset 3 (Personal Information) -->
+      <div class="personal-information form-step">
+        <h2 class="fs-title">Personal Information</h2>
+
+        {% for field in form %}
+        {% if field.label == "First Name" or field.label == "Last Name" %}
+
+        <fieldset>
+          <label for="{{ field.id_for_label }}">
+            {{ field.label }}
+          </label>
+
+          <div class="field-input">
+            {{ field }}
+
+            {% if field.errors %}
+            <div class="field-error">
+              {{ field.errors }}
+            </div>
+            {% endif %}
+          </div>
+        </fieldset>
+
+        {% endif %}
+        {% endfor %}
+
+        <div class="btns-group">
+          <a href="#" class="btn btn-prev">Previous</a>
+          <a href="#" class="btn btn-next">Next</a>
+        </div>
+
+      </div>
+      <!-- Fieldset 4 (Contact Details) -->
+      <div class="cersonal-detail form-step">
+        <h2 class="fs-title">Contact Details</h2>
+
+        {% for field in form %}
+        {% if field.label == "Mobile" or field.label == "Address" %}
+
+        <fieldset>
+          <label for="{{ field.id_for_label }}">
+            {{ field.label }}
+          </label>
+
+          <div class="field-input">
+            {{ field }}
+
+            {% if field.errors %}
+            <div class="field-error">
+              {{ field.errors }}
+            </div>
+            {% endif %}
+          </div>
+        </fieldset>
+
+        {% endif %}
+        {% endfor %}
+        
+        <div class="btns-group">
+          <a href="#" class="btn btn-prev">Previous</a>
+          <input type="submit" value="Submit" class="btn" />
+        </div>
+      </div>
+
+      {% if form.non_field_errors %}
+      <div class="non-field-errors">
+        {{ form.non_field_errors }}
+      </div>
+      {% endif %}
+
+    </div>
+  </form>
+</section>
+{% endblock %}

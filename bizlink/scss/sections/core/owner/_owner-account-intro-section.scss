@@ -1,0 +1,27 @@
+@use '../../../custom' as *;
+
+.owner_account_intro_section {
+
+    .account-intro-box {
+        padding: 3rem;
+        column-gap: 3rem;
+
+        .tab {
+            row-gap: 1rem;
+
+            .tab-btn {
+                background-color: $primary;
+                color: $white;
+            }
+
+            .tab-btn.active {
+                background-color: $white;
+                color: $primary;
+            }
+        }
+
+        .tab-content {
+            border: 2px solid $black;
+        }
+    }
+}

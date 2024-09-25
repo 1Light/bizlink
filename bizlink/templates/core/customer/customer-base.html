@@ -1,0 +1,38 @@
+{% extends "core/base.html" %}
+
+<!-- Owner Submenu Section -->
+{% block submenu %}
+
+<section class="customer_submenu_section">
+    <div class="container">
+        <div class="customer-submenu-section-box">
+            <ul class="submenu">
+                <li>Browse All Categories</li>
+                <li><a href="{% url 'core:shop' %}">Shops</a></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+<!-- Space to Display Error & Success Messages -->
+
+{% block message %}
+
+<section class="customer_submenu_message_box_section">
+
+  {% if messages %}
+    {% for message in messages %}
+
+      <div class="alert alert-{{ message.tags }} message-box alert-dismissible fade show" role="alert">
+          <strong>{{ message }}</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+
+    {% endfor %}
+  {% endif %}
+
+</section>
+
+{% endblock %}

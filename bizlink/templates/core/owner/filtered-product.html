@@ -1,0 +1,32 @@
+<div class="product-collection" id="filtered-product">
+    {% if products %}
+        <h3>
+            {% if products.count == 1 %}
+                1 Product
+            {% else %}
+                {{ products.count }} Products
+            {% endif %}
+        </h3>
+        <div class="product-collection-box">
+            {% for product in products %}
+                <div class="product-box">
+                    <a href="{% url 'core:product_detail' product.productId %}">
+                        <div class="product-image">
+                            <img src="{{ product.image.url }}" alt="{{ product.name }} image">
+                        </div>
+                    </a>
+                    <p>{{ product.category.name }}</p>
+                    <h4>{{ product.name }}</h4>
+                    <p>By {{ product.shop.name }}</p>
+                    <div class="price-and-button">
+                        <p>{{ product.price }}</p>
+                        <p>{{ product.old_price }}</p>
+                        <a href="#" class="btn add-btn">Add</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No products available. <a href="#">Click here</a> to create products</p>
+    {% endif %}
+</div>

@@ -1,0 +1,99 @@
+{% extends "core/customer/customer-base.html" %}
+
+{% block title %}
+Shops
+{% endblock %}
+
+{% block content %}
+
+<section class="shop-intro-section">
+    <div class="container">
+        <h1>Shops</h1>
+
+        <div class="search-box">
+            <div class="search">
+                <form
+                class="d-flex"
+                role="search"
+                method="get"
+                action="."
+                >
+                <input
+                    class="form-control me-2 search-bar"
+                    type="search"
+                    placeholder="Search here"
+                    aria-label="Search"
+                    name="q"
+                    value=""
+                />
+                <button
+                    class="btn btn-outline-success search-btn"
+                    type="submit"
+                >
+                    Search
+                </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="shop-collection">
+
+            {% if shops %}
+
+                <p class="shop-tally">As of now, we have 
+
+                    {% if shops.count  == 1 %}
+                        1 Shop
+                    {% else %}
+                        {{ shops.count  }} shops
+                    {% endif %}
+
+                </p>
+
+                    <div class="shop-collection-box">
+
+                        {% for shop in shops %}
+
+                            <div class="shop-box">
+
+                                <div class="shop-image-column">
+
+                                    <div class="shop-image">
+                                       <img src="{{ shop.image.url }}" alt="{{ shop.name }} image">
+                                    </div>
+                                    
+                                    <p>
+                                        {% if shop.shop_categories.count  == 1 %}
+                                            1 Category
+                                        {% else %}
+                                            {{ shop.shop_categories.count }} categories
+                                        {% endif %}
+                                    </p>
+
+                                </div>
+
+                                <div class="shop-detail">
+                                    <p>Since {{ shop.created_at|date:"M j, Y" }}</p>
+                                    <h3>{{ shop.name }}</h3>
+                                    <p>{{ shop.address }}</p>
+                                    <p>Call us: {{ shop.contact }}</p>
+                                </div>
+
+                                <div class="visit-shop-btn">
+                                    <a href="#" class="btn"> Visit Store</a>
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+                    </div>
+
+            {% else %}
+                <p>No shops yet. Please come back letter. </p>
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

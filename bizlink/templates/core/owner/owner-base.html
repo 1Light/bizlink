@@ -1,0 +1,73 @@
+{% extends "core/base.html" %}
+
+<!-- Owner Submenu Section -->
+{% block submenu %}
+
+<section class="owner_submenu_section">
+    <div class="container">
+        <div class="owner-submenu-section-box">
+            <ul class="submenu">
+                <li>Browse All Categories</li>
+                <li class="home-dropdown">
+                    <a class="btn dropdown-toggle home-btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Home
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'core:product' %}">Products</a></li>
+                        <li><a class="dropdown-item" href="{% url 'core:category' %}">Categories</a></li>
+                    </ul>
+                </li>
+                <li class="category-dropdown">
+                    <a class="btn dropdown-toggle category-btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Category
+                    </a>
+                    <ul class="dropdown-menu custom-dropdown-menu">
+
+                        {% if categories %}
+
+                            <div class="category-row">
+
+                                {% for category in categories %}
+
+                                    <li><a class="dropdown-item" href="{% url 'core:category_detail' category.categoryId %}">
+                                        {{ category.name }}
+                                    </a></li>
+                                
+                                {% endfor %}
+
+                            </div>
+
+                        {% else %}
+                            <p>No Categories. <a href="#">Click here</a> to create categories.</p>
+                        {% endif %}
+
+                    </ul>
+                </li>
+                <li><a href="{% url 'core:admin' %}">Admin</a></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+<!-- Space to Display Error & Success Messages -->
+
+{% block message %}
+
+<section class="owner_submenu_message_box_section">
+
+  {% if messages %}
+    {% for message in messages %}
+
+      <div class="alert alert-{{ message.tags }} message-box alert-dismissible fade show" role="alert">
+          <strong>{{ message }}</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+
+    {% endfor %}
+  {% endif %}
+
+</section>
+
+{% endblock %}

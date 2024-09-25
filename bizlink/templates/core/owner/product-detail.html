@@ -1,0 +1,249 @@
+{% extends "core/owner/owner-base.html" %}
+
+{% load static %}
+
+{% block title %}
+Product({{ product.name }})
+{% endblock %}
+
+{% block content %}
+
+<!-- Product Detail Intro Section -->
+
+<section class="product_detail_intro_section">
+
+    <div class="breadcrumb-box">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'core:owner_home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'core:category' %}">Categories</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+          </ol>
+    </div>
+
+    <div class="container">
+
+        <div class="product-detail-intro-box">
+            <div class="product-image">
+                <img id="main-image" src="{{ product.image.url }}" alt="{{ product.name }} image" class="img-fluid">
+            
+                <div class="more-product-images">
+                    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active" data-img="{{ product.image.url }}">
+                                <img src="{{ product.image.url }}" alt="{{ product.name }} image">
+                            </div>
+                            {% if product_images %}
+                                {% for img in product_images %}
+                                    <div class="carousel-item" data-img="{{ img.image.url }}">
+                                        <img src="{{ img.image.url }}" class="img-fluid" alt="{{ img.product.name }}">
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p>No more images available.</p>
+                            {% endif %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="product-description">
+                <h4>{{ product.name }}</h4>
+                <div class="price">
+                    <p class="new-price">{{ product.price }}</p>
+                    <p class="old-price">{{ product.old_price }}</p>
+                </div>
+                <p><b>Description: </b>{{ product.description|striptags|truncatechars:100 }}</p>
+                <p><b>Specifications: </b>{{ product.specifications|striptags|truncatechars:100 }}</p>
+
+                <a href="#" class="btn add-btn">Add</a>
+
+                <div class="more-detail">
+                    <p><b>Shop:</b> {{ product.shop.name }}</p>
+                    <p><b>Category:</b> {{ product.category.name }}</p>
+                    <p><b>Date: </b> {{ product.created_at|date:"M d, Y" }}</p>
+                    <p><b>Life:</b> {{ product.life }}</p>
+                    <p><b>MFG:</b> {{ product.mfg|date:"M, Y" }}</p>
+                    <p><b>In Stock:</b> {{ product.stock_quantity }}</p>
+                    <p class="tag"><b>Tags:</b> {% for tag in product.tags.all %} <a href="{% url 'core:tag' tag.slug %}">#{{ tag.name|lower }}</a> {% endfor %}</p>
+                </div>
+            </div>
+            <div class="product-shop">
+                <h3>Shop</h3>
+                <p class="shop-name">{{ shop.name }}</p>
+                <p><i class="fa-solid fa-location-dot"></i> {{ shop.address.address }}</p>
+                <p><i class="fa-solid fa-headphones"></i> {{ shop.contact }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Product Detail Tab Section -->
+
+<section class="product_detail_tab_section">
+    <div class="container">
+        <ul class="nav nav-pills mb-3 tab" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active rounded-pill" id="pills-description-tab" data-bs-toggle="pill" data-bs-target="#pills-description" type="button" role="tab" aria-controls="pills-description" aria-selected="true">Description</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link rounded-pill" id="pills-additional-info-tab" data-bs-toggle="pill" data-bs-target="#pills-additional-info" type="button" role="tab" aria-controls="pills-additional-info" aria-selected="false">Additional Info</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link rounded-pill" id="pills-shop-tab" data-bs-toggle="pill" data-bs-target="#pills-shop" type="button" role="tab" aria-controls="pills-shop" aria-selected="false">Shop</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link rounded-pill" id="pills-review-tab" data-bs-toggle="pill" data-bs-target="#pills-review" type="button" role="tab" aria-controls="pills-review" aria-selected="false">Review</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link rounded-pill" id="pills-video-tab" data-bs-toggle="pill" data-bs-target="#pills-video" type="button" role="tab" aria-controls="pills-video" aria-selected="false">Video</button>
+            </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-description" role="tabpanel" aria-labelledby="pills-description-tab" tabindex="0">{{ product.description|safe }}</div>
+            <div class="tab-pane fade" id="pills-additional-info" role="tabpanel" aria-labelledby="pills-additional-info-tab" tabindex="0">{{ product.specifications|safe }}</div>
+            <div class="tab-pane fade" id="pills-shop" role="tabpanel" aria-labelledby="pills-shop-tab" tabindex="0">
+                <div class="shop">
+                    <h3>Shop</h3>
+                    <p class="shop-name">{{ shop.name }}</p>
+                    <p><i class="fa-solid fa-location-dot"></i> {{ shop.address.address }}</p>
+                    <p><i class="fa-solid fa-headphones"></i> {{ shop.contact }}</p>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="pills-review" role="tabpanel" aria-labelledby="pills-review-tab" tabindex="0"></div>
+            <div class="tab-pane fade video-tab" id="pills-video" role="tabpanel" aria-labelledby="pills-video-tab" tabindex="0">
+
+                {% if product.video %}
+                <div class="video-box">
+                    <div class="vid">
+                        <video class="main-video" id="main-video" style="pointer-events: none;">
+                            <source src="{{ product.video.video.url }}">
+                        </video>
+                        <i class="fa-regular fa-circle-play" onclick="playMainVideo(this)"></i>
+                        <div class="vid-description">
+                            <p>{{ product.video.description|safe }}</p>
+                        </div>
+                    </div>
+                
+                    {% if product_videos %}
+                        {% for vid in product_videos %}
+                        <div class="vid">
+                            <video class="more-video" id="video-{{ forloop.counter }}" style="pointer-events: none;">
+                                <source src="{{ vid.video.url }}">
+                            </video>
+                            <i class="fa-regular fa-circle-play" onclick="playMoreVideo(this, 'video-{{ forloop.counter }}')"></i>
+                            <div class="vid-description">
+                                <p>{{ vid.description|safe }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                {% else %}
+                    <p>No demo videos available. Click here to upload.</p>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Related Products Section -->
+
+<section class="related_products_section">
+    <div class="container">
+        <div class="related-product-section-box">
+
+                <h3>Related Products</h3>
+
+                <div class="related-product-collection-box">
+    
+                    {% if related_products %}
+    
+                        {% for product in related_products%}
+
+                                <div class="product-box">
+                                        
+                                    <a href="{% url 'core:product_detail' product.productId %}">
+                                        <div class="product-image">
+                                            <img src="{{ product.image.url }}" alt="{{ product.name }} image">
+                                        </div>
+                                    </a>
+
+                                    <p>{{ product.category.name }}</p>
+                                    <h4>{{ product.name }}</h4>
+                                    <p>By {{ product.shop.name }}</p>
+
+                                    <div class="price-and-button">
+                                        <p>{{ product.price }}</p>
+                                        <p>{{ product.old_price }}</p>
+                                        <a href="#" class="btn add-btn">Add</a>
+                                    </div>
+
+                                </div>
+    
+                        {% endfor %}
+                    
+                    {% else %}
+                        <p>No related products available. <a href="#">Click here</a> to create products</p>
+                    {% endif %}
+    
+                </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Script for automatically updating the Main Image Based on the Active Carousel Item -->
+<!-- Defined here and not in an external js file becasue it interacts with the DOM directly -->
+
+<script>
+  const carousel = document.getElementById('carouselExample');
+  const mainImage = document.getElementById('main-image');
+
+  carousel.addEventListener('slid.bs.carousel', function () {
+      const activeItem = carousel.querySelector('.carousel-item.active');
+      const newImageUrl = activeItem.getAttribute('data-img');
+      mainImage.src = newImageUrl;
+  });
+</script>
+
+<script>
+function playMainVideo(icon) {
+    var video = document.getElementById('main-video');
+    video.style.pointerEvents = 'auto'; // Enable pointer events for the video
+    video.controls = true; // Show controls
+    video.play();
+    icon.style.display = 'none'; // Hide the icon
+
+    // Handle video pause
+    video.onpause = function() {
+        icon.style.display = 'block'; // Show the icon again
+        video.style.pointerEvents = 'none'; // Disable pointer events again
+        video.controls = false; // Hide controls
+    };
+}
+
+function playMoreVideo(icon, videoId) {
+    var video = document.getElementById(videoId);
+    video.style.pointerEvents = 'auto'; // Enable pointer events for the video
+    video.controls = true; // Show controls
+    video.play();
+    icon.style.display = 'none'; // Hide the icon
+
+    // Handle video pause
+    video.onpause = function() {
+        icon.style.display = 'block'; // Show the icon again
+        video.style.pointerEvents = 'none'; // Disable pointer events again
+        video.controls = false; // Hide controls
+    };
+}
+</script>
+{% endblock %}

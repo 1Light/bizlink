@@ -1,0 +1,322 @@
+{% extends "core/owner/owner-base.html" %}
+
+{% block title %}
+Admin
+{% endblock %}
+
+{% block content %}
+
+<!-- Admin Intro Section -->
+
+<section class="admin_intro_section">
+    <div class="container">
+
+        <form action="{% url 'core:update_shop' %}" method="POST" enctype="multipart/form-data">
+
+             <div class="intro-section-box">
+                {% csrf_token %}
+
+                <div class="shop-description">
+
+                    <input type="text" id="shopName" name="name" placeholder="Enter your shop name" class="mb-3" value="{{ shop.name }}">
+                    <textarea id="shopDescription" name="description" placeholder="Enter a brief description of your shop" rows="10" cols="50" maxlength="300" class="mb-3">{{ shop.description }}</textarea>
+                    <input type="text" id="shopAddress" name="address" placeholder="Enter your shop address" class="mb-3" value="{{ shop.address }}">
+                    <input type="text" id="shopContact" name="contact" placeholder="Enter your shop contact" value="{{ shop.contact }}">
+
+                </div>
+
+                <div class="shop-image">
+
+                    <div class="image-preview-box">
+                        
+                        <input name="image" type="file" id="file" accept="image/*" hidden>
+
+                        <div class="img-area" data-img="hello.jpg">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <h3>Upload Image</h3>
+                            <p>Image size must be less than <span>2MB</span></p>
+                        </div>
+
+                        <button type="button" class="select-image-btn">Select Image</button>
+
+                    </div>
+
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary update-shop-btn">Update Shop</button>
+        </form>
+    </div>
+</section>
+
+<!-- Admin Features Section -->
+
+<section class="admin_features_section mb-0 pb-5">
+    <div class="container">
+      <h1>Features Section</h1>
+  
+      <!-- Modal Button for Creating a Feature -->
+      <button type="button" class="btn btn-lg btn-danger" data-bs-toggle="modal" data-bs-target="#feature-creation-form">
+        Click to toggle popover
+      </button>
+  
+      <!-- Box for Displaying Features -->
+      <div class="features-section-box">
+        {% if features %}
+          {% for feature in features %}
+          <div class="feature">
+            <div class="feature-image">
+              <img
+                src="{{ feature.image.url }}"
+                alt="feature image"
+                class="img-fluid"
+              />
+            </div>
+            <div class="feature-name">
+              <h5>{{ feature.name }}</h5>
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-center">No features yet. Please add features.</p>
+        {% endif %}
+      </div>
+  
+      <!-- Model for Creating a Feature -->
+      <div class="modal fade" id="feature-creation-form" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable feature-modal">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modal-title">Create a Feature!!!</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form action="{% url 'core:create_feature' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                {% for field in create_feature_form %}
+                    <div class="field">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+  
+                        {% if field.field.widget.input_type == "file" %}
+  
+                        <div class="image-preview-box">
+                          <input name="image" type="file" id="file" accept="image/*" hidden>
+                          <div class="img-area" data-img="hello.jpg">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <h3>Upload Image</h3>
+                            <p>Image size must be less than <span>2MB</span></p>
+                          </div>
+                          <button type="button" class="select-image-btn">Select Image</button>
+                        </div>
+  
+                        {% else %}
+                          {{ field }}
+                        {% endif %}
+  
+                        {% if field.errors %}
+                            <div class="field_errors">
+                                {{ field.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                {% if create_feature_form.non_field_errors %}
+                    <div class="non_field_errors">
+                        {{ create_feature_form.non_field_errors }}
+                    </div>
+                {% endif %}
+                <button type="submit">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+<!-- Admin Featured Products Section -->
+<section class="admin_featured_products_section mb-6">
+    <div class="container">
+      <h1>Featured Products</h1>
+  
+      <!-- Modal Button for Creating a Featured Product -->
+      <button type="button" class="btn btn-lg btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#featured-product">
+        Click to toggle popover
+      </button>
+  
+      <!-- Box for Displaying Featured Products -->
+      <div class="featured-product-box">
+        {% if featured_products %}
+        <ul class="list-group">
+          {% for featured_product in featured_products %}
+            <li class="list-group-item">
+              <input type="checkbox" name="featured-product-ids" value="{{ featured_product.product.id }}" id="featured-product-{{ featured_product.product.id }}">
+              <label for="featured-product-{{ featured_product.product.id }}">
+                <div class="featured-product">
+                  <div class="product-image">
+                    {% if featured_product.product.image %}
+                      <img src="{{ featured_product.product.image.url }}" alt="product image" class="img-fluid" />
+                    {% else %}
+                      <p>No image available</p>
+                    {% endif %}
+                  </div>
+                  <div class="product-description">
+                    <p>{{ featured_product.category.name }}</p>
+                    <h4>{{ featured_product.product.name }}</h4>
+                    <p>By {{ featured_product.shop.name }}</p>
+                    <p>Price: {{ featured_product.product.price }}</p>
+                    <p>Quantity: {{ featured_product.product.stock_quantity }}</p>
+                  </div>
+                </div>
+              </label>
+            </li>              
+          {% endfor %}
+        </ul>
+        <button id="delete-featured-btn" class="btn btn-danger">Delete</button>
+        {% else %}
+          <p>Add featured products</p>
+        {% endif %}
+      </div>
+  
+      <!-- Modal for Creating a Featured Product-->
+      <div class="modal fade" id="featured-product" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable featured-product-modal">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modal-title">Create Featured Products!!!</h5>
+              <div class="header-btn">
+                {% if products %}
+                    <button class="btn btn-primary add-featured-btn" id="add-featured-btn">Add</button>
+                {% endif %}
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+            </div>
+            <div class="modal-body product-box">
+              {% if products %}
+              <ul class="list-group">
+                {% for product in products %}
+                  <li class="list-group-item">
+                    <input type="checkbox" name="featured-products" value="{{ product.id }}" id="modal-featured-product-{{ product.id }}">
+                    <label for="modal-featured-product-{{ product.id }}">
+                      <div class="product">
+                        <div class="product-image">
+                          <img src="{{ product.image.url }}" alt="product image" class="img-fluid" />
+                        </div>
+                        <div class="product-description">
+                          <p>{{ product.category.name }}</p>
+                          <h4>{{ product.name }}</h4>
+                          <p>By {{ product.shop.name }}</p>
+                          <p>Price: {{ product.price }}</p>
+                          <p>Quantity: {{ product.stock_quantity }}</p>
+                        </div>
+                      </div>
+                    </label>
+                  </li>              
+                {% endfor %}
+              </ul>
+              {% else %}
+                <p class="text-center">No products available yet. Start creating products!</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Start the New Arrivals Section -->
+  <section class="admin_new_arrivals_section mb-6">
+    <div class="container">
+      <h1>New Arrivals</h1>
+  
+      <!-- Modal Button for Creating a New Arrival -->
+      <button type="button" class="btn btn-lg btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#new-arrival">
+        Click to toggle popover
+      </button>
+  
+      <!-- Box for Displaying New Arrivals -->
+      <div class="new-arrival-box">
+        {% if new_arrivals %}
+        <ul class="list-group">
+          {% for new_arrival in new_arrivals %}
+          <li class="list-group-item">
+            <input type="checkbox" name="new-arrival-ids" value="{{ new_arrival.product.id }}" id="new-arrival-{{ new_arrival.product.id }}">
+            <label for="new-arrival-{{ new_arrival.product.id }}">
+              <div class="new-arrival">
+                <div class="product-image">
+                  {% if new_arrival.product.image %}
+                    <img src="{{ new_arrival.product.image.url }}" alt="product image" class="img-fluid" />
+                  {% else %}
+                    <p>No image available</p>
+                  {% endif %}
+                </div>
+                <div class="product-description">
+                  <p>{{ new_arrival.category.name }}</p>
+                  <h4>{{ new_arrival.product.name }}</h4>
+                  <p>By {{ new_arrival.shop.name }}</p>
+                  <p>Price: {{ new_arrival.product.price }}</p>
+                  <p>Quantity: {{ new_arrival.product.stock_quantity }}</p>
+                </div>
+             </div>
+            </label>
+          </li>              
+        {% endfor %}
+        </ul>
+        <button id="delete-new-arrival-btn" class="btn btn-danger">Delete</button>
+        {% else %}
+          <p>Add new arrivals</p>
+        {% endif %}
+      </div>
+  
+      <!-- Modal for Creating a New Arrival -->
+      <div class="modal fade" id="new-arrival" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable new-arrival-modal">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modal-title">Create New Arrival!!!</h5>
+              <div class="header-btn">
+                {% if products %}
+                    <button class="btn btn-primary add-new-arrival-btn" id="add-new-arrival-btn">Add</button>
+                {% endif %}
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+            </div>
+            <div class="modal-body product-box">
+              {% if products %}
+              <ul class="list-group">
+                {% for product in products %}
+                  <li class="list-group-item">
+                    <input type="checkbox" name="new-arrivals" value="{{ product.id }}" id="new-arrival-product-{{ product.id }}">
+                    <label for="new-arrival-product-{{ product.id }}">
+                      <div class="product">
+                        <div class="product-image">
+                          <img src="{{ product.image.url }}" alt="product image" class="img-fluid" />
+                        </div>
+                        <div class="product-description">
+                          <p>{{ product.category.name }}</p>
+                          <h4>{{ product.name }}</h4>
+                          <p>By {{ product.shop.name }}</p>
+                          <p>Price: {{ product.price }}</p>
+                          <p>Quantity: {{ product.stock_quantity }}</p>
+                        </div>
+                      </div>
+                    </label>
+                  </li>                           
+                {% endfor %}
+              </ul>
+              {% else %}
+                <p class="text-center">No products available yet. Start creating products!</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<script>
+    // Pass the shop image URL to JavaScript
+    const existingImage = "{% if shop.image %}{{ shop.image.url }}{% else %}null{% endif %}";
+</script>
+
+{% endblock %}
