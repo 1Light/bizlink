@@ -26,7 +26,7 @@ Bilzink is a dynamic e-commerce platform that enables shop owners to manage thei
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/1Light/bizlink.git
    ```
 2. Navigate to the project directory:
    ```bash
