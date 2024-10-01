@@ -1,0 +1,278 @@
+{% extends "core/owner/owner-base.html" %}
+
+{% load static %}
+
+{% block title %}
+Shop
+{% endblock %}
+
+{% block content %}
+
+<!-- Home Intro Section -->
+<section class="shop_intro_section">
+    <div class="container">
+        <div class="intro-section-box">
+            <div class="shop-detail">
+                <div class="shop-name content">
+                    <h1>{{ shop.name }}</h1>
+                </div>
+                <div class="shop-description content">
+                    <p>{{ shop.description|striptags }}</p>
+                </div>
+                <div class="shop-address content">
+                    <p><i class="fa-solid fa-location-pin"></i>&nbsp;&nbsp;{{ shop.address }}</p>
+                </div>
+                <div class="shop-contact content">
+                    <p><i class="fa-solid fa-phone"></i>&nbsp;&nbsp;{{ shop.contact }}</p>
+                </div>
+
+                {% if social_media %}
+                    <div class="contact-us">
+                        <p>Contact us: </p>
+                    </div>
+                    <div class="social-media">
+                        {% for entry in social_media %}
+                            <div class="content">
+                                {% if entry.platform == "facebook" %}
+                                    <a href="{{ entry.url }}" target="_blank">
+                                        <i class="fa-brands fa-square-facebook"></i>
+                                    </a>
+                                {% elif entry.platform == "twitter" %}
+                                    <a href="{{ entry.url }}" target="_blank">
+                                        <i class="fa-brands fa-square-x-twitter"></i>
+                                    </a>
+                                {% elif entry.platform == "instagram" %}
+                                    <a href="{{ entry.url }}" target="_blank">
+                                        <i class="fa-brands fa-square-instagram"></i>
+                                    </a>
+                                {% elif entry.platform == "linkedin" %}
+                                    <a href="{{ entry.url }}" target="_blank">
+                                        <i class="fa-brands fa-linkedin"></i>
+                                    </a>
+                                {% elif entry.platform == "youtube" %}
+                                    <a href="{{ entry.url }}" target="_blank">
+                                        <i class="fa-brands fa-youtube"></i>
+                                    </a>
+                                {% else %}
+                                    <a href="{{ entry.url }}" target="_blank">
+                                        <i class="fa-solid fa-link"></i>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="shop-image">
+                <img src="{{ shop.image.url }}" alt="{{ shop.name }} image">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Shop Banner Section -->
+
+<section class="shop_banner_section">
+    <div class="container">
+        <div class="banner-section-box">
+            <div class="col-lg-3">
+                <div class="category-collection-box">
+                    
+                    <a href="{% url 'core:category' %}" class="title">
+                        <h3>Category</h3>
+                    </a>
+
+                    {% if categories %}
+
+                        {% for category in categories%}
+                        
+                        <a href="{% url 'core:category_detail' category.categoryId %}" class="category">
+                            <div class="category-box">
+                                <p>{{ category }}</p>
+                                <p>{{ category.category_products.count }}</p>
+                            </div>
+                        </a>
+
+                        {% endfor %}
+                    
+                    {% else %}
+                        <p>No Categories. <a href="#">Click here</a> to create categories.</p>
+
+                    {% endif %}
+
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+
+                <div class="banner-box">
+                    <img src="{% static 'img/products/f1.jpg' %}" alt="banner image">
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Shop Features Section -->
+
+{% if features %}
+<section class="shop_features_section">
+    <div class="container">
+        <h3>Shop Features</h3>
+        <div class="shop-feature-collection-box">
+            {% for feature in features %}
+            <div class="feature-box">
+              <div class="feature-image">
+                <img
+                  src="{{ feature.image.url }}"
+                  alt="feature image"
+                  class="img-fluid"
+                />
+              </div>
+              <div class="feature-name">
+                <h5>{{ feature.name }}</h5>
+              </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if discounted_products %}
+
+<!-- Discounted Products Section -->
+<section class="shop_discounted_product_section">
+    <div class="container">
+        <h3>Shop Discounted Products</h3>
+        <div class="discounted-product-collection-box">
+
+            {% for discounted_product in discounted_products %}
+
+                <div class="discounted-product-box">
+
+                    <div class="discount-flag">
+                        <p>-{{ discounted_product.get_percentage|floatformat:"1" }}%</p>
+                    </div>
+                
+                    <a href="{% url 'core:product_detail' discounted_product.product.productId %}">
+                        <div class="discounted-product-image">
+                            <img src="{{ discounted_product.product.image.url }}" alt="{{ discounted_product.product.name }} image">
+                        </div>
+                    </a>
+                    <a href="#" class="add-to-wishlist" data-product-item="{{ discounted_product.product.productId }}">
+                        <i class="fa-solid fa-heart {% if discounted_product.product.productId in wishlist_items %}green-heart{% endif %}">
+                        </i>
+                    </a>
+
+                    <p>{{ discounted_product.product.category.name }}</p>
+                    <h4>{{ discounted_product.product.name }}</h4>
+                    <p>By {{ discounted_product.product.shop.name }}</p>
+
+                    <div class="price-and-button">
+                        <p class="old-price">{{ discounted_product.product.price }}</p>
+                        <p class="new-price">{{ discounted_product.new_price }}</p>
+                        <a href="#" class="btn add-btn">Add</a>
+                    </div>
+
+                </div>
+
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if featured_products %}
+<!-- Featured Products Section -->
+<section class="shop_featured_products_section">
+    <div class="container">
+        <h3>Shop Featured Products</h3>
+        <div class="featured-product-collection-box">
+
+            {% for featured_product in featured_products %}
+
+                <div class="featured-product-box">
+                
+                    <a href="{% url 'core:product_detail' featured_product.product.productId %}">
+                        <div class="featured-product-image">
+                            <img src="{{ featured_product.product.image.url }}" alt="{{ featured_product.product.name }} image">
+                        </div>
+                    </a>
+                    <a href="#" class="add-to-wishlist" data-product-item="{{ featured_product.product.productId }}">
+                        <i class="fa-solid fa-heart {% if featured_product.product.productId in wishlist_items %}green-heart{% endif %}">
+                        </i>
+                    </a>
+
+                    <p>{{ featured_product.product.category.name }}</p>
+                    <h4>{{ featured_product.product.name }}</h4>
+                    <p>By {{ featured_product.product.shop.name }}</p>
+
+                    <div class="price-and-button">
+                        <p>{{ featured_product.product.price }}</p>
+                        <p>{{ featured_product.product.old_price }}</p>
+                        <a href="#" class="btn add-btn">Add</a>
+                    </div>
+
+                </div>
+
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- New Arrivals Section -->
+
+{% if new_arrivals %}
+<section class="shop_new_arrivals_section">
+    <div class="container">
+        <h3>Shop New Arrivals</h3>
+        <div class="new-arrival-collection-box">
+
+            {% for new_arrival in new_arrivals %}
+
+            <div class="new-arrival-box">
+            
+                <a href="{% url 'core:product_detail' new_arrival.product.productId %}">
+                    <div class="new-arrival-image">
+                        <img src="{{ new_arrival.product.image.url }}" alt="{{ new_arrival.product.name }} image">
+                    </div>
+                </a>
+
+                <a href="#" class="add-to-wishlist" data-product-item="{{ new_arrival.product.productId }}">
+                    <i class="fa-solid fa-heart {% if new_arrival.product.productId in wishlist_items %}green-heart{% endif %}">
+                    </i>
+                </a>
+
+                <p>{{ new_arrival.product.category.name }}</p>
+                <h4>{{ new_arrival.product.name }}</h4>
+                <p>By {{ new_arrival.product.shop.name }}</p>
+
+                <div class="price-and-button">
+                    <p>{{ new_arrival.product.price }}</p>
+                    <p>{{ new_arrival.product.old_price }}</p>
+                    <a href="#" class="btn add-btn">Add</a>
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Shop Inventory Section -->
+<section class="shop_inventory_section">
+
+</section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+{% endblock %}

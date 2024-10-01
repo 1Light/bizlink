@@ -1,0 +1,73 @@
+@use '../../../custom' as *;
+
+.shop_intro_section {
+    height: 70vh;
+
+    .intro-section-box {
+        display: flex;
+        justify-content: space-between;
+        height: 70vh;
+
+        .shop-detail {
+            width: 47%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem 2rem 1rem 2rem;
+            position: relative;
+
+            i {
+                color: $primary;
+            }
+
+            .shop-description {
+                text-align: justify;
+            }
+
+            .contact-us {
+                position: absolute;
+                top: 77%;
+                left: 7%;
+                margin-top: 0.5rem;
+            }
+
+            .social-media {
+                display: flex;
+                gap: 3rem;
+                position: absolute;
+                top: 87%;
+                left: 7%;
+
+                a {
+                    text-decoration: none;
+                    color: $black;
+
+                    i {
+                        font-size: 2.5rem;
+                    }
+                }
+            }
+
+            .shop-name {
+                h1 {
+                    text-align: center;
+                }
+            }
+        }
+
+        .shop-image {
+            border: 2px solid $gray-200;
+            height: 10rem;
+            width: 47%;
+            height: 100%;
+
+            border-radius: 5%;
+
+            img {
+                width: 100%;
+                height: 100%;
+                border-radius: 5%;
+            }
+        }
+    }
+}

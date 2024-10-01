@@ -1,5 +1,7 @@
 {% extends "core/base.html" %}
 
+{% load static %}
+
 <!-- Owner Submenu Section -->
 {% block submenu %}
 
@@ -7,10 +9,10 @@
     <div class="container">
         <div class="owner-submenu-section-box">
             <ul class="submenu">
-                <li>Browse All Categories</li>
-                <li class="home-dropdown">
-                    <a class="btn dropdown-toggle home-btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Home
+                <li><a href="{% url 'core:owner_shop' %}">Shop</a></li>
+                <li class="browse-dropdown">
+                    <a class="btn dropdown-toggle browse-btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Browse
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{% url 'core:product' %}">Products</a></li>
@@ -38,12 +40,18 @@
                             </div>
 
                         {% else %}
-                            <p>No Categories. <a href="#">Click here</a> to create categories.</p>
+                            {% if user.user_type == 'business_owner' %}
+                                <p>No Categories. <a href="#">Click here</a> to create categories.</p>
+                            {% else %}
+                                <p>No categories available</p>
+                            {% endif %}
                         {% endif %}
 
                     </ul>
                 </li>
-                <li><a href="{% url 'core:admin' %}">Admin</a></li>
+                {% if user.user_type == 'business_owner' %}
+                    <li><a href="{% url 'core:admin' %}">Admin</a></li>
+                {% endif %}
             </ul>
         </div>
     </div>
@@ -69,5 +77,6 @@
   {% endif %}
 
 </section>
+
 
 {% endblock %}

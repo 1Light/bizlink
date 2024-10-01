@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Shop, Category, Product, MoreProductImage, CartOrder, CartOrderProduct, ProductReview, Wishlist, Address, Feature, FeaturedProduct, NewArrival, MoreProductVideo, ProductVideo
+from .models import Shop, Category, Product, DiscountedProduct, MoreProductImage, CartOrder, CartOrderProduct, ProductReview, Wishlist, Feature, FeaturedProduct, NewArrival, MoreProductVideo, ProductVideo
 
 # Configure Your Admin Models Here
 class MoreProductImageAdmin(admin.TabularInline):
@@ -14,6 +14,9 @@ class MoreProductVideoAdmin(admin.TabularInline):
 class ProductAdmin(admin.ModelAdmin):
     inlines = [MoreProductImageAdmin, MoreProductVideoAdmin]
     list_display = ['created_by', 'name', 'product_image', 'price', 'featured', 'product_status']
+
+class DiscountedProductAdmin(admin.ModelAdmin):
+    list_display = ['created_by', 'discounted_product_image', 'product_name', 'product_price', 'new_price', 'discount_until', 'has_discount_ended']
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['created_by', 'name', 'category_image']
@@ -33,11 +36,8 @@ class ProductReviewAdmin(admin.ModelAdmin):
 class WishlistAdmin(admin.ModelAdmin):
     list_display = ['created_by', 'product', 'created_at']
 
-class AddressAdmin(admin.ModelAdmin):
-    list_display = ['created_by', 'address', 'is_confirmed']
-
 class FeatureAdmin(admin.ModelAdmin):
-    list_display = ['created_by', 'feature_image']
+    list_display = ['created_by']
 
 class FeaturedProductAdmin(admin.ModelAdmin):
     list_display = ['created_by', 'featured_product_image']
@@ -50,13 +50,13 @@ class ProductVideoAdmin(admin.ModelAdmin):
 
 # Register Your Models Here
 admin.site.register(Product, ProductAdmin)
+admin.site.register(DiscountedProduct, DiscountedProductAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Shop, ShopAdmin)
 admin.site.register(CartOrder, CartOrderAdmin)
 admin.site.register(CartOrderProduct, CartOrderProductAdmin)
 admin.site.register(ProductReview, ProductReviewAdmin)
 admin.site.register(Wishlist, WishlistAdmin)
-admin.site.register(Address, AddressAdmin)
 admin.site.register(Feature, FeatureAdmin)
 admin.site.register(FeaturedProduct, FeaturedProductAdmin)
 admin.site.register(NewArrival, NewArrivalAdmin)

@@ -12,69 +12,166 @@ Account
     <div class="container">
         <div class="d-flex align-items-start account-intro-box">
             <div class="nav flex-column nav-pills me-3 tab" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-              <button class="nav-link active tab-btn" id="v-pills-dashboard-tab" data-bs-toggle="pill" data-bs-target="#v-pills-dashboard" type="button" role="tab" aria-controls="v-pills-dashboard" aria-selected="true">Dashboard</button>
-              <button class="nav-link tab-btn" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</button>
-              <button class="nav-link tab-btn" id="v-pills-detail-tab" data-bs-toggle="pill" data-bs-target="#v-pills-detail" type="button" role="tab" aria-controls="v-pills-detail" aria-selected="false">Detail</button>
-              <a class="nav-link btn tab-btn" href="{% url 'userauth:user_logout' %}" type="button" role="tab" aria-controls="v-pills-logout" aria-selected="false">Logout</a>
+                <button class="nav-link active tab-btn" id="v-pills-dashboard-tab" data-bs-toggle="pill" data-bs-target="#v-pills-dashboard" type="button" role="tab" aria-controls="v-pills-dashboard" aria-selected="true">Dashboard</button>
+                <button class="nav-link tab-btn" id="v-pills-notification-tab" data-bs-toggle="pill" data-bs-target="#v-pills-notification" type="button" role="tab" aria-controls="v-pills-notification" aria-selected="true">Notification</button>
+                <button class="nav-link tab-btn" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</button>
+                <button class="nav-link tab-btn" id="v-pills-detail-tab" data-bs-toggle="pill" data-bs-target="#v-pills-detail" type="button" role="tab" aria-controls="v-pills-detail" aria-selected="false">Detail</button>
+                <a class="nav-link btn tab-btn" href="{% url 'userauth:user_logout' %}" type="button" role="tab" aria-controls="v-pills-logout" aria-selected="false">Logout</a>
             </div>
+
+            <!-- Tab content -->
             <div class="tab-content" id="v-pills-tabContent">
-              <div class="tab-pane fade show active" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab" tabindex="0">
 
-                <h3>Hello, {{ user.first_name|title }}</h3>
-                <p>From your account dashboard. You can easily check and view your recent orders, <br>manage your shipping and billing addresses and edit your password and account details</p>
-              
-              </div>
+                <!-- Dashboard tab -->
+                <div class="tab-pane fade show active" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab" tabindex="0">
+                    <h3>Hello, {{ user.first_name|title }}</h3>
+                    <p>From your account dashboard, you can easily check and view your recent orders, <br>manage your shipping and billing addresses, and edit your password and account details.</p>
+                </div>
 
-              <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
-              </div>
+                <!-- Notification Tab -->
+                <div class="tab-pane fade notification-tab" id="v-pills-notification" role="tabpanel" aria-labelledby="v-pills-notification-tab" tabindex="0">
+                    <table class="table table-striped notification-table">
+                        <thead>
+                          <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Message</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Remove</th>
+                          </tr>
+                        </thead>
+                        <tbody id="notification-body">
 
-              <div class="tab-pane fade" id="v-pills-detail" role="tabpanel" aria-labelledby="v-pills-detail-tab" tabindex="0">
+                            {% for notification in notifications %}
+                                <tr>
+                                    <td><i class="fa-solid fa-bell"></i></td>
+                                    <td>{{ notification.message }}</td>
+                                    <td>{{ notification.created_at|date:"Y-m-d H:i" }}</td>
+                                    <td>
+                                        <a href="#" class="remove-notification" data-notification-id="{{ notification.notificationId }}">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center">No notifications available.</td>
+                                </tr>
+                            {% endfor %}
 
-                <div class="account-detail">
-                    <h3>Account Details</h3>
+                        </tbody>
+                      </table>
+                </div>
 
-                    <div class="account-detail-box">
-                        <div class="name">
-                            <div class="field first-name">
-                                <label for="first-name">First Name</label>
-                                <input type="text" id="first-name" value="{{ user.first_name|title }}" readonly>
+                <!-- Profile tab -->
+                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
+                    <form id="edit-profile-form" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="account-profile">
+                            <div class="account-profile-box">
+                                <div class="profile-picture">
+                                    <div class="profile-image-preview-box">
+                                        <input name="profile_image" type="file" id="profile-file" accept="image/*" hidden>
+                                        <div class="profile-img-area" data-img="{{ profile.image.url }}">
+                                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                                            <h3>Upload Profile Image</h3>
+                                            <p>Image size must be less than <span>2MB</span></p>
+                                        </div>
+                                    </div>  
+                                    <button type="button" class="select-profile-image-btn">
+                                        <i class="fa-solid fa-camera"></i>
+                                    </button>  
+                                </div>
+                                <div class="profile-detail">
+                                    <div>
+                                        <div>
+                                            <label for="full-name">Full Name</label>
+                                        </div>
+                                        <div>
+                                            <input type="text" id="full-name" name="full_name" value="{{ profile.full_name }}">
+                                            <span class="error-message" id="full-name-error" style="color: red;"></span> <!-- Error message for full name -->
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <label for="mobile">Mobile</label>
+                                        </div>
+                                        <div>
+                                            <input type="text" id="mobile" name="mobile" value="{{ profile.mobile }}">
+                                            <span class="error-message" id="mobile-error" style="color: red;"></span> <!-- Error message for mobile -->
+                                        </div>
+                                    </div>
+                                    {% if profile.verified %}
+                                    <div class="field verified">
+                                        <label for="verified">Verified</label>
+                                        <i class="fa-solid fa-circle-check"></i>
+                                    </div>
+                                    {% else %}
+                                    <div class="field unverified">
+                                        <label for="unverified">Unverified</label>
+                                        <i class="fa-solid fa-circle-xmark"></i>
+                                    </div>
+                                    {% endif %}
+                                </div>
                             </div>
-                            <div class="field last-name">
-                                <label for="last-name">Last Name</label>
-                                <input type="text" id="last-name" value = "{{ user.last_name|title }}" readonly>
+                        </div>
+                        <button type="submit" class="btn edit-profile-btn">Save Changes</button>   
+                    </form> 
+                </div>                
+
+                <!-- Detail tab -->
+                <div class="tab-pane fade" id="v-pills-detail" role="tabpanel" aria-labelledby="v-pills-detail-tab" tabindex="0">
+                    <div class="account-detail">
+                        <h3>Account Details</h3>
+                        <div class="account-detail-box">
+                            <div class="name">
+                                <div class="field first-name">
+                                    <label for="first-name">First Name</label>
+                                    <input type="text" id="first-name" value="{{ user.first_name|title }}" readonly>
+                                </div>
+                                <div class="field last-name">
+                                    <label for="last-name">Last Name</label>
+                                    <input type="text" id="last-name" value="{{ user.last_name|title }}" readonly>
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <label for="display-name">Display Name</label>
-                        </div>
-                        <div>
-                            <input type="text" id="display-name" value="Fix me" readonly>
-                        </div>
-                        <div>
-                            <label for="email-address">Email Address</label>
-                        </div>
-                        <div>
-                            <input type="email" id="email-address" value="{{ user.email|lower }}" readonly>
-                        </div>
-                        <div>
-                            <label for="phone-number">Phone Number</label>
-                        </div>
-                        <div>
-                            <input type="text" id="phone-number" value="{{ user.mobile }}" readonly>
-                        </div>
-                        <div>
-                            <label for="address">Address</label>
-                        </div>
-                        <div>
-                            <input type="text" id="address" value="{{ user.address }}" readonly>
+                            <div>
+                                <label for="display-name">Display Name</label>
+                            </div>
+                            <div>
+                                <input type="text" id="display-name" value="Fix me" readonly>
+                            </div>
+                            <div>
+                                <label for="email-address">Email Address</label>
+                            </div>
+                            <div>
+                                <input type="email" id="email-address" value="{{ user.email|lower }}" readonly>
+                            </div>
+                            <div>
+                                <label for="phone-number">Phone Number</label>
+                            </div>
+                            <div>
+                                <input type="text" id="phone-number" value="{{ user.mobile }}" readonly>
+                            </div>
+                            <div>
+                                <label for="address">Address</label>
+                            </div>
+                            <div>
+                                <input type="text" id="address" value="{{ user.address }}" readonly>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-              </div>
-            </div>
-          </div>
-    </div>
+            </div> <!-- End of Tab Content -->
+        </div> <!-- End of d-flex -->
+    </div> <!-- End of container -->
 </section>
+
+<script>
+    // Pass the profile image URL to JavaScript
+    const existingProfileImage = "{% if profile.image %}{{ profile.image.url }}{% else %}null{% endif %}";
+    var csrfToken = "{{ csrf_token }}";
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/custom-scripts/owner/owner-account.js' %}"></script>  
 
 {% endblock %}

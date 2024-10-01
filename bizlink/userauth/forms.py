@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomUser, USER_TYPE_CHOICES
+from .models import CustomUser, USER_TYPE_CHOICES, Profile, SocialMedia
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
@@ -144,3 +144,55 @@ class LogInForm(CustomAuthenticationForm):
             'class': INPUT_CLASSES
         }),
     )
+
+class ProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = Profile
+        fields = ('full_name', 'bio', 'mobile', 'verified', 'image')
+
+        widgets = {
+            'full_name': forms.TextInput(attrs={
+                'class': INPUT_CLASSES
+            }),
+            'bio': forms.TextInput(attrs={
+                'class': INPUT_CLASSES
+            }),
+            'mobile': forms.TextInput(attrs={
+                'class': INPUT_CLASSES
+            }),
+            'image': forms.FileInput(attrs={
+                'class': INPUT_CLASSES,
+                'accept': 'image/*',    
+                'id': 'profile-file',   
+                'hidden': 'true',       
+                'name': 'profile_image'
+            })
+        }
+
+        labels = {
+            'full_name':'Full Name',
+            'bio': 'Bio',
+            'mobile': 'Mobile',
+            'image': 'Image',
+        }
+class EditProfileForm(ProfileForm):
+    pass
+
+class SocialMediaForm(forms.ModelForm):
+
+    class Meta:
+        model = SocialMedia
+        fields = ['platform', 'url']
+
+        widget = {
+            
+            'platform': forms.Select(choices=SocialMedia.PLATFORM_CHOICES, attrs={
+                'class': INPUT_CLASSES
+            }),
+            'url': forms.URLInput(attrs={
+                'class': INPUT_CLASSES,  
+                'placeholder': 'Enter your social media URL',
+            }),
+        }
+    

@@ -1,0 +1,9 @@
+@use '../../../custom' as *;
+
+.notification-tab {
+    width: 65vw;
+
+    .notification-table {
+        width: 100%;
+    }
+}

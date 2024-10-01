@@ -20,6 +20,12 @@
 @use 'sections/core/owner/owner-submenu-section';
 @use 'sections/core/owner/owner-home-intro-section';
 @use 'sections/core/owner/home-popular-product-section';
+@use 'sections/core/owner/owner-shop-intro-section';
+@use 'sections/core/owner/shop-banner-section';
+@use 'sections/core/owner/shop-features-section';
+@use 'sections/core/owner/shop-featured-products-section';
+@use 'sections/core/owner/shop-new-arrivals-section';
+@use 'sections/core/owner/shop-discounted-products-section';
 @use 'sections/core/owner/product-intro-section';
 @use 'sections/core/owner/product-detail-intro-section';
 @use 'sections/core/owner/product-detail-tab-section';
@@ -30,8 +36,11 @@
 @use 'sections/core/owner/search-result-section';
 @use 'sections/core/owner/owner-account-intro-section';
 @use 'sections/core/owner/account-detail-form';
+@use 'sections/core/owner/account-profile';
+@use 'sections/core/owner/account-notification';
 @use 'sections/core/owner/wishlist-intro-section';
 @use 'sections/core/owner/admin-intro-section';
+@use 'sections/core/owner/admin-social-media-section';
 @use 'sections/core/owner/admin-features-section';
 @use 'sections/core/owner/admin-featured-products-section';
 @use 'sections/core/owner/admin-new-arrivals-section';

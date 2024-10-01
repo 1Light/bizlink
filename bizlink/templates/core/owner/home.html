@@ -121,6 +121,16 @@ Home
 </section>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    // Function to update the wishlist count dynamically
+    function updateWishlistCount(count) {
+        // Select the element that displays the wishlist count in base.html
+        let wishlistCountElement = $("#wishlist-count");
+
+        // Check if the wishlist count element exists before updating it
+        if (wishlistCountElement.length) {
+            wishlistCountElement.text(count);
+        }
+    }
 
     // Handle the click event to toggle wishlist status
     $(document).on("click", ".add-to-wishlist", function(event) {
@@ -128,6 +138,9 @@ Home
         
         let product_id = $(this).attr("data-product-item");
         let heartIcon = $(this).find(".fa-heart"); // Target the heart icon inside the clicked wishlist link
+
+        // Add loading indicator to heart icon (Optional CSS styling)
+        heartIcon.addClass("loading");
 
         // AJAX request to toggle wishlist (add or remove)
         $.ajax({
@@ -137,6 +150,9 @@ Home
             },
             dataType: "json",
             success: function(response) {
+                // Remove loading indicator
+                heartIcon.removeClass("loading");
+
                 if (response.added === true) {
                     heartIcon.addClass("green-heart"); // Turn green if added to wishlist
                     console.log("Added to wishlist...");
@@ -144,11 +160,22 @@ Home
                     heartIcon.removeClass("green-heart"); // Remove green if removed from wishlist
                     console.log("Removed from wishlist...");
                 }
+
+                // Update the wishlist count with the new value from the server
+                updateWishlistCount(response.wishlist_count);
+            },
+            error: function(xhr, status, error) {
+                // Handle error and show appropriate message
+                console.error("An error occurred while processing the request:", error);
+
+                // Remove loading indicator
+                heartIcon.removeClass("loading");
+
+                // Optionally show an alert or notification to the user
+                alert("There was an error updating the wishlist. Please try again.");
             }
         });
     });
-
 </script>
-
 
 {% endblock %}

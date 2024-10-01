@@ -20,8 +20,26 @@
                 align-items: center;
                 justify-content: center;
 
-                textarea {
-                    border: 2px solid $black;
+                .address-box {
+                    width: 90%;
+
+                    textarea {
+                        width: 100%;
+                        max-height: 3rem;
+                        overflow: hidden;
+                    }
+                }
+
+                .description-box {
+
+                    textarea {
+                        max-height: 15rem;
+                        overflow: hidden;
+                    }
+                }
+
+                .content {
+                    margin-bottom: 1.5rem;
                 }
             }
     

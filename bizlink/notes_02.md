@@ -19,6 +19,18 @@
 - You can't set teh width and height on an inline element.
 - Checkbox elements are designed to be square by default, so the width and height should be the same to maintain this square shape. When customizing their size, it's best to ensure the values are equal. If you want a rectangular checkbox, you better make your own using js and css and html
 - In an input tag, if a placehodler and value attribute are present, teh value attribute taes precendence and is displayed.
-- The |title filter in Django converts the first character of each word in a string to uppercase and the rest to lowercase. 
+- The |title filter in Django converts the first character of each word in a string to uppercase and the rest to lowercase.
   - user|title does the same as user.first_name|title
-- when an item can't be centered by teh usual means, teh best possible solution is display flex and setting the align-items and jsutify-content to center. 
+- when an item can't be centered by teh usual means, teh best possible solution is display flex and setting the align-items and jsutify-content to center.
+- If you're overriding the default User model behavior, make sure that post_save is triggered within your custom user creation methods. If you're directly calling BusinessOwner.objects.create_user() or Customer.objects.create_user(), it might not invoke the same post-save logic as User.objects.create_user(). Hence you need to do user.save() for each custom user creation. You do this beacse signals don't usually get trigegred by sub classes of a class and sicne you are applying the signla on the custom suer mdoel diretly, you are gonna have to call the save method for each custom subclass.
+  - Such behavior is tricky. When the user is created on teh admins site directly, the signal gets triggered. When you create a user via the admin panel, Django’s built-in user management system handles the creation process, which uses the save() method directly on the CustomUser model. In your custom sign-up form, you're using the create_user() method, which bypasses Django's default user creation process.
+- Yes, get\_<fieldname>\_display() is a built-in method in Django. It is automatically provided for any model field that has the choices option set. Whenever you define a field in a Django model with a choices attribute, Django automatically generates this method for that specific field. This method allows you to get the human-readable (or display) value from the choices you've defined for the field, rather than the raw value stored in the database.
+  - Django will automatically provide you with a method called get_platform_display() that you can call to retrieve the display value (e.g., 'Facebook' instead of 'facebook').
+- pretty-print appears when jquery cdn isn't loaded.
+- @csrf_exempt should only be used during testing. It shouldn't be used during production.
+- The parse_datetime function you mentioned is likely coming from Django, which can return timezone-aware datetime objects.
+- context-processors should only accept the argument "request".
+- Unlike the get() the filter() mehtod, doesn't raise except. hence, there is no point in doing try except for a query using filter logic. 
+- The message "Notification object (1)" in the Django admin interface indicates that the __str__ method has not been defined for the Notification model, so Django defaults to displaying the generic object representation. To change this, you need to define a __str__ method in your Notification model, which specifies how instances of the model should be represented as strings.
+- Here is a huge discovery, in your js script, if there is an error on one line, all other scrips below that won't get executed. 
+- never forget to include a closing slash / when u declare a path in django.

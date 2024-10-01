@@ -1,5 +1,7 @@
 {% extends "core/owner/owner-base.html" %}
 
+{% load static %}
+
 {% block title %}
 Admin
 {% endblock %}
@@ -10,6 +12,7 @@ Admin
 
 <section class="admin_intro_section">
     <div class="container">
+      <h1>Intro Section</h1>
 
         <form action="{% url 'core:update_shop' %}" method="POST" enctype="multipart/form-data">
 
@@ -17,11 +20,18 @@ Admin
                 {% csrf_token %}
 
                 <div class="shop-description">
-
-                    <input type="text" id="shopName" name="name" placeholder="Enter your shop name" class="mb-3" value="{{ shop.name }}">
-                    <textarea id="shopDescription" name="description" placeholder="Enter a brief description of your shop" rows="10" cols="50" maxlength="300" class="mb-3">{{ shop.description }}</textarea>
-                    <input type="text" id="shopAddress" name="address" placeholder="Enter your shop address" class="mb-3" value="{{ shop.address }}">
-                    <input type="text" id="shopContact" name="contact" placeholder="Enter your shop contact" value="{{ shop.contact }}">
+                    <div class="content">
+                      <input type="text" id="shopName" name="name" placeholder="Enter your shop name" class="mb-3" value="{{ shop.name }}">
+                    </div>
+                    <div class="content description-box">
+                      <textarea id="shopDescription" name="description" placeholder="Enter a brief description of your shop" rows="5" cols="50" maxlength="300" class="mb-3">{{ shop.description|striptags }}</textarea>
+                    </div>
+                    <div class="content address-box">
+                      <textarea id="shopAddress" name="address" placeholder="Enter your shop address" rows="2" class="mb-3" maxlength="110">{{ shop.address }}</textarea>
+                    </div>
+                    <div class="content contact-box">
+                      <input type="text" id="shopContact" name="contact" placeholder="Enter your shop contact" value="{{ shop.contact }}">
+                    </div>
 
                 </div>
 
@@ -46,6 +56,28 @@ Admin
             <button type="submit" class="btn btn-primary update-shop-btn">Update Shop</button>
         </form>
     </div>
+</section>
+
+<!-- Start the Social Media Section -->
+<section class="admin_social_media_section">
+  <div class="container">
+    <h1>Add Social Media Link</h1>
+    <form method="POST">
+      {% csrf_token %}
+
+        <div class="social-media-box">
+          <div class="social-media-dropdown">
+            {{ social_media_form.platform }}
+          </div>
+
+          <div class="url-collection-box">
+          </div>
+        </div>
+
+        <button type="button" id="save-social-media">Save</button>
+
+    </form>
+  </div>
 </section>
 
 <!-- Admin Features Section -->
@@ -99,15 +131,15 @@ Admin
   
                         {% if field.field.widget.input_type == "file" %}
   
-                        <div class="image-preview-box">
-                          <input name="image" type="file" id="file" accept="image/*" hidden>
-                          <div class="img-area" data-img="hello.jpg">
-                            <i class="fa-solid fa-cloud-arrow-up"></i>
-                            <h3>Upload Image</h3>
-                            <p>Image size must be less than <span>2MB</span></p>
+                        <div class="feature-image-preview-box">
+                          <input name="image" type="file" id="feature-file" accept="image/*" hidden>
+                          <div class="feature-img-area" data-img="default-feature.jpg">
+                              <i class="fa-solid fa-cloud-arrow-up"></i>
+                              <h3>Upload Feature Image</h3>
+                              <p>Image size must be less than <span>2MB</span></p>
                           </div>
-                          <button type="button" class="select-image-btn">Select Image</button>
-                        </div>
+                          <button type="button" class="select-feature-image-btn">Select Feature Image</button>
+                        </div>                      
   
                         {% else %}
                           {{ field }}
@@ -318,5 +350,10 @@ Admin
     // Pass the shop image URL to JavaScript
     const existingImage = "{% if shop.image %}{{ shop.image.url }}{% else %}null{% endif %}";
 </script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/custom-scripts/owner/admin.js' %}"></script>  
+
+
 
 {% endblock %}

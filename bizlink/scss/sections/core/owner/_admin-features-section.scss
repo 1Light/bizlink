@@ -35,14 +35,14 @@
         .modal-content {
             height: 100%;
 
-            .image-preview-box {
+            .feature-image-preview-box {
                 max-width: 400px;
                 width: 100%;
                 background: #fff;
                 border-radius: 15px;
                 margin: 30px auto;
 
-                .img-area {
+                .feature-img-area {
                     position: relative;
                     width: 100%;
                     height: 280px;
@@ -79,7 +79,7 @@
                     }
 
                 }
-                .img-area::before {
+                .feature-img-area::before {
                     content: attr(data-img);
                     position: absolute;
                     top: 0;
@@ -98,12 +98,12 @@
                     transition: all .3s ease;
                     z-index: 200;
                 }
-                .img-area.active:hover::before {
+                .feature-img-area.active:hover::before {
                     opacity: 1;
                 }
 
 
-                .img-area.image-uploaded {
+                .feature-img-area.image-uploaded {
                     background-color: white;
 
                     i, h3, p {
@@ -111,7 +111,7 @@
                     }
                 }
 
-                .select-image-btn {
+                .select-feature-image-btn {
                     display: block;
                     width: 30%;
                     margin: auto;

@@ -60,7 +60,11 @@ Products
                         </div>
 
                 {% else %}
-                    <p>No products available. <a href="#">Click here</a> to create products</p>
+                    {% if user.user_type == 'business_owner' %}
+                        <p>No products available. <a href="#">Click here</a> to create products</p>
+                    {% else %}
+                        <p>No products available.</p>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>

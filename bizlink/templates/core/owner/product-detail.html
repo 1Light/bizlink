@@ -12,19 +12,26 @@ Product({{ product.name }})
 
 <section class="product_detail_intro_section">
 
-    <div class="breadcrumb-box">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'core:owner_home' %}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'core:category' %}">Categories</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
-          </ol>
-    </div>
-
     <div class="container">
+
+        <div class="intro-banner">
+            <h3>{{ product.name }}</h3>
+    
+            <div class="breadcrumb-box">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'core:owner_home' %}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'core:product' %}">Products</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+                  </ol>
+            </div>
+    
+        </div>
 
         <div class="product-detail-intro-box">
             <div class="product-image">
-                <img id="main-image" src="{{ product.image.url }}" alt="{{ product.name }} image" class="img-fluid">
+                <div class="image-box">
+                    <img id="main-image" src="{{ product.image.url }}" alt="{{ product.name }} image" class="img-fluid">
+                </div>
             
                 <div class="more-product-images">
                     <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
@@ -55,6 +62,12 @@ Product({{ product.name }})
             </div>
             <div class="product-description">
                 <h4>{{ product.name }}</h4>
+                {% if user.user_type == 'business_owner' %}
+                    <div class="offer-discount">
+                        <button id="clock-icon"><i class="fa-solid fa-clock"></i></button>
+                    </div>
+                {% endif %}
+
                 <div class="price">
                     <p class="new-price">{{ product.price }}</p>
                     <p class="old-price">{{ product.old_price }}</p>
@@ -74,11 +87,61 @@ Product({{ product.name }})
                     <p class="tag"><b>Tags:</b> {% for tag in product.tags.all %} <a href="{% url 'core:tag' tag.slug %}">#{{ tag.name|lower }}</a> {% endfor %}</p>
                 </div>
             </div>
-            <div class="product-shop">
-                <h3>Shop</h3>
-                <p class="shop-name">{{ shop.name }}</p>
-                <p><i class="fa-solid fa-location-dot"></i> {{ shop.address.address }}</p>
-                <p><i class="fa-solid fa-headphones"></i> {{ shop.contact }}</p>
+            <div class="shop-and-discount">
+                <div class="product-shop">
+                    <h3>Shop</h3>
+                    <p class="shop-name"><i class="fa-solid fa-shop"></i>&nbsp;&nbsp;{{ shop.name }}</p>
+                    <div class="shop-detail">
+                        <p><i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp;{{ shop.address }}</p>
+                        <p><i class="fa-solid fa-headphones"></i>&nbsp;&nbsp;{{ shop.contact }}</p>
+                    </div>
+                </div>
+
+                <div id="discount-section">
+                    <!-- The discount timer will be injected here after a successful discount creation -->
+                     <!-- This is for automatic rendering of the countdown timer -->
+
+                    <!-- This is the same block of code but this is to render it even during reload -->
+                     {% if discounted_product %}
+                        <div class="discount-timer">
+                            <table id="countdown">
+                                <tr id="countdown-timer">
+                                    <td><span id="days">0</span></td>
+                                    <td><span id="hours">0</span></td>
+                                    <td><span id="minutes">0</span></td>
+                                    <td><span id="seconds">0</span></td>
+                                </tr>
+                                <tr id="countdown-labels">
+                                    <td><span>d</span></td>
+                                    <td><span>hr</span></td>
+                                    <td><span>min</span></td>
+                                    <td><span>sec</span></td>
+                                </tr>
+                            </table>                        
+                            <button id="delete-discount-button" data-product-id="{{ product.productId }}" class="hidden">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    {% endif %}
+
+                </div>
+                
+
+                <div class="discount-box" id="discount-form">
+                    <form method="POST" action="{% url 'core:apply_discount' product.productId %}">
+                        {% csrf_token %}
+                        <label for="original-price">Original Price</label>
+                        <input type="text" id="original-price" name="original_price" placeholder="Enter original price" value="{{ product.price }}" readonly>
+
+                        <label for="new-price">New Price</label>
+                        <input type="text" id="new-price" name="new_price" placeholder="Enter new price" value="{% if discounted_product %}{{ discounted_product.new_price }}{% endif %}" required>
+                        
+                        <label for="discount-time">Discount Valid Until</label>
+                        <input type="datetime-local" id="discount-time" name="discount_until" value="{% if discounted_product and discounted_product.discount_until %}{{ discounted_product.discount_until|date:'Y-m-d\TH:i' }}{% endif %}" required>
+                
+                        <button class="add-discount-btn" type="submit">Apply Discount</button>
+                    </form>
+                </div>             
             </div>
         </div>
     </div>
@@ -192,7 +255,11 @@ Product({{ product.name }})
                         {% endfor %}
                     
                     {% else %}
-                        <p>No related products available. <a href="#">Click here</a> to create products</p>
+                        {% if user.user_type == 'business_owner' %}
+                            <p>No related products available. <a href="#">Click here</a> to create products</p>
+                        {% else %}
+                            <p>No related products available.</p>
+                        {% endif %}
                     {% endif %}
     
                 </div>
@@ -201,49 +268,14 @@ Product({{ product.name }})
     </div>
 </section>
 
-<!-- Script for automatically updating the Main Image Based on the Active Carousel Item -->
-<!-- Defined here and not in an external js file becasue it interacts with the DOM directly -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
 
 <script>
-  const carousel = document.getElementById('carouselExample');
-  const mainImage = document.getElementById('main-image');
-
-  carousel.addEventListener('slid.bs.carousel', function () {
-      const activeItem = carousel.querySelector('.carousel-item.active');
-      const newImageUrl = activeItem.getAttribute('data-img');
-      mainImage.src = newImageUrl;
-  });
+    const productId = "{{ product.productId }}";
+    const userType = "{{ user.user_type }}";
+    const existingDiscountEndTime = "{{ discounted_product.discount_until|date:'c' }}";
 </script>
+<script src="{% static 'js/custom-scripts/owner/product-detail.js' %}"></script> 
 
-<script>
-function playMainVideo(icon) {
-    var video = document.getElementById('main-video');
-    video.style.pointerEvents = 'auto'; // Enable pointer events for the video
-    video.controls = true; // Show controls
-    video.play();
-    icon.style.display = 'none'; // Hide the icon
 
-    // Handle video pause
-    video.onpause = function() {
-        icon.style.display = 'block'; // Show the icon again
-        video.style.pointerEvents = 'none'; // Disable pointer events again
-        video.controls = false; // Hide controls
-    };
-}
-
-function playMoreVideo(icon, videoId) {
-    var video = document.getElementById(videoId);
-    video.style.pointerEvents = 'auto'; // Enable pointer events for the video
-    video.controls = true; // Show controls
-    video.play();
-    icon.style.display = 'none'; // Hide the icon
-
-    // Handle video pause
-    video.onpause = function() {
-        icon.style.display = 'block'; // Show the icon again
-        video.style.pointerEvents = 'none'; // Disable pointer events again
-        video.controls = false; // Hide controls
-    };
-}
-</script>
 {% endblock %}

@@ -75,17 +75,9 @@ def feature_directory_path(instance, filename):
 class Tag(models.Model):
     pass
 
-class Address(models.Model):
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user_addresses', on_delete=models.CASCADE)
-    address = models.CharField(max_length=255)
-    is_confirmed = models.BooleanField(default=False)
-
-    class Meta:
-        verbose_name_plural = "Address"
-
 class ProductVideo(models.Model):
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user_videos', on_delete=models.CASCADE)
-    description = CKEditor5Field('Description' ,blank=True, null=True, default="This is a demo video for the product", config_name='extends')
+    description = models.TextField(blank=True, null=True, default="This is a demo video for the product")
     video = models.FileField(upload_to='product_video_directory_path', null=True, blank=True)
 
     class Meta:
@@ -98,10 +90,10 @@ class Shop(models.Model):
     shopId = ShortUUIDField(unique=True, length=10, max_length=21, prefix="shop", alphabet="ABCDEF0123456789")
 
     name = models.CharField(max_length=255, default="Nestify")
-    description = CKEditor5Field('Description', blank=False, null=False, default="This is a shop", config_name='extends')
+    description = models.TextField(blank=False, null=False, default="This is a shop")
     image = models.ImageField(upload_to='shop_directory_path', blank=True, null=True)
 
-    address = models.OneToOneField(Address, on_delete=models.CASCADE)
+    address = models.TextField(blank=False, null=False, default="This is my address")
     contact = models.CharField(max_length=255, default="+251 97 654 2331")
 
     chat_resp_time = models.CharField(max_length=255, default="100")
@@ -131,7 +123,7 @@ class Category(models.Model):
     categoryId =  ShortUUIDField(unique=True, length=10, max_length=21, prefix="category", alphabet="ABCDEF0123456789")
 
     name = models.CharField(max_length=255, default="Food")
-    description = CKEditor5Field('Description', blank=False, null=False, default="This is a category", config_name='extends')
+    description = models.TextField(blank=False, null=False, default="This is a category")
     image = models.ImageField(upload_to='category_directory_path', blank=True, null=True, default="category.jpg")
     shop = models.ForeignKey(Shop, related_name='shop_categories', on_delete=models.CASCADE)
 
@@ -159,14 +151,13 @@ class Product(models.Model):
 
     shop = models.ForeignKey(Shop, related_name='shop_products', on_delete=models.CASCADE)
 
-    description = CKEditor5Field('Description', blank=True, null=True, default="This is the product", config_name='extends')
-    specifications = CKEditor5Field('Specifications', blank=True, null=True, config_name='extends')
+    description = models.TextField(blank=True, null=True, default="This is the product")
+    specifications = models.TextField(blank=True, null=True)
     
     life = models.CharField(max_length=255, default="Not Specified", null=True, blank=True)
     mfg = models.DateTimeField(auto_now_add=False, null=True, blank=True)  
 
     price = models.DecimalField(max_digits=15, decimal_places=2, default=1.99)
-    old_price = models.DecimalField(max_digits=15, decimal_places=2, default=2.99)
 
     stock_quantity = models.PositiveIntegerField(default="5")
 
@@ -194,17 +185,46 @@ class Product(models.Model):
     def product_image(self):
         return mark_safe('<img src="%s" width="50" height="50"/>' %(self.image.url))
     
-    def get_percentage(self):
-        if self.old_price > 0:
-            new_price = (self.price / self.old_price) * 100
-            return new_price
-        return 0
-    
     def check_stock_status(self):
         if self.stock_quantity > 0:
             return "In Stock"
         else:
             return "Out of Stock"
+class DiscountedProduct(models.Model):
+    discountProductId = ShortUUIDField(unique=True, length=10, max_length=27, prefix="discountedProduct", alphabet="ABCDEF0123456789")
+
+    shop = models.ForeignKey(Shop, related_name='shop_discounted_products', on_delete=models.CASCADE)
+
+    product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='discounted_product')
+    new_price = models.DecimalField(max_digits=15, decimal_places=2, default=3.99)
+    discount_until = models.DateTimeField(null=True, blank=True) 
+    has_discount_ended = models.BooleanField(default=False)
+
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user_discounted_products', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('product__name',)
+        verbose_name_plural = "Discounted Products"
+        unique_together = ('shop', 'product')
+    
+    def __str__(self):
+        return self.product.name
+    
+    def discounted_product_image(self):
+        return mark_safe('<img src="%s" width="50" height="50"/>' %(self.product.image.url))
+    
+    def product_name(self):
+        return self.product.name
+
+    def product_price(self):
+        return self.product.price
+    
+    def get_percentage(self):
+        if self.new_price > 0:
+            discount = (self.new_price / self.product.price) * 100
+            return discount
+        return 0
 
 class MoreProductImage(models.Model):
     mpiId = ShortUUIDField(unique=True, length=10, max_length=21, prefix="mpi", alphabet="ABCDEF0123456789")
@@ -228,7 +248,7 @@ class MoreProductVideo(models.Model):
     mpvId = ShortUUIDField(unique=True, length=10, max_length=21, prefix="mpv", alphabet="ABCDEF0123456789")
 
     video = models.FileField(upload_to='mpv_directory_path', blank=True, null=True, default="more_product_video.jpg")
-    description = CKEditor5Field('Description', blank=True, null=True, default="This is a demo video for the product", config_name='extends')
+    description = models.TextField(blank=True, null=True, default="This is a demo video for the product")
 
     product = models.ForeignKey(Product, related_name='more_product_videos', on_delete=models.CASCADE)
 
@@ -283,9 +303,9 @@ class CartOrderProduct(models.Model):
     def cart_order_product_image(self):
         return mark_safe('<img src="%s" width="50" height="50"/>' %(self.image.url))
     
-######################### Product Review, Wishlist and Address ######################### 
-######################### Product Review, Wishlist and Address ######################### 
-######################### Product Review, Wishlist and Address #########################
+######################### Product Review, Wishlist ######################### 
+######################### Product Review, Wishlist ######################### 
+######################### Product Review, Wishlist #########################
 
 class ProductReview(models.Model):
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user_product_reviews', on_delete=models.SET_NULL, null=True)

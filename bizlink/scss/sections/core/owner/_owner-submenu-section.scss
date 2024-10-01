@@ -1,21 +1,23 @@
 @use '../../../custom' as *;
 
 .owner_submenu_section {
-    border: 2px solid $black;
     margin: 2rem 0 2rem 0;
 
     .owner-submenu-section-box {
         min-height: 3.3rem;
         position: relative;
+        border: 2px solid $gray-200;
 
         .submenu {
             list-style-type: none;
             display: flex;
             align-items: center;
-            column-gap: 3rem;
+            column-gap: 5rem;
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
+            width: 100%;
+            z-index: 999;
 
             li {
 
@@ -23,13 +25,21 @@
                     text-decoration: none;
                     color: $black;
                 }
+
+                ul.dropdown-menu {
+                    padding: 0;
+
+                    li {
+                        width: 100%;
+                    }
+                }
             }
 
-            .home-dropdown {
+            .browse-dropdown {
                 padding-right: 20px;
                 position: relative;
 
-                .home-btn {
+                .browse-btn {
                     border: none;
                 }
 

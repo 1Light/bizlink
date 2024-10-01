@@ -4,12 +4,9 @@
 .navbar_section {
 
     .navbar {
-        background: $gray-200;
         min-height: 5rem;
         padding: 0 3rem 0 3rem;
-        border: 2px solid $black;
-        
-    
+
         .company-logo {
             position: relative;
     
@@ -35,38 +32,44 @@
             .search {
                 margin-left: 11rem;
                 width: 30rem;
+                padding-top: 15px;
             }
     
             ul.icon-list {
                 display: flex;
                 justify-content: space-between;
-                margin-right: 3rem;
+                margin-right: 2.1rem;
                 width: 27%;
+                text-transform: none;
+                padding-top: 13px;
 
                 li:nth-child(2) {
                     margin-left: 2rem;
+                    text-transform: none;
                 }
     
                 li {
+                    text-transform: none;
 
                     .nav-link {
                         position: relative;
+                        text-transform: none;
 
                         i {
                             font-size: 1.3rem;
+                            text-transform: none;
                         }
 
-                        i::after {
-                            content: attr(data-title);
-                            text-transform: lowercase;
+                        span {
                             position: absolute;
-                            bottom: 10%;
-                            left: 87%;
-                            font-size: 0.7rem;
+                            top: 50%;
+                            left: 80%;
+                            font-size: 1rem;
                             color: $black;
+                            text-transform: none;
                         }
 
-                        .num-of-wishlist {
+                        .num-of-wishlist, .num-of-notification {
                             position: absolute;
                             width: 25px;
                             height: 25px;
@@ -76,9 +79,7 @@
                             top: 0%;
                             left: 50%;
                             text-align: center;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
+                            display: none;
 
                             p {
                                 margin: 0;
@@ -93,42 +94,45 @@
                     cursor: pointer;
                     
                     ul.account-submenu {
-                        display: none;
-                        margin-top: 10px;
                         position: absolute;
-                        top: 17%;
+                        display: none;
+                        top: 13%;
                         min-width: 9rem;
-                        min-height: 9rem;
-                        padding-top: 3rem;
+                        min-height: 12rem;
+                        padding-top: 3.3rem;
                         padding-left: 0;
                         transition: 0.3s ease;
-                        z-index: 999;
+                        z-index: 9999;
 
-                        li:nth-child(2) {
-                            margin-left: 0rem;
-                        }
-                  
-                        li {
-                            list-style-type: none;
-                            font-size: 1rem;
-                            text-align: left;
-                            display: block;
-                            padding: 5px 0;
-                    
+                        .submenu-box {
+                            background-color: $white;
+
                             a {
                                 text-transform: capitalize;
                                 text-decoration: none;
                                 color: $black;
-                                padding-top: 8px; 
-                                padding-bottom: 8px; 
-
-                                i {
-                                    margin-right: 10px;
+    
+                                li {
+                                    list-style-type: none;
+                                    font-size: 1rem;
+                                    text-align: left;
+                                    display: block;
+                                    padding: 0.5rem;
+                                    border-radius: 5%;
+                                    border: 1px solid $gray-400;
+    
+                                    li:nth-child(2) {
+                                        margin-left: 0rem;
+                                    }
+    
+                                    i {
+                                        margin-right: 10px;
+                                    }
                                 }
-                    
+    
                                 &:hover {
                                     background-color: #000;
-                                    color: #fff; 
+                                    color: $primary; 
                                 }
                             }
                         }
