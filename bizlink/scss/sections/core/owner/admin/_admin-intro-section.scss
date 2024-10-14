@@ -1,6 +1,12 @@
 @use '../../../../custom' as *;
 
 .admin_intro_section {
+    margin-bottom: 5rem;
+
+    h1.title {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
 
     form {
 
@@ -121,31 +127,30 @@
                     }
     
                     .select-image-btn {
-                        display: block;
-                        width: 30%;
-                        margin: auto;
-                        padding: 8px 0;
-                        border-radius: 15px;
-                        background: $blue;
-                        color: #fff;
-                        font-weight: 500;
-                        font-size: 16px;
-                        border: none;
+                        background-color: $blue;
                         cursor: pointer;
                         position: absolute;
-                        top: 105%;
-                        left: 50%;
-                        transform: translateX(-50%);
+                        top: -3.3%;
+                        right: 0%;
+                        display: block;
+                        margin: 1rem auto 1rem auto;
+                        width: 2rem;
+                        height: 2rem;
+                        color: $white;
+                        border: none;
+                        z-index: 9999;
                     }
                 }
             }
         }
 
         .update-shop-btn {
-            display: block;
-            margin: 4rem auto;
-            border-radius: 15px;
             background-color: $primary;
+            display: block;
+            margin: 1rem auto 1rem auto;
+            width: 8rem;
+            height: 2.5rem;
+            color: $white;
             border: none;
         }
     }

@@ -332,35 +332,37 @@ def update_shop(request):
         'shop': shop
     })
 
-def create_feature(request):
 
+def create_feature(request):
     user = request.user
-    shop = Shop.objects.get(created_by=user)
+    shop = get_object_or_404(Shop, created_by=user)
     features = Feature.objects.filter(created_by=user)
 
     if request.method == "POST":
         form = CreateFeature(request.POST, request.FILES)
-    
-        if form.is_valid():
 
-            if features.count() > 10:
-                # Limit reached, return an error or a message
-                messages.error("Feature limit reached")
-                return redirect("core:home")
-        
-        feature = form.save(commit=False)
-        feature.shop = shop
-        feature.created_by = request.user
-        feature.save()
-        
+        if form.is_valid():
+            # Check if the feature limit is reached
+            if features.count() >= 5:  # Changed to >= to enforce the limit
+                messages.error(request, "Feature limit reached. You can only create up to 6 features.")
+                return redirect("core:admin")
+
+            feature = form.save(commit=False)
+            feature.shop = shop
+            feature.created_by = request.user
+            feature.save()
+            messages.success(request, "Feature created successfully!")
+            return redirect("core:admin")  # Redirect after successful creation
+
     else:
         form = CreateFeature()
-    
+
     return render(request, "core/owner/shop.html", {
         'shop': shop,
         'features': features,
         'form': form
-})
+    })
+
 
 def add_featured_product(request):
     if request.method == 'POST':
@@ -414,6 +416,26 @@ def delete_featured_product(request):
             return JsonResponse({'success': False, 'message': str(e)})
     else:
         return JsonResponse({'success': False, 'message': 'Invalid request method.'})
+
+def delete_feature(request):
+    try:
+        # Load the JSON data from the request body
+        data = json.loads(request.body)
+        feature_ids = data.get('feature_ids', [])  # Get the list of feature IDs
+
+        if not feature_ids:
+            return JsonResponse({'success': False, 'message': 'No features selected.'})
+
+        # Get the shop owned by the current user
+        shop = get_object_or_404(Shop, created_by=request.user)
+
+        # Delete the Featured instances associated with the shop
+        Feature.objects.filter(shop=shop, featureId__in=feature_ids).delete()
+
+        return JsonResponse({'success': True})
+
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': str(e)})
     
 def add_new_arrival(request):
     if request.method == 'POST':
@@ -467,12 +489,6 @@ def delete_new_arrival(request):
             return JsonResponse({'success': False, 'message': str(e)})
     else:
         return JsonResponse({'success': False, 'message': 'Invalid request method.'})
-
-def share_product(request, productId):
-    product = Product.objects.get(productId=productId)
-    product_url = request.build_absolute_uri(product.get_absolute_url()) 
-    
-    return JsonResponse({'url': product_url, 'title': product.name})
 
 """ Category """
 

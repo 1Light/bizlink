@@ -137,11 +137,6 @@ def edit_profile(request):
     # If the request method is not POST, return an error response
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .models import SocialMedia
-from django.contrib.auth.decorators import login_required
-
 @login_required
 def manage_social_media(request):
     if request.method == 'GET':

@@ -20,6 +20,7 @@ urlpatterns = [
     path('owner/home/admin/delete_featured_product/', views.delete_featured_product, name="delete_featured_product"),
     path('owner/home/admin/add_new_arrival/', views.add_new_arrival, name='add_new_arrival'),
     path('owner/home/admin/delete_new_arrival/', views.delete_new_arrival, name="delete_new_arrival"),
+    path('owner/home/admin/delete_feature/', views.delete_feature, name="delete_feature"),
 
     ## Category
     path("owner/home/categories/", views.category, name="category"),
@@ -62,7 +63,6 @@ urlpatterns = [
     ## Shop
     path("owner/shop/", views.owner_shop, name="owner_shop"),
     path("owner/shop/add-to-wishlist/", views.add_to_wishlist, name="add-to-wishlist"),
-    path("owner/shop/product_detail/share/<productId>", views.share_product, name="share_product"),
 
     # Path for the Customer Pages
     

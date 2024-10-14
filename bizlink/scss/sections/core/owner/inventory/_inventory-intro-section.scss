@@ -15,9 +15,23 @@
             padding: 2.5rem;
 
             table {
+
+                .product-btn {
+                    background-color: $primary;
+                    color: $white;
+                }
+
                 td, th {
                     text-align: center;
                     width: 14%;
+                }
+
+                .reduce {
+                    width: 10%;
+                }
+
+                .enlarge {
+                    width: 16%;
                 }
 
                .quantity {
@@ -26,6 +40,14 @@
                     width: 67%;
                 }
                }
+
+               a.remove-product {
+
+                    i {
+                        color: $red;
+                        font-size: 1.3rem;
+                    }  
+                }
 
                .btns {
                 width: 100%;
@@ -38,6 +60,18 @@
                     display: flex;
                     justify-content: space-between;
 
+                    .add-stock {
+                        background-color: $blue;
+                        border: none;
+                        color: $white;
+                    }
+
+                    .sell-stock {
+                        background-color: $orange;
+                        border: none;
+                        color: $white;
+                    }
+
                     button {
                         flex: 0 0 45%;
                     }
@@ -48,6 +82,8 @@
 
                     button {
                         width: 100%;
+                        background-color: $gray-200;
+                        border: none;
                     }
                 }
 
@@ -61,10 +97,44 @@
             padding: 2.5rem;
 
             table {
+
+                .category-btn {
+                    background-color: $primary;
+                    color: $white;
+                }
+
                 td, th {
                     text-align: center;
                     width: 14%;
                 }
+
+                a.remove-category {
+
+                    i {
+                        color: $red;
+                        font-size: 1.3rem;
+                    }  
+                }
+            }
+        }
+
+        .analytics-tab {
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 23rem; 
+            position: relative;
+            background-color: $gray-100;
+
+            span {
+                position: absolute;
+                font-size: 48px; 
+                font-weight: bold;
+                color: #555; 
+                transform: rotate(-15deg); 
+                letter-spacing: 5px; 
+                text-align: center;
             }
         }
     }

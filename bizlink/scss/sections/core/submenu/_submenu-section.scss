@@ -82,6 +82,10 @@
     
     .message-box {
         min-height: 3.3rem;
+        width: 88%;
+        border: 2px solid $black;
+        margin-left: auto;
+        margin-right: auto;
     }
 
 }

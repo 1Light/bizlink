@@ -12,7 +12,7 @@ Admin
 
 <section class="admin_intro_section">
     <div class="container">
-      <h1>Intro Section</h1>
+      <h1 class="title">Intro Section</h1>
 
         <form action="{% url 'core:update_shop' %}" method="POST" enctype="multipart/form-data">
 
@@ -47,13 +47,13 @@ Admin
                             <p>Image size must be less than <span>2MB</span></p>
                         </div>
 
-                        <button type="button" class="select-image-btn">Select Image</button>
+                        <button type="button" class="select-image-btn"><i class="fa-solid fa-camera"></i></button>
 
                     </div>
 
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary update-shop-btn">Update Shop</button>
+            <button type="submit" class="btn btn-primary update-shop-btn rounded-pill">Update Shop</button>
         </form>
     </div>
 </section>
@@ -61,53 +61,63 @@ Admin
 <!-- Start the Social Media Section -->
 <section class="admin_social_media_section">
   <div class="container">
-    <h1>Add Social Media Link</h1>
-    <form method="POST">
-      {% csrf_token %}
-
-        <div class="social-media-box">
-          <div class="social-media-dropdown">
-            {{ social_media_form.platform }}
-          </div>
-
-          <div class="url-collection-box">
-          </div>
-        </div>
-
-        <button type="button" id="save-social-media">Save</button>
-
-    </form>
+    <h1 class="title">Add Social Media Link</h1>
+      <div class="social-media-collection-box">
+        <form method="POST">
+          {% csrf_token %}
+    
+            <div class="social-media-box">
+              <div class="social-media-dropdown">
+                {{ social_media_form.platform }}
+              </div>
+    
+              <div class="url-collection-box">
+              </div>
+            </div>
+    
+            <button type="button" class="save-btn rounded-pill" id="save-social-media">Save</button>
+    
+        </form>
+      </div>
   </div>
 </section>
 
 <!-- Admin Features Section -->
 
-<section class="admin_features_section mb-0 pb-5">
+<section class="admin_features_section">
     <div class="container">
-      <h1>Features Section</h1>
+      <h1 class="title">Features Section</h1>
   
       <!-- Modal Button for Creating a Feature -->
       <button type="button" class="btn btn-lg btn-danger" data-bs-toggle="modal" data-bs-target="#feature-creation-form">
-        Click to toggle popover
+        Create Feature
       </button>
   
       <!-- Box for Displaying Features -->
       <div class="features-section-box">
         {% if features %}
+        <ul class="list-group">
           {% for feature in features %}
-          <div class="feature">
-            <div class="feature-image">
-              <img
-                src="{{ feature.image.url }}"
-                alt="feature image"
-                class="img-fluid"
-              />
-            </div>
-            <div class="feature-name">
-              <h5>{{ feature.name }}</h5>
-            </div>
-          </div>
+          <li class="list-group-item">
+            <input type="checkbox" name="feature-ids" value="{{ feature.featureId }}" id="feature-{{ feature.featureId }}">
+            <label for="feature-{{ feature.featureId }}">
+              <div class="feature">
+                <div class="feature-image">
+                  {% if feature.image %}
+                    <img src="{{ feature.image.url }}" alt="feature image" class="img-fluid" />
+                  {% else %}
+                    <img src="{% static 'img/feature.jpeg' %}" alt="feature image" class="img-fluid">
+                  {% endif %}
+                </div>
+                <div class="feature-name">
+                  <h5>{{ feature.name }}</h5>
+                </div>
+              </div>
+            </label>
+          </li>
           {% endfor %}
+        </ul>
+          <button id="delete-feature-btn" class="btn btn-danger">Delete</button>
         {% else %}
           <p class="text-center">No features yet. Please add features.</p>
         {% endif %}
@@ -167,13 +177,13 @@ Admin
 </section>
 
 <!-- Admin Featured Products Section -->
-<section class="admin_featured_products_section mb-6">
+<section class="admin_featured_products_section">
     <div class="container">
-      <h1>Featured Products</h1>
+      <h1 class="title">Featured Products</h1>
   
       <!-- Modal Button for Creating a Featured Product -->
       <button type="button" class="btn btn-lg btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#featured-product">
-        Click to toggle popover
+        Add Featured Product
       </button>
   
       <!-- Box for Displaying Featured Products -->
@@ -259,11 +269,11 @@ Admin
   <!-- Start the New Arrivals Section -->
   <section class="admin_new_arrivals_section mb-6">
     <div class="container">
-      <h1>New Arrivals</h1>
+      <h1 class="title">New Arrivals</h1>
   
       <!-- Modal Button for Creating a New Arrival -->
       <button type="button" class="btn btn-lg btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#new-arrival">
-        Click to toggle popover
+        Add New Arrival
       </button>
   
       <!-- Box for Displaying New Arrivals -->
@@ -349,6 +359,7 @@ Admin
 <script>
     // Pass the shop image URL to JavaScript
     const existingImage = "{% if shop.image %}{{ shop.image.url }}{% else %}null{% endif %}";
+    var csrfToken = "{{ csrf_token }}";
 </script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

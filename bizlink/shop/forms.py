@@ -55,6 +55,9 @@ class CreateFeature(forms.ModelForm):
             'image': 'Image'
         }
 
+class EditFeature(CreateFeature):
+    pass
+
 class CreateProductForm(forms.ModelForm):
 
     category = forms.ModelChoiceField(

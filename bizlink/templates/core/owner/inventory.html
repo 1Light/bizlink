@@ -31,13 +31,13 @@ Inventory
                     <caption>List of products</caption>
                     <thead>
                         <tr>
-                        <th scope="col">Name</th>
+                        <th scope="col" class="enlarge">Name</th>
                         <th scope="col">Category</th>
-                        <th scope="col">Price</th>
+                        <th scope="col" class="price">Price</th>
                         <th scope="col">Date Added</th>
-                        <th scope="col">In Stock</th>
-                        <th scope="col">Quantity</th> 
-                        <th scope="col">Actions</th>
+                        <th scope="col" class="reduce">In Stock</th>
+                        <th scope="col" class="reduce">Quantity</th> 
+                        <th scope="col" class="enlarge">Actions</th>
                         <th scope="col">Remove</th>
                         </tr>
                     </thead>
@@ -48,8 +48,8 @@ Inventory
                 
                                 <tr id="product-row-{{ product.productId }}">
 
-                                        <td>
-                                            <button type="button" class="btn btn-lg btn-danger"
+                                        <td class="enlarge">
+                                            <button type="button" class="btn btn-lg product-btn"
                                             data-bs-toggle="modal" data-bs-target="#edit-product-form"
                                                 data-product-id="{{ product.productId}}"
                                                 data-product-name="{{ product.name }}"
@@ -108,17 +108,17 @@ Inventory
                                             {{ product.created_at|date:"M j, Y" }}<br>
                                             at {{ product.created_at|date:"g:i a" }}
                                         </td>
-                                        <td id="stock-{{ product.productId }}">{{ product.stock_quantity}}</td>
-                                        <td class="quantity">
+                                        <td class="reduce" id="stock-{{ product.productId }}">{{ product.stock_quantity}}</td>
+                                        <td class="quantity reduce">
                                             <input type="number" min="1" value="1" id="quantity-{{ product.productId }}" name="quantity" oninput="validity.valid||(value='');"/>
                                         </td>
-                                        <td class="btns">
+                                        <td class="btns enlarge">
                                             <div class="add-and-sell">
-                                                <button class="add-stock" data-product-id="{{ product.productId }}">Add</button>
-                                                <button class="sell-stock" data-product-id="{{ product.productId }}">Sell</button>
+                                                <button class="add-stock rounded-pill" data-product-id="{{ product.productId }}">Add</button>
+                                                <button class="sell-stock rounded-pill" data-product-id="{{ product.productId }}">Sell</button>
                                             </div>
                                             <div class="undo">
-                                                <button class="undo-stock" data-product-id="{{ product.productId }}">Undo</button> <!-- Undo button -->
+                                                <button class="undo-stock rounded-pill" data-product-id="{{ product.productId }}">Undo</button> <!-- Undo button -->
                                             </div>                                            
                                         </td>
                                         <td>
@@ -164,7 +164,7 @@ Inventory
                                 {% for category in categories %}
                                     <tr id="category-row-{{ category.categoryId }}">
     
-                                            <td><button type="button" class="btn btn-lg btn-danger"
+                                            <td><button type="button" class="btn btn-lg category-btn"
                                                 data-bs-toggle="modal" data-bs-target="#edit-category-form"
                                                     data-category-id="{{ category.categoryId}}"
                                                     data-category-name="{{ category.name }}"
@@ -194,7 +194,11 @@ Inventory
                     </table>
                 </div>
             </div>
-            <div class="tab-pane fade" id="nav-analytics" role="tabpanel" aria-labelledby="nav-analytics-tab" tabindex="0">...</div>
+            <div class="tab-pane fade" id="nav-analytics" role="tabpanel" aria-labelledby="nav-analytics-tab" tabindex="0">
+                <div class="coming-soon analytics-tab">
+                    <span>Coming Soon</span>
+                </div>
+            </div>
             </div>
     </div>
 </section>

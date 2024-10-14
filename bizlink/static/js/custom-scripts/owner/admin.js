@@ -1,113 +1,156 @@
+document.addEventListener('DOMContentLoaded', function () {
+  const deleteFeaturedBtn = document.getElementById('delete-feature-btn');
+
+  if (deleteFeaturedBtn) {
+    deleteFeaturedBtn.addEventListener('click', function () {
+      // Collect all checked checkboxes
+      const selectedFeatures = Array.from(document.querySelectorAll('input[name="feature-ids"]:checked'))
+        .map(input => input.value); // Extract the feature IDs
+
+      if (selectedFeatures.length > 0) {
+        fetch('/core/owner/home/admin/delete_feature/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken // Include CSRF token for Django
+          },
+          body: JSON.stringify({ feature_ids: selectedFeatures })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Selected features have been deleted!');
+            location.reload(); // Reload the page to reflect changes
+          } else {
+            alert('Failed to delete features: ' + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred. Please try again.');
+        });
+      } else {
+        alert('Please select at least one feature to delete.');
+      }
+    });
+  }
+});
+
 $(document).ready(function() {
-    const addedPlatforms = new Set();
+  const addedPlatforms = new Set();
 
-    // Function to fetch and display existing social media URLs
-    function loadExistingSocialMedia() {
-        $.ajax({
-            type: 'GET',
-            url: '/userauth/manage_social_media/',  // Adjust URL to your view
-            success: function(data) {
-                data.forEach(function(entry) {
-                    addSocialMediaInput(entry.platform, entry.url);
-                });
-            },
-            error: function(xhr) {
-                alert(xhr.responseJSON.error);
-            }
-        });
-    }
+  // Function to fetch and display existing social media URLs
+  function loadExistingSocialMedia() {
+      $.ajax({
+          type: 'GET',
+          url: '/userauth/manage_social_media/',  // Adjust URL to your view
+          success: function(data) {
+              data.forEach(function(entry) {
+                  addSocialMediaInput(entry.platform, entry.url);
+              });
+          },
+          error: function(xhr) {
+              // Check if xhr.responseJSON exists before accessing its properties
+              const errorMessage = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : 'An error occurred.';
+              alert(errorMessage);
+          }
+      });
+  }
 
-    // Function to add social media input
-    function addSocialMediaInput(platform, url) {
-        if (platform && !addedPlatforms.has(platform)) {
-            addedPlatforms.add(platform);
+  // Function to add social media input
+  function addSocialMediaInput(platform, url) {
+      if (platform && !addedPlatforms.has(platform)) {
+          addedPlatforms.add(platform);
 
-            const label = $('<label>').text(`Enter your ${platform.charAt(0).toUpperCase() + platform.slice(1)} URL:`);
-            const input = $('<input>', {
-                type: 'url',
-                name: `${platform}_url`,
-                class: 'form-control social-media-input',
-                placeholder: `Enter your ${platform} URL`,
-                value: url // Populate with existing URL
-            });
+          const label = $('<label>').text(`Enter your ${platform.charAt(0).toUpperCase() + platform.slice(1)} URL:`);
+          const input = $('<input>', {
+              type: 'url',
+              name: `${platform}_url`,
+              class: 'form-control social-media-input',
+              placeholder: `Enter your ${platform} URL`,
+              value: url // Populate with existing URL
+          });
 
-            const removeButton = $('<button>', {
-                type: 'button',
-                class: 'remove-social-media',
-                css: { border: 'none', cursor: 'pointer' }
-              }).html('<i class="fa-solid fa-trash"></i>');
+          const removeButton = $('<button>', {
+              type: 'button',
+              class: 'remove-social-media',
+              css: { border: 'none', cursor: 'pointer' }
+          }).html('<i class="fa-solid fa-trash"></i>');
 
-            // Create a wrapper div for the input and remove button
-            const inputWrapper = $('<div>', { class: 'input-wrapper' }).append(input, removeButton);
+          // Create a wrapper div for the input and remove button
+          const inputWrapper = $('<div>', { class: 'input-wrapper' }).append(input, removeButton);
+          const wrapperDiv = $('<div>', { class: 'form-row' }).append(label, inputWrapper);
+          $('.url-collection-box').append(wrapperDiv);  // Update to target the correct class
 
-            const wrapperDiv = $('<div>', { class: 'form-row' }).append(label, inputWrapper);
-            $('.url-collection-box').append(wrapperDiv);  // Update to target the correct class
+          // Remove button click event
+          removeButton.on('click', function() {
+              $(this).closest('.form-row').remove();
+              addedPlatforms.delete(platform); // Remove from the set
+              // Send delete request
+              $.ajax({
+                  type: 'POST',
+                  url: '/userauth/manage_social_media/',  // Adjust URL to your view
+                  data: {
+                      'platform': platform,
+                      'action': 'delete',  // Specify action
+                      'csrfmiddlewaretoken': csrfToken  // Ensure this is set correctly
+                  },
+                  success: function(response) {
+                      alert(response.message);
+                  },
+                  error: function(xhr) {
+                      // Check if xhr.responseJSON exists before accessing its properties
+                      const errorMessage = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : 'An error occurred.';
+                      alert(errorMessage);
+                  }
+              });
+          });
+      }
+  }
 
-            // Remove button click event
-            removeButton.on('click', function() {
-                $(this).closest('.form-row').remove();
-                addedPlatforms.delete(platform); // Remove from the set
-                // Send delete request
-                $.ajax({
-                    type: 'POST',
-                    url: '{% url "userauth:manage_social_media" %}',  // Adjust URL to your view
-                    data: {
-                        'platform': platform,
-                        'action': 'delete',  // Specify action
-                        'csrfmiddlewaretoken': '{{ csrf_token }}'
-                    },
-                    success: function(response) {
-                        alert(response.message);
-                    },
-                    error: function(xhr) {
-                        alert(xhr.responseJSON.error);
-                    }
-                });
-            });
-        }
-    }
+  // Load existing social media URLs on page load
+  loadExistingSocialMedia();
 
-    // Load existing social media URLs on page load
-    loadExistingSocialMedia();
+  $('#id_platform').on('change', function() {
+      const selectedPlatform = $(this).val();
+      // Check if a platform is selected and not already added
+      if (selectedPlatform) {
+          addSocialMediaInput(selectedPlatform, '');
+      }
+  });
 
-    $('#id_platform').on('change', function() {
-        const selectedPlatform = $(this).val();
-        // Check if a platform is selected and not already added
-        if (selectedPlatform) {
-            addSocialMediaInput(selectedPlatform, '');
-        }
-    });
+  $('#save-social-media').on('click', function() {
+      const socialMediaData = [];
+      $('.url-collection-box .form-row').each(function() {  // Update to target the correct class
+          const platform = $(this).find('input').attr('name').split('_')[0];
+          const url = $(this).find('input').val();
 
-    $('#save-social-media').on('click', function() {
-        const socialMediaData = [];
-        $('.url-collection-box .form-row').each(function() {  // Update to target the correct class
-            const platform = $(this).find('input').attr('name').split('_')[0];
-            const url = $(this).find('input').val();
+          if (platform && url) {
+              socialMediaData.push({ platform: platform, url: url });
+          }
+      });
 
-            if (platform && url) {
-                socialMediaData.push({ platform: platform, url: url });
-            }
-        });
-
-        socialMediaData.forEach(function(data) {
-            $.ajax({
-                type: 'POST',
-                url: '{% url "userauth:manage_social_media" %}',  // Adjust URL to your view
-                data: {
-                    'platform': data.platform,
-                    'url': data.url,
-                    'action': 'save',  // Specify action
-                    'csrfmiddlewaretoken': '{{ csrf_token }}'
-                },
-                success: function(response) {
-                    alert(response.message);
-                },
-                error: function(xhr) {
-                    alert(xhr.responseJSON.error);
-                }
-            });
-        });
-    });
+      socialMediaData.forEach(function(data) {
+          $.ajax({
+              type: 'POST',
+              url: '/userauth/manage_social_media/',  // Adjust URL to your view
+              data: {
+                  'platform': data.platform,
+                  'url': data.url,
+                  'action': 'save',  // Specify action
+                  'csrfmiddlewaretoken': csrfToken  // Ensure this is set correctly
+              },
+              success: function(response) {
+                  alert(response.message);
+              },
+              error: function(xhr) {
+                  // Check if xhr.responseJSON exists before accessing its properties
+                  const errorMessage = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : 'An error occurred.';
+                  alert(errorMessage);
+              }
+          });
+      });
+  });
 });
 
 /* Script for Uploading and Previewing the Shop Image on Admin Site */
@@ -230,6 +273,8 @@ document.addEventListener('DOMContentLoaded', function () {
   /* Script to delete the Items in the Featured Products section */
   document.addEventListener('DOMContentLoaded', function () {
     const deleteFeaturedBtn = document.getElementById('delete-featured-btn');
+
+    if (deleteFeaturedBtn) {
   
     deleteFeaturedBtn.addEventListener('click', function () {
       // Collect all checked checkboxes
@@ -262,6 +307,7 @@ document.addEventListener('DOMContentLoaded', function () {
         alert('Please select at least one item to delete.');
       }
     });
+  }
   
     // Function to get CSRF token from cookies
     function getCookie(name) {
@@ -332,9 +378,11 @@ document.addEventListener('DOMContentLoaded', function () {
   
   /* Script to delete the Items in the New Arrival section */
   document.addEventListener('DOMContentLoaded', function () {
-    const deleteFeaturedBtn = document.getElementById('delete-new-arrival-btn');
+    const deleteNewArrivalBtn = document.getElementById('delete-new-arrival-btn');
+
+    if (deleteNewArrivalBtn) {
   
-    deleteFeaturedBtn.addEventListener('click', function () {
+    deleteNewArrivalBtn.addEventListener('click', function () {
       // Collect all checked checkboxes
       const selectedProducts = Array.from(document.querySelectorAll('input[name="new-arrival-ids"]:checked'))
         .map(input => input.value); // Extract the item IDs
@@ -365,6 +413,7 @@ document.addEventListener('DOMContentLoaded', function () {
         alert('Please select at least one item to delete.');
       }
     });
+  }
   
     // Function to get CSRF token from cookies
     function getCookie(name) {

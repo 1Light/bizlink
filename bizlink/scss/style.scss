@@ -7,6 +7,9 @@
 @use 'components/mixins';
 @use 'components/typography';
 
+                                /* Styles for the Base */
+@use 'base';
+
                                 /* Styles for the Navbar */
                                 
 @use 'navbar-section';

@@ -28,7 +28,7 @@ Search
 
                 <div class="breadcrumb-box">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{% url 'core:owner_home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'core:owner_shop' %}">Shop</a></li>
                         <li class="breadcrumb-item"><a href="{% url 'core:product' %}">Products</a></li>
                         <li class="breadcrumb-item active" aria-current="page">{{ query|truncatechars:30 }}</li>
                       </ol>
@@ -49,16 +49,18 @@ Search
                                     <h3>Category</h3>
                                 </a>
                                 
-                                {% for category in categories%}
-            
-                                    <div class="category-box">
-                                        <label class="category-label">
-                                            <input type="checkbox" class="category-checkbox filter-checkbox" data-filter="category" value="{{ category.categoryId}}">
-                                            &nbsp;<span class="category-name">{{ category.name }}</span>
-                                        </label>
-                                    </div>                                                                    
-            
-                                {% endfor %}
+                                <div class="category-collection">
+                                    {% for category in categories%}
+                
+                                        <div class="category-box">
+                                            <label class="category-label">
+                                                <input type="checkbox" class="category-checkbox filter-checkbox" data-filter="category" value="{{ category.categoryId}}">
+                                                &nbsp;<p class="category-name">{{ category.name }}</p>
+                                            </label>
+                                        </div>                                                                    
+                
+                                    {% endfor %}
+                                </div>
                             </div>
 
                             <div class="filter-by-price">
@@ -92,7 +94,11 @@ Search
                         {% if products.count  == 1 %}
                             1 Product
                         {% else %}
-                            {{ products.count  }} Products
+                            {% if products.count == 0 %}
+                                <p>You have no products</p>
+                            {% else %}
+                                {{ products.count }} Products
+                            {% endif %}
                         {% endif %}
 
                     </h3>

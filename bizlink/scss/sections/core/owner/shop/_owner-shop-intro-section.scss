@@ -1,13 +1,29 @@
 @use '../../../../custom' as *;
 
 .shop_intro_section {
-    border: 2px solid $black;
     margin-top: 3rem;
+    margin-bottom: 4rem;
+
+    .intro-text {
+        text-align: center;
+
+        h1 {
+            margin-bottom: 1rem;
+            font-size: 3.5rem;
+        }
+
+        p {
+            font-size: 1.5rem;
+        }
+    }
 
     .intro-section-box {
         display: flex;
         justify-content: space-between;
-        height: 70vh;
+        align-items: center;
+        height: 100vh;
+        margin-top: 3rem;
+        border: 2px solid $black;
 
         .shop-detail {
             width: 47%;
@@ -17,8 +33,8 @@
             padding: 1rem 2rem 1rem 2rem;
             position: relative;
 
-            i {
-                color: $primary;
+            .shop-name {
+                text-align: center;
             }
 
             .shop-description {
@@ -49,19 +65,27 @@
                 }
             }
 
-            .shop-name {
-                h1 {
-                    text-align: center;
+            .inbox-button {
+                width: 7rem;
+                margin: 1rem auto 2rem auto;
+
+                a {
+                    background-color: $primary;
+                    color: $white;
+                    display: block;
+                    border: none;
                 }
+            }
+
+            i {
+                color: $primary;
             }
         }
 
         .shop-image {
             border: 2px solid $gray-200;
-            height: 10rem;
             width: 47%;
-            height: 100%;
-
+            height: 90%;
             border-radius: 5%;
 
             img {

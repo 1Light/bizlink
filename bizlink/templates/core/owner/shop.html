@@ -8,24 +8,25 @@ Shop
 
 {% block content %}
 
-<!-- Home Intro Section -->
+<!-- ========================================================================================= -->
+<!------------------------------------- Shop Intro Section -------------------------------------->
+<!-- ========================================================================================= -->
+
 <section class="shop_intro_section">
     <div class="container">
+        <div class="intro-text">
+            <h1>Welcome to your shop on Bizlink!</h1>
+            <p>Explore unique products, connect with customers, and grow your business.<br>We’re excited to have you here!</p>
+        </div>
         <div class="intro-section-box">
             <div class="shop-detail">
                 <div class="shop-name content">
-                    <h1>{{ shop.name }}</h1>
+                    <h1 class="shop-name">{{ shop.name }}</h1>
                 </div>
                 <div class="shop-description content">
                     <p>{{ shop.description|striptags }}</p>
                 </div>
-                <div class="shop-address content">
-                    <p><i class="fa-solid fa-location-pin"></i>&nbsp;&nbsp;{{ shop.address }}</p>
-                </div>
-                <div class="shop-contact content">
-                    <p><i class="fa-solid fa-phone"></i>&nbsp;&nbsp;{{ shop.contact }}</p>
-                </div>
-
+                <div class="inbox-button">
                     <!-- Button trigger modal -->
                     <a type="button" 
                     class="btn btn-primary" 
@@ -34,9 +35,16 @@ Shop
                     hx-swap="innerHTML" 
                     data-bs-toggle="modal" 
                     data-bs-target="#inboxModal" data-backdrop="static" data-keyboard="false"> 
-                Inbox
-            </a>
-        
+                    Inbox
+                    </a>
+                </div>
+
+                <div class="shop-address content">
+                    <p><i class="fa-solid fa-location-pin"></i>&nbsp;&nbsp;{{ shop.address }}</p>
+                </div>
+                <div class="shop-contact content">
+                    <p><i class="fa-solid fa-phone"></i>&nbsp;&nbsp;{{ shop.contact }}</p>
+                </div>
 
                 {% if social_media %}
                     <div class="contact-us">
@@ -82,7 +90,9 @@ Shop
     </div>
 </section>
 
-<!-- Shop Banner Section -->
+<!-- ========================================================================================= -->
+<!------------------------------------- Shop Banner Section -------------------------------------->
+<!-- ========================================================================================= -->
 
 <section class="shop_banner_section">
     <div class="container">
@@ -96,16 +106,20 @@ Shop
 
                     {% if categories %}
 
+                    <div class="category-collection">
+
                         {% for category in categories%}
                         
                         <a href="{% url 'core:category_detail' category.categoryId %}" class="category">
                             <div class="category-box">
                                 <p>{{ category }}</p>
-                                <p>{{ category.category_products.count }}</p>
+                                <p class="category-count">{{ category.category_products.count }}</p>
                             </div>
                         </a>
 
                         {% endfor %}
+                    
+                    </div>
                     
                     {% else %}
                         <p>No Categories. <a href="#">Click here</a> to create categories.</p>
@@ -115,10 +129,10 @@ Shop
                 </div>
             </div>
 
-            <div class="col-lg-9">
+            <div class="banner-box">
 
-                <div class="banner-box">
-                    <img src="{% static 'img/products/f1.jpg' %}" alt="banner image">
+                <div class="banner">
+                    <img src="{% static 'img/banner.jpg' %}" alt="banner image">
                 </div>
 
             </div>
@@ -127,21 +141,27 @@ Shop
     </div>
 </section>
 
-<!-- Shop Features Section -->
+<!-- ========================================================================================= -->
+<!------------------------------------- Shop Features Section -------------------------------------->
+<!-- ========================================================================================= -->
 
 {% if features %}
 <section class="shop_features_section">
     <div class="container">
-        <h3>Shop Features</h3>
+        <h1 class="feature-title">Features</h1>
         <div class="shop-feature-collection-box">
             {% for feature in features %}
             <div class="feature-box">
               <div class="feature-image">
-                <img
-                  src="{{ feature.image.url }}"
-                  alt="feature image"
-                  class="img-fluid"
-                />
+                {% if feature.image %}
+                    <img
+                    src="{{ feature.image.url }}"
+                    alt="feature image"
+                    class="img-fluid"
+                    />
+                {% else %}
+                    <img src="{% static 'img/feature.jpeg' %}" alt="feature image" class="img-fluid">
+                {% endif %}
               </div>
               <div class="feature-name">
                 <h5>{{ feature.name }}</h5>
@@ -158,7 +178,7 @@ Shop
 <!-- Discounted Products Section -->
 <section class="shop_discounted_product_section">
     <div class="container">
-        <h3>Shop Discounted Products</h3>
+        <h3>Discounted Products</h3>
         <div class="discounted-product-collection-box">
 
             {% for discounted_product in discounted_products %}

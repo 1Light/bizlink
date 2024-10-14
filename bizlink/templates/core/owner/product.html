@@ -1,5 +1,7 @@
 {% extends "core/owner/owner-base.html" %}
 
+{% load static %}
+
 {% block title %}
 Products
 {% endblock %}
@@ -15,13 +17,64 @@ Products
 
                 <div class="breadcrumb-box">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{% url 'core:owner_home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'core:owner_shop' %}">Shop</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Products</li>
                       </ol>
                 </div>
 
             </div>
-            <div class="product-collection">
+
+            <!-- Filtering -->
+            <div class="container">
+                <div class="filter-box">
+                
+                    {% if products %}
+                        {% if categories %}
+            
+                            <div class="filter-by-category">
+                                
+                                <a href="{% url 'core:category' %}">
+                                    <h3>Category</h3>
+                                </a>
+                                
+                                <div class="category-collection">
+                                    {% for category in categories%}
+                
+                                        <div class="category-box">
+                                            <label class="category-label">
+                                                <input type="checkbox" class="category-checkbox filter-checkbox" data-filter="category" value="{{ category.categoryId}}">
+                                                &nbsp;<p class="category-name">{{ category.name }}</p>
+                                            </label>
+                                        </div>                                                                    
+                
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="filter-by-price">
+                                <h3>Filter by Price</h3>
+                                <div class="price-filter-box">
+                                    <div class="min-price">
+                                        <label for="min-price-input">Min Price:</label>
+                                        <input type="number" id="min-price-input" name="min-price" step="0.01" placeholder="Min Price">
+                                        <p class="error" id="min-price-error">Minimum price cannot be greater than maximum price.</p>
+                                        <div class="error" id="negative-min-error">Minimum price cannot be negative.</div>
+                                    </div>
+                                    
+                                    <div class="max-price">
+                                        <label for="max-price-input">Max Price:</label>
+                                        <input type="number" id="max-price-input" name="max-price" step="0.01" placeholder="Max Price">
+                                        <div class="error" id="max-price-error">Maximum price cannot be negative.</div>
+                                    </div>                                    
+                                </div>
+                            </div>                            
+
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="product-collection" id="filtered-product">
                 {% if products %}
 
                     <h3>
@@ -72,5 +125,8 @@ Products
         </div>
     </div>
 </section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/custom-scripts/owner/search.js' %}"></script>  
 
 {% endblock %}

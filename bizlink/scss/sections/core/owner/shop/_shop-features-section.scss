@@ -1,16 +1,24 @@
 @use '../../../../custom' as *;
 
 .shop_features_section {
-    height: 70vh;
-    margin-top: 3rem;
+    margin-bottom: 4rem;
+
+    .feature-title {
+        text-align: center;
+
+        h1.feature-title {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+    }
 
     .shop-feature-collection-box {
-        height: 70vh;
+        border: 2px solid $black;
         margin-top: 1rem;
         display: flex;
         flex-wrap: wrap;
         justify-content: start;
-        gap: 3rem 5rem;
+        gap: 3rem 1.75rem;
 
         .feature-box {
             width: 200px;

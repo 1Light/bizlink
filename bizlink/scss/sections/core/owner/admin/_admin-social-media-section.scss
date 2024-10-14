@@ -1,28 +1,56 @@
 @use '../../../../custom' as *;
 
 .admin_social_media_section {
-    height: 70vh;
 
-    form {
+    h1.title {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
 
-        .social-media-box {
+    .social-media-collection-box {
+        border: 2px solid $black;
+        margin-bottom: 5rem;
+
+        form {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
 
-            .social-media-dropdown {
-                width: 47%;
-            }
+            .social-media-box {
+                display: flex;
+                justify-content: space-between;
+                padding: 2rem;
     
-            .url-collection-box {
-                width: 47%;
+                .social-media-dropdown {
+                    width: 47%;
 
-                .form-row {
-
-                    .input-wrapper {
-                        display: flex;
-                        column-gap: 1rem;
+                    select {
+                        width: 80%;
                     }
                 }
+        
+                .url-collection-box {
+                    width: 47%;
+    
+                    .form-row {
+                        margin-bottom: 0.9rem;
+    
+                        .input-wrapper {
+                            display: flex;
+                            column-gap: 1rem;
+                            margin-top: 0.5rem;
+                        }
+                    }
+                }
+            }
+
+            .save-btn {
+                display: block;
+                margin: 1rem auto 1rem auto;
+                width: 8rem;
+                height: 2.5rem;
+                background-color: $primary;
+                color: $white;
+                border: none;
             }
         }
     }
