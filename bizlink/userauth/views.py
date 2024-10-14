@@ -81,7 +81,7 @@ def user_login(request):
                         login(request, user)
                         
                         # demo line of code for testing
-                        return redirect("core:owner_home")
+                        return redirect("core:owner_shop")
 
                         if Shop.objects.filter(created_by=user).exists():
                             messages.success(request, f"Hello <b>{user.username}</b>! You have been logged in")

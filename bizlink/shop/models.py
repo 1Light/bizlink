@@ -3,7 +3,7 @@ from django.conf import settings
 from shortuuid.django_fields import ShortUUIDField
 from django.utils.html import mark_safe
 from taggit.managers import TaggableManager
-from django_ckeditor_5.fields import CKEditor5Field
+from django.db.models import Sum
 
 # Creating Status Choices for Products
 STATUS_CHOICES = (
@@ -96,12 +96,6 @@ class Shop(models.Model):
     address = models.TextField(blank=False, null=False, default="This is my address")
     contact = models.CharField(max_length=255, default="+251 97 654 2331")
 
-    chat_resp_time = models.CharField(max_length=255, default="100")
-    shipping_on_time = models.CharField(max_length=255, default="100")
-    authentic_rating = models.CharField(max_length=255, default="100")
-    days_return = models.CharField(max_length=255, default="100")
-    warranty_period = models.CharField(max_length=255, default="100")
-
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_shop")
 
@@ -124,7 +118,7 @@ class Category(models.Model):
 
     name = models.CharField(max_length=255, default="Food")
     description = models.TextField(blank=False, null=False, default="This is a category")
-    image = models.ImageField(upload_to='category_directory_path', blank=True, null=True, default="category.jpg")
+    image = models.ImageField(upload_to='category_directory_path', blank=True, null=True)
     shop = models.ForeignKey(Shop, related_name='shop_categories', on_delete=models.CASCADE)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -139,7 +133,12 @@ class Category(models.Model):
         return self.name
     
     def category_image(self):
-        return mark_safe('<img src="%s" width="50" height="50"/>' %(self.image.url))
+        if self.image:
+            return mark_safe('<img src="%s" width="50" height="50"/>' %(self.image.url))
+        return ""
+    
+    def total_value(self):
+        return self.category_products.aggregate(total=Sum('price'))['total'] or 0.00
 
 class Product(models.Model):
     productId =  ShortUUIDField(unique=True, length=10, max_length=21, prefix="product", alphabet="ABCDEF0123456789")
@@ -147,14 +146,13 @@ class Product(models.Model):
     name = models.CharField(max_length=255, default="Fresh Pear")
     category = models.ForeignKey(Category, related_name='category_products', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='product_directory_path', blank=True, null=True, default="product.jpg")
-    video = models.ForeignKey(ProductVideo, null=True, blank=True, on_delete=models.SET_NULL, related_name="product_on_video")
+    video = models.ForeignKey(ProductVideo, null=True, blank=True, on_delete=models.SET_NULL, related_name="product_on_the_video")
 
     shop = models.ForeignKey(Shop, related_name='shop_products', on_delete=models.CASCADE)
 
     description = models.TextField(blank=True, null=True, default="This is the product")
     specifications = models.TextField(blank=True, null=True)
     
-    life = models.CharField(max_length=255, default="Not Specified", null=True, blank=True)
     mfg = models.DateTimeField(auto_now_add=False, null=True, blank=True)  
 
     price = models.DecimalField(max_digits=15, decimal_places=2, default=1.99)
@@ -166,12 +164,6 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     tags = TaggableManager(blank=True)
-    product_status = models.CharField(max_length=20, choices=STATUS, default='in_review')
-    status = models.BooleanField(default=True)
-
-    in_stock = models.BooleanField(default=True)
-    featured = models.BooleanField(default=False)
-    digital = models.BooleanField(default=False)
 
     sku = ShortUUIDField(unique=True, length=4, max_length=10, prefix="sku", alphabet="0123456789")
 
@@ -190,6 +182,12 @@ class Product(models.Model):
             return "In Stock"
         else:
             return "Out of Stock"
+    
+    def get_mfg_display(self):
+        if self.mfg:
+            return self.mfg
+        return "Not Specified"
+    
 class DiscountedProduct(models.Model):
     discountProductId = ShortUUIDField(unique=True, length=10, max_length=27, prefix="discountedProduct", alphabet="ABCDEF0123456789")
 
@@ -229,7 +227,7 @@ class DiscountedProduct(models.Model):
 class MoreProductImage(models.Model):
     mpiId = ShortUUIDField(unique=True, length=10, max_length=21, prefix="mpi", alphabet="ABCDEF0123456789")
 
-    image = models.ImageField(upload_to='mpi_directory_path', blank=True, null=True, default="more_product_image.jpg")
+    image = models.ImageField(upload_to='mpi_directory_path', blank=True, null=True)
     product = models.ForeignKey(Product, related_name='more_product_images', on_delete=models.CASCADE)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -247,8 +245,8 @@ class MoreProductImage(models.Model):
 class MoreProductVideo(models.Model):
     mpvId = ShortUUIDField(unique=True, length=10, max_length=21, prefix="mpv", alphabet="ABCDEF0123456789")
 
-    video = models.FileField(upload_to='mpv_directory_path', blank=True, null=True, default="more_product_video.jpg")
-    description = models.TextField(blank=True, null=True, default="This is a demo video for the product")
+    video = models.FileField(upload_to='mpv_directory_path', null=True, blank=True)
+    description = models.TextField(blank=True, null=True, default="This is an additional demo video for the product")
 
     product = models.ForeignKey(Product, related_name='more_product_videos', on_delete=models.CASCADE)
 
@@ -265,6 +263,29 @@ class MoreProductVideo(models.Model):
         if self.video:
             return mark_safe(f'<video width="100" height="100" controls><source src="{self.video.url}" type="video/mp4"></video>')
         return "No video available"
+
+class TransactionLog(models.Model):
+        
+    ACTION_CHOICES = [
+        ('add', 'Add'),
+        ('sell', 'Sell'),
+    ]
+    
+    transactionLogId = ShortUUIDField(unique=True, length=10, max_length=21, prefix="tlog", alphabet="ABCDEF0123456789")
+    product = models.ForeignKey(Product, related_name='product_transaction_logs', on_delete=models.CASCADE)
+    action = models.CharField(max_length=4, choices=ACTION_CHOICES)  # 'add' or 'sell'
+    quantity = models.PositiveIntegerField()  
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Transaction Log"
+        verbose_name_plural = "Transaction Logs"
+
+    def __str__(self):
+        return f"{self.product.name} - {self.action} - {self.quantity}"
+    
+    def product_name(self):
+        return self.product.name
 
     
 ######################### Cart, Order, OrderItems, and Address ######################### 

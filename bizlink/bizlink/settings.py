@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -41,12 +42,14 @@ INSTALLED_APPS = [
 
     # Third Party App
     "taggit",
-    "django_ckeditor_5",
+    'django_htmx',
+    'django_cleanup',
 
     # Custom Apps
     "core",
     "userauth",
     "shop",
+    "chat",
 ]
 
 # Taggit Config
@@ -60,6 +63,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'django_htmx.middleware.HtmxMiddleware',
 ]
 
 ROOT_URLCONF = "bizlink.urls"
@@ -81,8 +85,14 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "bizlink.wsgi.application"
+#WSGI_APPLICATION = "bizlink.wsgi.application"
+ASGI_APPLICATION = "bizlink.asgi.application"
 
+CHANNEL_LAYERS = {
+    'default': {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

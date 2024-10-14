@@ -1,5 +1,7 @@
 {% extends "core/owner/owner-base.html" %}
 
+{% load static %}
+
 {% block title %}
 Products
 {% endblock %}
@@ -30,7 +32,11 @@ Products
                         {% if categories.count  == 1 %}
                             1 Category
                         {% else %}
-                            {{ categories.count  }} Category
+                            {% if categories.count == 0%}
+                                <p>You have no categories</p>
+                            {% else %}
+                                {{ categories.count  }} Categories
+                            {% endif %}
                         {% endif %}
 
                     </h3>
@@ -41,9 +47,15 @@ Products
 
                                 <div class="category-box">
                                     
+                                    {% if category.image %}
                                         <div class="category-image">
                                             <a href="{% url 'core:category_detail' category.categoryId %}"><img src="{{ category.image.url }}" alt="{{ category.name }} image"></a>
                                         </div>
+                                    {% else %}
+                                        <div class="category-image">
+                                            <a href="{% url 'core:category_detail' category.categoryId %}"><img src="{% static 'img/category.png' %}" alt="{{ category.name }} image"></a>
+                                        </div>
+                                    {% endif %}
 
                                     <h4>{{ category.name }}</h4>
                                     <p>By {{ category.shop.name }}</p>

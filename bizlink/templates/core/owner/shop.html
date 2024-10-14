@@ -26,6 +26,18 @@ Shop
                     <p><i class="fa-solid fa-phone"></i>&nbsp;&nbsp;{{ shop.contact }}</p>
                 </div>
 
+                    <!-- Button trigger modal -->
+                    <a type="button" 
+                    class="btn btn-primary" 
+                    hx-get="{% url 'chat:get_or_create_chatroom' shop.created_by.username %}" 
+                    hx-target="#modal-body" 
+                    hx-swap="innerHTML" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#inboxModal" data-backdrop="static" data-keyboard="false"> 
+                Inbox
+            </a>
+        
+
                 {% if social_media %}
                     <div class="contact-us">
                         <p>Contact us: </p>
@@ -266,13 +278,37 @@ Shop
 </section>
 {% endif %}
 
+
+<section class="inbox-modal">
+  
+  <!-- Modal -->
+  <div class="modal fade" id="inboxModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable"">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Hi there. What can I do for you?</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modal-body">
+            
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Shop Inventory Section -->
 <section class="shop_inventory_section">
 
 </section>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+<script src="https://unpkg.com/htmx.org@1.8.4"></script>
+<script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
+<script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
 
 
 {% endblock %}

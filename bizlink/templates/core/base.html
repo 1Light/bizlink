@@ -22,7 +22,7 @@
             <div class="container">
                 <!-- Company Logo & Name -->
                 <div class="company-logo">
-                    <a class="navbar-brand" href="{% url 'core:owner_home' %}">
+                    <a class="navbar-brand" href="{% url 'core:owner_shop' %}">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="currentColor"
@@ -96,9 +96,12 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <i class="fa-solid fa-cart-shopping"></i>
-                                    <span>Cart</span>
+                                <a class="nav-link" href="{% url 'chat:chat'%}">
+                                    <i class="fa-solid fa-message"></i>
+                                    <span>Inbox</span>
+                                    {% if request.user.is_authenticated %}
+                                        <span id="inbox-count" class="num-of-inbox">{{ total_unread_messages }}</span>
+                                    {% endif %}
                                 </a>
                             </li>
                             <li class="nav-item account-item">
@@ -111,7 +114,7 @@
                                 </a>
                                 <ul class="account-submenu">
                                     <div class="submenu-box">
-                                        <a href="{% url 'core:owner_account' %}"><li><i class="fa-regular fa-user"></i>My Account</li></a>
+                                        <a href="{% url 'core:account' %}"><li><i class="fa-regular fa-user"></i>My Account</li></a>
                                         <a href="#"><li><i class="fa-solid fa-sliders"></i>Setting</li></a>
     
                                         {% if request.user.is_authenticated %}

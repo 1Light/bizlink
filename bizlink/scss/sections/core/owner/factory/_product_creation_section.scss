@@ -1,0 +1,526 @@
+@use '../../../../custom' as *;
+
+.product_creation_section {
+    border: 2px solid $black;
+    margin-bottom: 3rem;
+
+    .product-creation-box {
+
+        .main-data {
+
+            .data-1 {
+                display: flex;
+                border: 2px solid $black;
+                justify-content: space-between;
+
+                .column1 {
+                    border: 2px solid $black;
+                    padding: 1rem;
+                    flex: 0 0 47%;
+
+                    input, select {
+                        width: 100%;
+                        height: 2.5rem;
+                        margin-top: 5px;
+                        margin-bottom: 1rem;
+                    }
+                }
+
+                .column2 {
+                    flex: 0 0 47%;
+                    padding: 1rem;
+                    border: 2px solid $black;
+
+                    .field {
+                        width: 100%;
+                        height: 100%;
+
+                        .product-image {
+                            border: 2px solid $black;
+                            width: 100%;
+                            height: 90%;
+                            position: relative;
+
+                            .select-image-btn {
+                                display: block;
+                                width: 30%;
+                                margin: auto;
+                                padding: 8px 0;
+                                border-radius: 15px;
+                                background: $primary;
+                                color: #fff;
+                                font-weight: 500;
+                                font-size: 16px;
+                                border: none;
+                                cursor: pointer;
+                                position: absolute;
+                                top: 105%;
+                                left: 50%;
+                                transform: translateX(-50%);
+                            }
+                
+                            .image-preview-box {
+                                width: 100%;
+                                height: 100%;
+                                background: #fff;
+                                border-radius: 15px;
+                
+                                .img-area {
+                                    position: relative;
+                                    width: 100%;
+                                    height: 100%;
+                                    background: $gray-300;
+                                    border-radius: 15px;
+                                    overflow: hidden;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    flex-direction: column;
+                
+                                    img {
+                                        width: 100%;
+                                        height: 100%;
+                                        object-position: center;
+                                        z-index: 100;
+                                    }
+                
+                                    i {
+                                        font-size: 100px;
+                                    }
+                                    
+                                    p {
+                                        color: #999;
+                
+                                        span {
+                                            font-weight: 600;
+                                        }
+                                    }
+                
+                                }
+                                .img-area::before {
+                                    content: attr(data-img);
+                                    position: absolute;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    height: 100%;
+                                    background: rgba(0, 0, 0, .5);
+                                    color: #fff;
+                                    font-weight: 500;
+                                    text-align: center;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    pointer-events: none;
+                                    opacity: 0;
+                                    transition: all .3s ease;
+                                    z-index: 200;
+                                }
+                                .img-area.active:hover::before {
+                                    opacity: 1;
+                                }
+                
+                
+                                .img-area.image-uploaded {
+                                    background-color: white;
+                
+                                    i, h3, p {
+                                        display: none;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            .data-2 {
+                border: 2px solid $black;
+
+                .row2 {
+                    display: flex;
+                    justify-content: space-between;
+
+                    .column1 {
+                        flex: 0 0 47%;
+                        border: 2px solid $black;
+                        padding: 1rem;
+
+                        textarea {
+                            width: 100%;
+                            margin-top: 5px;
+                            margin-bottom: 1rem;
+                        }
+                    }
+
+                    .column2 {
+                        flex: 0 0 47%;
+                        padding: 1rem;
+                        border: 2px solid $black;
+                        width: 100%;
+                        height: 39.30rem;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        position: relative;
+
+                        .clear-video-btn {
+                            display: none;
+                            top: 10%;
+                            right: 5%;
+                            position: absolute;
+                            z-index: 9999;
+                            background-color: $black;
+                            color: $white;
+                        }
+
+                        .product-video {
+                            border: 2px solid $black;
+                            height: 48.5%;
+                            width: 100%;
+
+                            &:hover {
+                                .video-preview-box {
+                                    .btn {
+                                        opacity: 1;
+                                        visibility: visible;
+                                    }
+                                }
+                            }
+                
+                            .video-preview-box {
+                                width: 100%;
+                                height: 100%;
+                                background: #fff;
+                                border-radius: 15px;
+                                position: relative;
+
+                                .btn {
+                                    position: absolute;
+                                    z-index: 9999;
+                                    opacity: 0;
+                                    visibility: hidden;
+                                    transition: opacity 0.3s ease, visibility 0.3s ease;
+                                }
+
+                                .toggle-description-btn {
+                                    bottom: 0;
+                                    left:  0;
+                                }
+
+                                .select-video-btn {
+                                    top: 0%;
+                                    right: 0%;
+                                }
+    
+                                .delete-product-video {
+                                    top: 0%;
+                                    left: 0%;
+                                }
+                
+                                .video-area {
+                                    position: relative;
+                                    width: 100%;
+                                    height: 100%;
+                                    background: $gray-300;
+                                    border-radius: 15px;
+                                    overflow: hidden;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    flex-direction: column;
+                
+                                    video {
+                                        width: 100%;
+                                        height: 100%;
+                                        object-position: center;
+                                    }
+                
+                                    i {
+                                        font-size: 100px;
+                                    }
+                                    
+                                    p {
+                                        color: #999;
+                
+                                        span {
+                                            font-weight: 600;
+                                        }
+                                    }
+                
+                                }
+                
+                
+                                .video-area.video-uploaded {
+                                    background-color: white;
+                
+                                    i, h3, p {
+                                        display: none;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .more-product-image {
+            min-height: 11rem;
+            border: 2px solid $black;
+            display: flex;
+            padding: 3.5rem;
+            flex-wrap: wrap;
+            gap: 2.1rem;
+            position: relative;
+
+            .add-more-images-btn {
+                position: absolute;
+                top: 0;
+                right: 0;
+                z-index: 9999;
+            }
+
+            .product-image {
+                border: 2px solid $black;
+                height: 15rem;
+                flex: 0 0 30.7%;
+                position: relative;
+
+                .btn {
+                    position: absolute;
+                    z-index: 9999;
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: opacity 0.3s ease, visibility 0.3s ease;
+                }
+
+                .select-more-image-btn { 
+                    top: 0%;
+                    right: 0%;
+                }
+
+                .delete-more-image-btn {
+                    top: 0%;
+                    left: 0%;
+                }
+
+                &:hover {
+                    .btn {
+                        opacity: 1;
+                        visibility: visible;
+                    }
+                }
+
+                .remove-more-product-image {
+                    position: absolute;
+                    top: 0%;
+                    left: 0%;
+                    z-index: 9999;
+                }
+    
+                .image-preview-box {
+                    width: 100%;
+                    height: 100%;
+                    background: #fff;
+                    border-radius: 15px;
+    
+                    .more-img-area {
+                        position: relative;
+                        width: 100%;
+                        height: 100%;
+                        background: $gray-300;
+                        border-radius: 15px;
+                        overflow: hidden;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        flex-direction: column;
+    
+                        img {
+                            width: 100%;
+                            height: 100%;
+                            object-position: center;
+                            z-index: 100;
+                        }
+    
+                        i {
+                            font-size: 100px;
+                        }
+                        
+                        p {
+                            color: #999;
+    
+                            span {
+                                font-weight: 600;
+                            }
+                        }
+    
+                    }
+                    .more-img-area::before {
+                        content: attr(data-img);
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(0, 0, 0, .5);
+                        color: #fff;
+                        font-weight: 500;
+                        text-align: center;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        pointer-events: none;
+                        opacity: 0;
+                        transition: all .3s ease;
+                        z-index: 200;
+                    }
+                    .more-img-area.active:hover::before {
+                        opacity: 1;
+                    }
+    
+    
+                    .more-img-area.image-uploaded {
+                        background-color: white;
+    
+                        i, h3, p {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+
+        .more-product-video {
+            min-height: 11rem;
+            border: 2px solid $black;
+            display: flex;
+            padding: 3rem 3rem 5rem 3rem;
+            flex-wrap: wrap;
+            gap: 5rem 2rem;
+            position: relative;
+
+            .add-more-videos-btn {
+                position: absolute;
+                top: 0;
+                right: 0;
+                z-index: 9999;
+            }
+            
+            .product-video {
+                height: 19rem;
+                flex: 0 0 48%;
+                border: 2px solid $gray-300;
+                border-radius: 10px;
+                position: relative;
+
+                .video-description {
+                    border: 2px solid $black;
+                    position: relative;
+
+                    textarea {
+                        position: absolute;
+                        top: 100%;
+                        left: 0%;
+                        width: 100%;
+                    }
+                }
+    
+                .video-preview-box {
+                    height: 100%;
+                    display: block;
+                    background: #fff;
+                    border-radius: 15px;
+                    border: 2px solid $primary;
+
+                    .btn {
+                        position: absolute;
+                        z-index: 9999;
+                        opacity: 0;
+                        visibility: hidden;
+                        transition: opacity 0.3s ease, visibility 0.3s ease;
+                    }
+
+                    .select-more-video-btn {
+                        top: 0%;
+                        right: 0%;
+                    }
+    
+                    .delete-more-video-btn {
+                        top: 0%;
+                        left: 0%;
+                    }
+    
+                    .toggle-description-btn  {
+                        bottom: 0%;
+                        left: 0%;
+                    }
+    
+                    .more-video-area {
+                        width: 100%;
+                        height: 100%;
+                        background: $gray-300;
+                        border-radius: 15px;
+                        overflow: hidden;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        flex-direction: column;
+    
+                        video {
+                            width: 100%;
+                            height: 100%;
+                            object-position: center;
+                            z-index: 100;
+                        }
+    
+                        i {
+                            font-size: 100px;
+                        }
+                        
+                        p {
+                            color: #999;
+    
+                            span {
+                                font-weight: 600;
+                            }
+                        }
+    
+                    }
+    
+    
+                    .more-video-area.video-uploaded {
+                        background-color: white;
+    
+                        i, h3, p {
+                            display: none;
+                        }
+                    }
+                }
+
+                &:hover {
+
+                    .video-preview-box {
+                        .btn {
+                            opacity: 1;
+                            visibility: visible;
+                        }
+                    }
+                }
+            }
+        }
+
+        .create-product-btn {
+            margin-top: 5rem;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: $primary;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 500;
+            border: none;
+        }
+    }
+}

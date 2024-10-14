@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Shop, Category, Product, DiscountedProduct, MoreProductImage, CartOrder, CartOrderProduct, ProductReview, Wishlist, Feature, FeaturedProduct, NewArrival, MoreProductVideo, ProductVideo
+from .models import Shop, Category, Product, DiscountedProduct, MoreProductImage, CartOrder, CartOrderProduct, ProductReview, Wishlist, Feature, FeaturedProduct, NewArrival, MoreProductVideo, ProductVideo, TransactionLog
 
 # Configure Your Admin Models Here
 class MoreProductImageAdmin(admin.TabularInline):
@@ -11,9 +11,14 @@ class MoreProductVideoAdmin(admin.TabularInline):
     fields = ['mpvId', 'video', 'description']
     readonly_fields = ['mpvId']
 
+class TransactionLogAdmin(admin.TabularInline):
+    model = TransactionLog
+    extra = 1
+    list_display = ['product_name', 'action', 'quantity', 'timestamp']
+
 class ProductAdmin(admin.ModelAdmin):
-    inlines = [MoreProductImageAdmin, MoreProductVideoAdmin]
-    list_display = ['created_by', 'name', 'product_image', 'price', 'featured', 'product_status']
+    inlines = [MoreProductImageAdmin, MoreProductVideoAdmin, TransactionLogAdmin]
+    list_display = ['created_by', 'name', 'product_image', 'price', 'get_mfg_display']
 
 class DiscountedProductAdmin(admin.ModelAdmin):
     list_display = ['created_by', 'discounted_product_image', 'product_name', 'product_price', 'new_price', 'discount_until', 'has_discount_ended']

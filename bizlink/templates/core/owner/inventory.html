@@ -1,0 +1,505 @@
+{% extends "core/owner/owner-base.html" %}
+
+{% load static %}
+
+{% block title %}
+Inventory
+{% endblock %}
+
+{% block content %}
+
+<!-- Shop Inventory Section -->
+<section class="shop_inventory_intro_section">
+    <div class="container">
+        <nav>
+            <div class="nav nav-tabs inventory-tabs" id="nav-tab" role="tablist">
+              <button class="nav-link active" id="nav-products-tab" data-bs-toggle="tab" data-bs-target="#nav-products" type="button" role="tab" aria-controls="nav-products" aria-selected="true">Products</button>
+              <button class="nav-link" id="nav-categories-tab" data-bs-toggle="tab" data-bs-target="#nav-categories" type="button" role="tab" aria-controls="nav-categories" aria-selected="false">Categories</button>
+              <button class="nav-link" id="nav-analytics-tab" data-bs-toggle="tab" data-bs-target="#nav-analytics" type="button" role="tab" aria-controls="nav-analytics" aria-selected="false">Analytics</button>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active products-tab" id="nav-products" role="tabpanel" aria-labelledby="nav-products-tab" tabindex="0">
+                
+                <p class="text-center">You have
+                    <span id="product-count" data-initial-count="{{ products.count }}">
+                        {{ products.count }}
+                    </span>
+                </p>   
+                
+                <table class="table caption-top">
+                    <caption>List of products</caption>
+                    <thead>
+                        <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Date Added</th>
+                        <th scope="col">In Stock</th>
+                        <th scope="col">Quantity</th> 
+                        <th scope="col">Actions</th>
+                        <th scope="col">Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if products %}
+
+                            {% for product in products %}
+                
+                                <tr id="product-row-{{ product.productId }}">
+
+                                        <td>
+                                            <button type="button" class="btn btn-lg btn-danger"
+                                            data-bs-toggle="modal" data-bs-target="#edit-product-form"
+                                                data-product-id="{{ product.productId}}"
+                                                data-product-name="{{ product.name }}"
+                                                data-product-category="{{ product.category }}"
+                                                data-product-price="{{ product.price }}"
+                                                data-product-tags="{% for tag in product.tags.all %}{{ tag.slug }}{% if not forloop.last %}, {% endif %}{% endfor %}"
+                                                data-product-stock-quantity="{{ product.stock_quantity }}"
+                                                data-product-description="{{ product.description }}"
+                                                data-product-specification="{{ product.specifications }}"
+                                                data-product-image="{% if product.image %}{{ product.image.url }}{% else %}null{% endif %}"  
+                                                data-product-video="{% if product.video %}{{ product.video.video.url }}{% else %}null{% endif %}"
+                                                data-product-video-description="{% if product.video %}{{ product.video.description }}{% endif %}"
+                                                data-more-product-images='[
+                                                    {% for image in product.more_product_images.all %}
+                                                        {
+                                                            "url": "{% if image.image %}{{ image.image.url }}{% else %}null{% endif %}",
+                                                            "mpiId": "{{ image.mpiId }}"
+                                                        }{% if not forloop.last %},{% endif %}
+                                                    {% endfor %}
+                                                ]'
+                                                data-more-product-video='[
+                                                    {% for video in product.more_product_videos.all %}
+                                                        {
+                                                            "url": "{% if video.video %}{{ video.video.url }}{% else %}null{% endif %}",
+                                                            "moreProductVideoDescription": "{{ video.description }}",
+                                                            "mpvId": "{{ video.mpvId }}"
+                                                        }{% if not forloop.last %},{% endif %}
+                                                    {% endfor %}
+                                                ]'
+                                                data-transaction-log-id='[
+                                                    {% for transaction_log in product.product_transaction_logs.all %}
+                                                        "{{ transaction_log.transactionLogId }}"{% if not forloop.last %},{% endif %}
+                                                    {% endfor %}
+                                                ]'
+                                                data-action='[
+                                                    {% for transaction_log in product.product_transaction_logs.all %}
+                                                        "{{ transaction_log.action }}"{% if not forloop.last %},{% endif %}
+                                                    {% endfor %}
+                                                ]'
+                                                data-quantity='[
+                                                    {% for transaction_log in product.product_transaction_logs.all %}
+                                                        {{ transaction_log.quantity }}{% if not forloop.last %},{% endif %}
+                                                    {% endfor %}
+                                                ]'
+                                                data-timestamp='[
+                                                    {% for transaction_log in product.product_transaction_logs.all %}
+                                                        "{{ transaction_log.timestamp|date:"M j, Y" }} at {{ transaction_log.timestamp|date:"g:i a" }}"{% if not forloop.last %},{% endif %}
+                                                    {% endfor %}
+                                                ]'>
+                                        {{ product.name }}
+                                            </button>
+                                        </td>
+                                        <td>{{ product.category.name }}</td>
+                                        <td>{{ product.price }}</td>
+                                        <td>
+                                            {{ product.created_at|date:"M j, Y" }}<br>
+                                            at {{ product.created_at|date:"g:i a" }}
+                                        </td>
+                                        <td id="stock-{{ product.productId }}">{{ product.stock_quantity}}</td>
+                                        <td class="quantity">
+                                            <input type="number" min="1" value="1" id="quantity-{{ product.productId }}" name="quantity" oninput="validity.valid||(value='');"/>
+                                        </td>
+                                        <td class="btns">
+                                            <div class="add-and-sell">
+                                                <button class="add-stock" data-product-id="{{ product.productId }}">Add</button>
+                                                <button class="sell-stock" data-product-id="{{ product.productId }}">Sell</button>
+                                            </div>
+                                            <div class="undo">
+                                                <button class="undo-stock" data-product-id="{{ product.productId }}">Undo</button> <!-- Undo button -->
+                                            </div>                                            
+                                        </td>
+                                        <td>
+                                            <a href="#" class="remove-product" data-product-id="{{ product.productId }}">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </a>
+                                        </td>
+                                </tr>
+                            {% endfor %}
+
+                        {% else %}
+                            <tr>
+                                <td colspan="8" class="text-center">No products available.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="tab-pane fade" id="nav-categories" role="tabpanel" aria-labelledby="nav-categories-tab" tabindex="0">
+                <div class="tab-pane fade show active categories-tab" id="nav-categories" role="tabpanel" aria-labelledby="nav-categories-tab" tabindex="0">
+                
+                    <p class="text-center">You have
+                        <span id="category-count" data-initial-count="{{ categories.count }}">
+                            {{ categories.count }}
+                        </span>
+                    </p>                                       
+    
+                    <table class="table caption-top">
+                        <caption>List of categories</caption>
+                        <thead>
+                            <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Products</th>
+                            <th scope="col">Total Value</th>
+                            <th scope="col">Date Added</th>
+                            <th scope="col">Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if categories %}
+    
+                                {% for category in categories %}
+                                    <tr id="category-row-{{ category.categoryId }}">
+    
+                                            <td><button type="button" class="btn btn-lg btn-danger"
+                                                data-bs-toggle="modal" data-bs-target="#edit-category-form"
+                                                    data-category-id="{{ category.categoryId}}"
+                                                    data-category-name="{{ category.name }}"
+                                                    data-category-description="{{ category.description }}"
+                                                    data-category-image="{% if category.image %}{{ category.image.url }}{% else %}null{% endif %}">
+                                                    {{ category.name }}</button></td>
+                                            <td>{{ category.category_products.count }}</td>
+                                            <td>{{ category.total_value|floatformat:3 }}</td>
+                                            <td>
+                                                {{ category.created_at|date:"M j, Y" }}<br>
+                                                at {{ category.created_at|date:"g a" }}
+                                            </td>
+                                            <td>
+                                                <a href="#" class="remove-category" data-category-id="{{ category.categoryId }}">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a>
+                                            </td>
+                                    </tr>
+                                {% endfor %}
+    
+                            {% else %}
+                                <tr>
+                                    <td colspan="8" class="text-center">No categories available.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-analytics" role="tabpanel" aria-labelledby="nav-analytics-tab" tabindex="0">...</div>
+            </div>
+    </div>
+</section>
+
+<section class="shop_inventory_modal_section">
+    <!-- Product Modal -->
+
+    <!-- Model for Creating a Feature -->
+    <div class="modal fade" id="edit-product-form" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable product-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="modal-title">{{ product.name }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST" id="productUpdateForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                
+                    <div class="main-data">
+                
+                        <!-- Data-1 section with column1 and column2 -->
+                        <div class="data-1">
+                
+                            <!-- Column1 -->
+                            <div class="column1">
+                                {% for field in edit_product_form %}
+                                    {% if field.label == "Name" or field.label == "Shop" or field.label == "Price" or field.label == "Tags" or field.label == "In Stock" %}
+                                        <div class="field">
+                                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                            <div class="column1-field-box">
+                                                {{ field }}
+                                                {% if field.errors %}
+                                                    <div class="field_errors">
+                                                        {{ field.errors }}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if field.label == "Category" %}
+                                        
+                                    <div class="field">
+                                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                        <div class="column1-field-box">
+
+                                            <select name="category" id="id_category">
+                                                {% for category in categories %}
+                                                    <option value="{{ category.categoryId }}">{{ category.name }}</option>
+                                                {% endfor %}
+                                            </select>
+
+                                            {% if field.errors %}
+                                                <div class="field_errors">
+                                                    {{ field.errors }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    {% endif %}
+
+                                {% endfor %}
+                            </div>
+                
+                            <!-- Column2 -->
+                            <div class="column2">
+                                {% for field in edit_product_form %}
+                                    {% if field.label == "Image"%}
+                                        <div class="field">
+                                            <!-- Image field -->
+                                            <div class="product-image">
+                                                <div class="image-preview-box">
+                                                    <input name="image" type="file" id="file" accept="image/*" hidden>
+                                                    <div class="img-area" data-img="hello.jpg">
+                                                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                                                        <h3>Upload Image</h3>
+                                                        <p>Image size must be less than <span>2MB</span></p>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="select-image-btn">Select Image</button>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                
+                        </div>
+                
+                        <!-- Data-2 section -->
+                        <div class="data-2">
+                            <div class="row2">
+                                <!-- Column 1 for Description and Specifications -->
+                                <div class="column1">
+                                    {% for field in edit_product_form %}
+                                        {% if field.label == "Description" or field.label == "Specifications" %}
+                                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                            <div class="row2-field-box">
+                                                {{ field }}
+                                                {% if field.errors %}
+                                                    <div class="field_errors">
+                                                        {{ field.errors }}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+
+                                <!-- Column 2 for Video field -->
+                                <div class="column2">
+                                    {% for field in edit_product_form %}
+                                        {% if field.label == "Video" %}
+                                            <div class="product-video">
+                                                <div class="video-preview-box">
+                                                    <input name="video" type="file" id="video-file" accept="video/*" hidden>
+                                                    <div class="video-area" data-video="no-video">
+                                                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                                                        <h3>Upload Video</h3>
+                                                        <p>Video size must be less than <span>50MB</span></p> 
+                                                    </div>
+                                                    <div class="video-description" style="display: none;">
+                                                        <textarea name="video-description">
+
+                                                        </textarea>
+                                                    </div>
+                                                    <button type="button" class="select-video-btn btn btn-success"><i class="fa-solid fa-square-plus"></i></button>
+                                                    <button type="button" class="delete-product-video btn btn-danger">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button> 
+                                                    <button type="button" class="toggle-description-btn btn btn-info"><i class="fa-solid fa-circle-info"></i></button>                                                   
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Non-field errors -->
+                        {% if product_form.non_field_errors %}
+                            <div class="non_field_errors">
+                                {{ product_form.non_field_errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {% if more_product_image_form and more_product_video_form %}
+                    
+                        <div class="more-data">
+
+                            <div class="more-product-image">
+                                <!-- Js injects the product image div here -->
+
+                                <div class="more-product-image-box">
+
+                                </div>
+
+                                <div class="add-more-images-btn-box">
+                                    <button type="button" id="add-more-images-btn" class="add-more-images-btn btn btn-primary">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+
+                            <div class="more-product-video">
+                                
+                                <div class="more-product-video-box">
+
+                                </div>
+
+                                <div class="add-more-videos-btn-box">
+                                    <button type="button" id="add-more-videos-btn" class="add-more-videos-btn btn btn-primary">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </div>    
+                    {% endif %}
+                    
+                    <div class="transaction-log">
+
+                        <table class="table caption-top">
+                            <caption>List of transaction logs</caption>
+                            <thead>
+                                <tr>
+                                <th scope="col">Actions</th>
+                                <th scope="col">Quantity</th> 
+                                <th scope="col">Date</th>
+                                <th scope="col">Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transaction-log-body">
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" class="rounded-pill save-changes-btn">Save Changes</button>
+                </form>                
+                
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Category Modal -->
+
+    <div class="modal fade" id="edit-category-form" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable category-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="modal-title">{{ category.name }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST" id="categoryUpdateForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="row1">
+                        <!-- Column1 -->
+                        <div class="column1">
+                            {% for field in edit_category_form %}
+                                {% if field.label == "Name" or field.label == "Description" %}
+                                    <div class="field">
+                                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                        <div class="column1-field-box">
+                                            {{ field }}
+                                            {% if field.errors %}
+                                                <div class="field_errors">
+                                                    {{ field.errors }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                            {% endfor %}
+                        </div>
+            
+                        <!-- Column2 -->
+                        <div class="column2">
+                            {% for field in edit_category_form %}
+                                {% if field.label == "Image"%}
+                                    <div class="field">
+                                        <!-- Image field -->
+                                        <div class="category-image">
+                                            <div class="image-preview-box">
+                                                <input name="image" type="file" id="category-file" accept="image/*" hidden>
+                                                <div class="category-img-area" data-img="hello.jpg">
+                                                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                                                    <h3>Upload Image</h3>
+                                                    <p>Image size must be less than <span>2MB</span></p>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="select-category-image-btn">Select Image</button>
+                                            <button type="button" class="delete-category-image">Delete Image</button>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="product-table">
+                        <table id="product-table" class="table caption-top">
+                            <caption>List of products</caption>
+                            <thead>
+                                <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Date Added</th>
+                                <th scope="col">In Stock</th>
+                                <th scope="col">Quantity</th> 
+                                <th scope="col">Actions</th>
+                                <th scope="col">Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody id="product-list">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="submit" class="rounded-pill save-changes-btn">Save Changes</button>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    var csrfToken = "{{ csrf_token }}";
+    const updateProductInfoUrl = "{% url 'core:update_product_info' 'dummy_id' %}";
+    const updateCategoryInfoUrl = "{% url 'core:update_category_info' 'dummy_id' %}";
+</script>
+
+<script src="{% static 'js/custom-scripts/owner/inventory.js' %}"></script>  
+
+{% endblock %}

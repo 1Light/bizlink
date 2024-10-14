@@ -25,9 +25,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("core/", include("core.urls")),
     path("userauth/", include("userauth.urls")),
-
-    # Path for Third Party App
-    path("ckeditor5/", include('django_ckeditor_5.urls')),
+    path("chat/", include("chat.urls")),
 ]
 
 if settings.DEBUG:

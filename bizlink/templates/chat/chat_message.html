@@ -1,0 +1,40 @@
+{% load static %}
+
+
+{% if message.author == user %}
+<li class="text-box1 fad-in-out">
+    <div class="text">
+        <p>{{ message.body }}</p>
+    </div>
+    <div class="time" data-date="{{ message.created_at|date:'F j, Y' }}">
+        <p>{{ message.created_at|date:"g:i A" }}</p>
+    </div>
+    <div class="text-tail">
+        <svg >
+            <path d="M6.3,10.4C1.5,8.7,0.9,5.5,0,0.2L0,13l5.2,0C7,13,9.6,11.5,6.3,10.4z"/>
+        </svg>
+    </div>
+</li>
+{% else %}
+
+<li class="text-box2 fad-in-out">
+    <div class="profile-picture">
+        {% if message.author.user_profile.image %}
+            <img src="{{ message.author.user_profile.image }}" alt="{{ message.author.name }} profile picture">
+        {% else %}
+            <img src="{% static 'img/default.png' %}" alt="{{ message.author.name }} profile picture">
+        {% endif %}
+    </div>
+    <div class="text-tail" >
+        <svg>
+            <path d="M2.8,13L8,13L8,0.2C7.1,5.5,6.5,8.7,1.7,10.4C-1.6,11.5,1,13,2.8,13z"></path>
+        </svg>
+    </div>
+    <div class="text">
+        <p>{{ message.body }}</p>
+    </div>
+    <div class="time" data-date="{{ message.created_at|date:'F j, Y' }}">
+        <p>{{ message.created_at|date:"g:i A" }}</p>
+    </div>
+</li>
+{% endif %}

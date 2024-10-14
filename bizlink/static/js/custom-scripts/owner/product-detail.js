@@ -1,4 +1,5 @@
-    /////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////
 
 
     const carousel = document.getElementById('carouselExample');
@@ -240,3 +241,5 @@ document.addEventListener("DOMContentLoaded", function() {
 }
 
 // The rest of your countdown and discount logic
+
+

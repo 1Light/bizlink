@@ -112,7 +112,9 @@ if (existingProfileImage && existingProfileImage !== "null") {
     profileImg.src = existingProfileImage;
     profileImgArea.appendChild(profileImg);
     profileImgArea.classList.add('active', 'image-uploaded');
-    profileImgArea.dataset.img = existingProfileImage; 
+
+    const filename = existingProfileImage.split('/').pop();
+    profileImgArea.dataset.img = filename; 
 }
 
 selectProfileImage.addEventListener('click', function () {

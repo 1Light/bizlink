@@ -101,7 +101,7 @@ def profile_directory_path(instance, filename):
 
 class Profile(models.Model):
     created_by = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='user_profile', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='profile_directory_path', blank=True, null=True, default="profile.jpg")
+    image = models.ImageField(upload_to='profile_directory_path', blank=True, null=True)
     full_name = models.CharField(max_length=250, blank=True, null=True, default="John Adams")
     bio = models.CharField(max_length=250, blank=True, null=True, default="I am awesome")
     mobile = models.CharField(max_length=250, blank=True, null=True, default="0987094994")
@@ -115,7 +115,9 @@ class Profile(models.Model):
         return self.full_name if self.full_name else self.created_by.username
     
     def profile_image(self):
-        return mark_safe('<img src="%s" width="50" height="50"/>' %(self.image.url))
+        if self.image:
+            return mark_safe('<img src="%s" width="50" height="50"/>' %(self.image.url))
+        return ''
     
 class SocialMedia(models.Model):
     # Defining constants for platform choices
@@ -154,7 +156,7 @@ class SocialMedia(models.Model):
         return f"{self.get_platform_display()} - {self.url}"
 
 class Notification(models.Model):
-    notificationId = ShortUUIDField(length=10, max_length=25, prefix="notification", alphabet="ABCDEF0123456789")
+    notificationId = ShortUUIDField(unique=True, length=10, max_length=25, prefix="notification", alphabet="ABCDEF0123456789")
 
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user_notifications', on_delete=models.CASCADE)
     message = models.CharField(max_length=255)

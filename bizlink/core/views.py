@@ -14,10 +14,10 @@ from django.views.decorators.cache import never_cache
 from datetime import datetime
 from django.utils.dateparse import parse_datetime
 
-from shop.forms import EditShop, CreateFeature
+from shop.forms import EditShop, CreateFeature, EditProductForm, MoreProductImageForm, MoreProductVideoForm, EditCategoryForm, CreateCategoryForm, CreateProductForm
 from userauth.forms import SocialMediaForm
 
-from shop.models import Shop, Category, Product, DiscountedProduct, MoreProductImage, CartOrder, CartOrderProduct, ProductReview, Wishlist, Feature, FeaturedProduct, NewArrival
+from shop.models import Shop, Category, Product, DiscountedProduct, MoreProductImage, MoreProductVideo, CartOrder, CartOrderProduct, ProductReview, Wishlist, Feature, FeaturedProduct, NewArrival, TransactionLog, ProductVideo
 from userauth.models import Profile, SocialMedia, Notification
 
 ############################ Views for Business Owners ############################
@@ -36,210 +36,6 @@ def owner_home(request):
         'products': products,
         'categories': categories,
         'wishlist_items': wishlist_items,
-    })
-
-def product(request):
-    user = request.user
-
-    if user.user_type == 'business_owner':  
-    # Owner: Fetch the shop based on the logged-in user
-        products = Product.objects.filter(created_by=user).order_by("-created_at")
-
-        if not products.exists():  # Check if the queryset is empty
-            messages.error(request, "You don't have any products yet.")
-
-    elif user.user_type == 'customer':
-        # Customer: Use session-stored shopId to view a shop
-        shopId = request.session.get('current_shop_id')
-        if shopId:
-            shop = get_object_or_404(Shop, shopId=shopId)
-            products = Product.objects.filter(shop=shop).order_by("-created_at")
-        else:
-            messages.error(request, "No products available.")
-
-    return render(request, "core/owner/product.html", {
-        'products': products,
-    })
-
-def product_detail(request, productId):
-    user = request.user
-
-    if user.user_type == 'business_owner':  
-    # Owner: Fetch the shop based on the logged-in user
-        try:
-            product = Product.objects.get(created_by=user, productId=productId)
-            shop = Shop.objects.get(created_by=user)
-        except Product.DoesNotExist:
-            messages.error(request, "No product detail available.")
-
-    elif user.user_type == 'customer':
-        # Customer: Use session-stored shopId to view a shop
-        shopId = request.session.get('current_shop_id')
-        if shopId:
-            shop = get_object_or_404(Shop, shopId=shopId)
-            product = Product.objects.get(shop=shop, productId=productId)
-        else:
-            messages.error(request, "No products available.")
-    
-    product_images = product.more_product_images.all()
-    product_videos = product.more_product_videos.all()
-    related_products = Product.objects.filter(category=product.category).exclude(productId=productId)
-    
-    try:
-        discounted_product = DiscountedProduct.objects.get(product=product)
-    except DiscountedProduct.DoesNotExist:
-        discounted_product = None
-
-    return render(request, "core/owner/product-detail.html", {
-        'user': user,
-        'product': product,
-        'product_images': product_images,
-        'product_videos': product_videos,
-        'shop': shop,
-        'related_products': related_products,
-        'discounted_product': discounted_product,
-    })
-
-def apply_discount(request, productId):
-    if request.method == 'POST':
-        try:
-            # Parse the request data
-            data = json.loads(request.body.decode('utf-8'))
-            new_price = data.get('new_price')
-            discount_until = data.get('discount_until')
-
-            # Validate that new price and discount_until are provided
-            if not new_price or not discount_until:
-                return JsonResponse({'success': False, 'message': 'New price and discount time are required.'})
-
-            # Convert new_price to a float
-            new_price = float(new_price)
-
-            # Parse discount_until into a datetime object
-            discount_until = parse_datetime(discount_until)
-
-            # Check if discount_until is valid
-            if discount_until is None or discount_until <= datetime.now():
-                return JsonResponse({'success': False, 'message': 'Discount time must be in the future.'})
-
-            # Find the product
-            product = get_object_or_404(Product, productId=productId)
-
-            # Validate that the new price is lower than the original price
-            if new_price >= product.price:
-                return JsonResponse({'success': False, 'message': 'New price must be lower than the original price.'})
-
-            # Get the shop from the product
-            shop = product.shop
-
-            # Create or update the discounted product
-            discounted_product, created = DiscountedProduct.objects.update_or_create(
-                product=product,
-                defaults={
-                    'new_price': new_price,
-                    'discount_until': discount_until,
-                    'shop': shop,  # Ensure the shop is passed
-                    'created_by': request.user,
-                }
-            )
-
-            return JsonResponse({'success': True, 'message': 'Discount applied successfully!'})
-
-        except ValueError:
-            return JsonResponse({'success': False, 'message': 'Invalid input data. Please provide valid numbers and dates.'})
-        except Exception as e:
-            return JsonResponse({'success': False, 'message': str(e)})
-
-    return JsonResponse({'success': False, 'message': 'Invalid request method.'})
-
-def delete_discount(request, productId):
-    # Get the user from the request
-    user = request.user
-    product = Product.objects.get(productId=productId)
-
-    if request.method == 'DELETE':
-        print("Attempting to delete discount for productId:", productId)  # Debugging line
-        try:
-            # Find the discounted product
-            discounted_product = get_object_or_404(DiscountedProduct, product__productId=productId)
-            
-            # Check for the has_discount_ended parameter
-            has_discount_ended = request.GET.get('has_discount_ended', 'false').lower() == 'true'
-
-            # If the countdown has ended, create a notification
-            if has_discount_ended:
-
-                Notification.objects.create(created_by=user, message=f'The discount has ended for the product: {product.name}')
-
-            # Delete the discounted product
-            discounted_product.delete()
-
-            return JsonResponse({'success': True, 'message': 'Discount deleted successfully!'})
-
-        except Exception as e:
-            return JsonResponse({'success': False, 'message': str(e)})
-
-    return JsonResponse({'success': False, 'message': 'Invalid request method.'})
-
-def category(request):
-    user = request.user
-    
-    if user.user_type == 'business_owner':  
-        categories = Category.objects.filter(created_by=user).order_by("-created_at")
-
-        if not categories.exists():  # Check if the queryset is empty
-            messages.error(request, "You don't have any categories yet.")
-
-    elif user.user_type == 'customer':
-        # Customer: Use session-stored shopId to view a shop
-        shopId = request.session.get('current_shop_id')
-        if shopId:
-            shop = get_object_or_404(Shop, shopId=shopId)
-            categories = Category.objects.filter(shop=shop).order_by("-created_at")
-        else:
-            messages.error(request, "No categories available.")
-
-    return render(request, "core/owner/category.html", {
-        'categories': categories,
-    })
-
-def category_detail(request, categoryId):
-    user = request.user
-
-    if user.user_type == 'business_owner':  
-        try:
-            category = Category.objects.get(created_by=user, categoryId=categoryId)
-            shop = Shop.objects.get(created_by=user)
-        except Category.DoesNotExist:
-            messages.error(request, "No category detail available.")
-
-    elif user.user_type == 'customer':
-        # Customer: Use session-stored shopId to view a shop
-        shopId = request.session.get('current_shop_id')
-        if shopId:
-            shop = get_object_or_404(Shop, shopId=shopId)
-            category = Category.objects.get(shop=shop, categoryId=categoryId)
-        else:
-            messages.error(request, "No products available.")
-    
-    products = Product.objects.filter(shop=shop, category=category)
-
-    return render(request, "core/owner/category-detail.html", {
-        'category': category,
-        'products': products,
-    })
-
-def tag(request, tag_slug=None):
-    products = Product.objects.all().order_by("-created_at")
-
-    tag = None
-    if tag_slug:
-        products = products.filter(tags__slug=tag_slug)
-        tag = get_object_or_404(Tag, slug=tag_slug)
-
-    return render(request, "core/owner/tag.html", {
-        "products": products,
-        "tag": tag,
     })
 
 def search(request):
@@ -350,18 +146,6 @@ def notification(request):
         'notifications': notifications,
     })
 
-@login_required
-def owner_account(request):
-    user = request.user
-    profile = Profile.objects.get(created_by=user)
-    notifications = Notification.objects.filter(created_by=user).order_by('-created_at')
-
-    return render(request, "core/owner/owner-account.html", {
-        'user': user,
-        'profile': profile,
-        'notifications': notifications,
-    })
-
 @login_required  # Ensure the user is authenticated
 def add_to_wishlist(request):
     product_id = request.GET.get('id')
@@ -415,27 +199,6 @@ def wishlist(request):
         'wishlist_products': wishlist_products,
     })
 
-
-def admin(request):
-    user = request.user
-    products = Product.objects.filter(created_by=user)
-    shop = Shop.objects.get(created_by=user)
-    features = Feature.objects.filter(created_by=user, shop=shop)
-    create_feature_form = CreateFeature()
-    featured_products = FeaturedProduct.objects.filter(created_by=user)
-    new_arrivals = NewArrival.objects.filter(created_by=user)
-    social_media_form = SocialMediaForm()
-
-    return render(request, "core/owner/admin.html", {
-        'shop': shop,
-        'features': features,
-        'products': products,
-        'create_feature_form': create_feature_form,
-        'featured_products': featured_products,
-        'new_arrivals': new_arrivals,
-        'social_media_form': social_media_form,
-    })
-
 ############################ Views for Shop ############################
 @never_cache
 def owner_shop(request):
@@ -458,10 +221,56 @@ def owner_shop(request):
             messages.error(request, "No products available.")
 
     social_media = SocialMedia.objects.filter(created_by=shop.created_by)
+    categories = Category.objects.filter(created_by=shop.created_by)
     features = Feature.objects.filter(created_by=shop.created_by)
     featured_products = FeaturedProduct.objects.filter(created_by=shop.created_by)
     new_arrivals = NewArrival.objects.filter(created_by=shop.created_by)
     discounted_products = DiscountedProduct.objects.filter(created_by=shop.created_by, shop=shop)
+    wishlist_items = Wishlist.objects.filter(created_by=user).values_list('product__productId', flat=True)
+
+    return render(request, "core/owner/shop.html", {
+        'user': user,
+        'shop': shop,
+        'social_media': social_media,
+        'features': features,
+        'featured_products': featured_products,
+        'new_arrivals': new_arrivals,
+        'discounted_products': discounted_products,
+        'categories': categories,
+        'wishlist_items': wishlist_items,
+    })
+
+############################ Views for Customers ############################
+############################ Views for Customers ############################
+############################ Views for Customers ############################
+
+@never_cache
+def customer_home(request):
+
+    return render(request, "core/customer/home.html")
+
+@never_cache
+def shop(request):
+
+    shops = Shop.objects.all().order_by("name")
+
+    return render(request, "core/customer/shop.html", {
+        'shops': shops
+    }) 
+
+@never_cache
+def visit_shop(request, shopId):
+    user = request.user
+    request.session['current_shop_id'] = shopId
+    
+    shop = Shop.objects.get(shopId=shopId)
+
+    # Fetch the same data as before
+    social_media = SocialMedia.objects.filter(created_by=shop.created_by)
+    features = Feature.objects.filter(created_by=shop.created_by)
+    featured_products = FeaturedProduct.objects.filter(shop=shop)
+    new_arrivals = NewArrival.objects.filter(shop=shop)
+    discounted_products = DiscountedProduct.objects.filter(shop=shop)
     wishlist_items = Wishlist.objects.filter(created_by=user).values_list('product__productId', flat=True)
 
     return render(request, "core/owner/shop.html", {
@@ -474,7 +283,31 @@ def owner_shop(request):
         'wishlist_items': wishlist_items,
     })
 
-############################ Views for Admin ############################
+######################################################################################
+####################################### Owner #######################################
+######################################################################################
+
+""" Admin """
+
+def admin(request):
+    user = request.user
+    products = Product.objects.filter(created_by=user)
+    shop = Shop.objects.get(created_by=user)
+    features = Feature.objects.filter(created_by=user, shop=shop)
+    create_feature_form = CreateFeature()
+    featured_products = FeaturedProduct.objects.filter(created_by=user)
+    new_arrivals = NewArrival.objects.filter(created_by=user)
+    social_media_form = SocialMediaForm()
+
+    return render(request, "core/owner/admin.html", {
+        'shop': shop,
+        'features': features,
+        'products': products,
+        'create_feature_form': create_feature_form,
+        'featured_products': featured_products,
+        'new_arrivals': new_arrivals,
+        'social_media_form': social_media_form,
+    })
 
 def update_shop(request):
     user = request.user
@@ -635,45 +468,741 @@ def delete_new_arrival(request):
     else:
         return JsonResponse({'success': False, 'message': 'Invalid request method.'})
 
-############################ Views for Customers ############################
-############################ Views for Customers ############################
-############################ Views for Customers ############################
-
-@never_cache
-def customer_home(request):
-
-    return render(request, "core/customer/home.html")
-
-@never_cache
-def shop(request):
-
-    shops = Shop.objects.all().order_by("name")
-
-    return render(request, "core/customer/shop.html", {
-        'shops': shops
-    }) 
-
-@never_cache
-def visit_shop(request, shopId):
-    user = request.user
-    request.session['current_shop_id'] = shopId
+def share_product(request, productId):
+    product = Product.objects.get(productId=productId)
+    product_url = request.build_absolute_uri(product.get_absolute_url()) 
     
-    shop = Shop.objects.get(shopId=shopId)
+    return JsonResponse({'url': product_url, 'title': product.name})
 
-    # Fetch the same data as before
-    social_media = SocialMedia.objects.filter(created_by=shop.created_by)
-    features = Feature.objects.filter(created_by=shop.created_by)
-    featured_products = FeaturedProduct.objects.filter(shop=shop)
-    new_arrivals = NewArrival.objects.filter(shop=shop)
-    discounted_products = DiscountedProduct.objects.filter(shop=shop)
-    wishlist_items = Wishlist.objects.filter(created_by=user).values_list('product__productId', flat=True)
+""" Category """
 
-    return render(request, "core/owner/shop.html", {
+def category(request):
+    user = request.user
+    
+    if user.user_type == 'business_owner':  
+        categories = Category.objects.filter(created_by=user).order_by("-created_at")
+
+        if not categories.exists():  # Check if the queryset is empty
+            messages.error(request, "You don't have any categories yet.")
+
+    elif user.user_type == 'customer':
+        # Customer: Use session-stored shopId to view a shop
+        shopId = request.session.get('current_shop_id')
+        if shopId:
+            shop = get_object_or_404(Shop, shopId=shopId)
+            categories = Category.objects.filter(shop=shop).order_by("-created_at")
+        else:
+            messages.error(request, "No categories available.")
+
+    return render(request, "core/owner/category.html", {
+        'categories': categories,
+    })
+
+def category_detail(request, categoryId):
+    user = request.user
+
+    if user.user_type == 'business_owner':  
+        try:
+            category = Category.objects.get(created_by=user, categoryId=categoryId)
+            shop = Shop.objects.get(created_by=user)
+        except Category.DoesNotExist:
+            messages.error(request, "No category detail available.")
+
+    elif user.user_type == 'customer':
+        # Customer: Use session-stored shopId to view a shop
+        shopId = request.session.get('current_shop_id')
+        if shopId:
+            shop = get_object_or_404(Shop, shopId=shopId)
+            category = Category.objects.get(shop=shop, categoryId=categoryId)
+        else:
+            messages.error(request, "No products available.")
+    
+    products = Product.objects.filter(shop=shop, category=category)
+
+    return render(request, "core/owner/category-detail.html", {
+        'category': category,
+        'products': products,
+    })
+
+""" Product """
+
+def product(request):
+    user = request.user
+
+    if user.user_type == 'business_owner':  
+    # Owner: Fetch the shop based on the logged-in user
+        products = Product.objects.filter(created_by=user).order_by("-created_at")
+
+        if not products.exists():  # Check if the queryset is empty
+            messages.error(request, "You don't have any products yet.")
+
+    elif user.user_type == 'customer':
+        # Customer: Use session-stored shopId to view a shop
+        shopId = request.session.get('current_shop_id')
+        if shopId:
+            shop = get_object_or_404(Shop, shopId=shopId)
+            products = Product.objects.filter(shop=shop).order_by("-created_at")
+        else:
+            messages.error(request, "No products available.")
+
+    return render(request, "core/owner/product.html", {
+        'products': products,
+    })
+
+def product_detail(request, productId):
+    user = request.user
+
+    if user.user_type == 'business_owner':  
+    # Owner: Fetch the shop based on the logged-in user
+        try:
+            product = Product.objects.get(created_by=user, productId=productId)
+            shop = Shop.objects.get(created_by=user)
+        except Product.DoesNotExist:
+            messages.error(request, "No product detail available.")
+
+    elif user.user_type == 'customer':
+        # Customer: Use session-stored shopId to view a shop
+        shopId = request.session.get('current_shop_id')
+        if shopId:
+            shop = get_object_or_404(Shop, shopId=shopId)
+            product = Product.objects.get(shop=shop, productId=productId)
+        else:
+            messages.error(request, "No products available.")
+    
+    product_images = product.more_product_images.all()
+    product_videos = product.more_product_videos.all()
+    related_products = Product.objects.filter(category=product.category).exclude(productId=productId)
+    
+    try:
+        discounted_product = DiscountedProduct.objects.get(product=product)
+    except DiscountedProduct.DoesNotExist:
+        discounted_product = None
+
+    return render(request, "core/owner/product-detail.html", {
+        'user': user,
+        'product': product,
+        'product_images': product_images,
+        'product_videos': product_videos,
         'shop': shop,
-        'social_media': social_media,
-        'features': features,
-        'featured_products': featured_products,
-        'new_arrivals': new_arrivals,
-        'discounted_products': discounted_products,
-        'wishlist_items': wishlist_items,
+        'related_products': related_products,
+        'discounted_product': discounted_product,
+    })
+
+def apply_discount(request, productId):
+    if request.method == 'POST':
+        try:
+            # Parse the request data
+            data = json.loads(request.body.decode('utf-8'))
+            new_price = data.get('new_price')
+            discount_until = data.get('discount_until')
+
+            # Validate that new price and discount_until are provided
+            if not new_price or not discount_until:
+                return JsonResponse({'success': False, 'message': 'New price and discount time are required.'})
+
+            # Convert new_price to a float
+            new_price = float(new_price)
+
+            # Parse discount_until into a datetime object
+            discount_until = parse_datetime(discount_until)
+
+            # Check if discount_until is valid
+            if discount_until is None or discount_until <= datetime.now():
+                return JsonResponse({'success': False, 'message': 'Discount time must be in the future.'})
+
+            # Find the product
+            product = get_object_or_404(Product, productId=productId)
+
+            # Validate that the new price is lower than the original price
+            if new_price >= product.price:
+                return JsonResponse({'success': False, 'message': 'New price must be lower than the original price.'})
+
+            # Get the shop from the product
+            shop = product.shop
+
+            # Create or update the discounted product
+            discounted_product, created = DiscountedProduct.objects.update_or_create(
+                product=product,
+                defaults={
+                    'new_price': new_price,
+                    'discount_until': discount_until,
+                    'shop': shop,  # Ensure the shop is passed
+                    'created_by': request.user,
+                }
+            )
+
+            return JsonResponse({'success': True, 'message': 'Discount applied successfully!'})
+
+        except ValueError:
+            return JsonResponse({'success': False, 'message': 'Invalid input data. Please provide valid numbers and dates.'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method.'})
+
+def delete_discount(request, productId):
+    # Get the user from the request
+    user = request.user
+    product = Product.objects.get(productId=productId)
+
+    if request.method == 'DELETE':
+        print("Attempting to delete discount for productId:", productId)  # Debugging line
+        try:
+            # Find the discounted product
+            discounted_product = get_object_or_404(DiscountedProduct, product__productId=productId)
+            
+            # Check for the has_discount_ended parameter
+            has_discount_ended = request.GET.get('has_discount_ended', 'false').lower() == 'true'
+
+            # If the countdown has ended, create a notification
+            if has_discount_ended:
+
+                Notification.objects.create(created_by=user, message=f'The discount has ended for the product: {product.name}')
+
+            # Delete the discounted product
+            discounted_product.delete()
+
+            return JsonResponse({'success': True, 'message': 'Discount deleted successfully!'})
+
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method.'})
+
+def tag(request, tag_slug=None):
+    products = Product.objects.all().order_by("-created_at")
+
+    tag = None
+    if tag_slug:
+        products = products.filter(tags__slug=tag_slug)
+        tag = get_object_or_404(Tag, slug=tag_slug)
+
+    return render(request, "core/owner/tag.html", {
+        "products": products,
+        "tag": tag,
+    })
+
+""" Factory """
+
+def factory(request):
+    # Initialize forms
+    category_form = CreateCategoryForm()
+    product_form = CreateProductForm()
+    more_product_image_form = MoreProductImageForm()  # Initialize the form for more product images
+    more_product_video_form = MoreProductVideoForm()  # Initialize the form for more product videos
+    
+    if request.method == 'POST':
+        print(request.POST)
+        print(request.FILES)
+        
+        # Handling category form submission
+        if 'category_form_submit' in request.POST:
+            category_form = CreateCategoryForm(request.POST, request.FILES)
+            if category_form.is_valid():
+                category = category_form.save(commit=False)
+                category.created_by = request.user
+                category.shop = request.user.user_shop
+                category.save()
+
+        # Handling product form submission
+        elif 'product_form_submit' in request.POST:
+            product_form = CreateProductForm(request.POST, request.FILES)
+            if product_form.is_valid():
+                product = product_form.save(commit=False)
+                product.shop = request.user.user_shop
+                product.created_by = request.user  
+
+                # Save the product first
+                product.save()
+
+                # Handle main video upload
+                if 'video' in request.FILES:  
+                    video_description = product_form.cleaned_data.get('video-description', "")
+                    product_video = ProductVideo(
+                        created_by=request.user,
+                        video=request.FILES['video'],
+                        description=video_description
+                    )
+                    product_video.save()
+                    product.video = product_video  # Link the Product to the ProductVideo instance
+
+                # Handling more product images
+                # Collect all uploaded images
+                for index in range(1, len(request.FILES) + 1):
+                    image_key = f'image{index}'  # Assuming fields are named as 'image1', 'image2', etc.
+                    if image_key in request.FILES:
+                        image = request.FILES[image_key]
+                        more_product_image = MoreProductImage(
+                            product=product,
+                            image=image
+                        )
+                        more_product_image.save()
+
+                # Handling more product videos
+                # Collect all uploaded videos and their descriptions
+                for index in range(1, len(request.FILES) + 1):
+                    video_key = f'video{index}'
+                    if video_key in request.FILES:
+                        video = request.FILES[video_key]
+                        description_key = f'video-description-{index}'
+                        video_description = request.POST.get(description_key, "")
+                        
+                        more_product_video = MoreProductVideo(
+                            product=product,
+                            video=video,
+                            description=video_description
+                        )
+                        more_product_video.save()
+
+    return render(request, "core/owner/factory.html", {
+        'category_form': category_form,
+        'product_form': product_form,
+        'more_product_image_form': more_product_image_form,  
+        'more_product_video_form': more_product_video_form,
+    })
+
+""" Inventory """
+    
+def inventory(request):
+    user = request.user
+    products = Product.objects.filter(created_by=user).order_by("name")
+    categories = Category.objects.filter(created_by=user).order_by("name")
+    edit_product_form = EditProductForm()
+    edit_category_form = EditCategoryForm()
+    more_product_image_form = MoreProductImageForm()
+    more_product_video_form = MoreProductVideoForm()
+
+    return render(request, "core/owner/inventory.html", {
+        'products': products,
+        'edit_product_form': edit_product_form,
+        'edit_category_form': edit_category_form,
+        'categories': categories,
+        'more_product_image_form': more_product_image_form,
+        'more_product_video_form': more_product_video_form,
+    })
+
+def category_inventory_view(request, categoryId):
+    category = Category.objects.get(categoryId=categoryId)
+    products = Product.objects.filter(category=category)
+
+    # Serialize the products queryset
+    products_list = []
+    for product in products:
+        products_list.append({
+            'productId': product.productId,
+            'name': product.name,
+            'price': product.price,
+            'stock_quantity': product.stock_quantity,
+            'created_at': product.created_at.isoformat(),
+        })
+
+    return JsonResponse({'products': products_list})
+
+def update_category_info(request, categoryId):
+    category = get_object_or_404(Category, categoryId=categoryId)
+
+    if request.method == 'POST':
+        print("Hi there")
+        edit_category_form = EditCategoryForm(request.POST, request.FILES, instance=category)
+
+        # Check if the form is valid before saving
+        if edit_category_form.is_valid():
+            print("form is valid")
+            edit_category_form.save()  # This saves the updated category
+
+    else:
+        edit_category_form = EditCategoryForm(instance=category)
+    
+    return render(request, 'core/owner/inventory.html')
+
+def delete_category_image(request):
+    
+    if request.method == "POST":
+        categoryId = request.POST.get("id")
+        
+        # Find the product by productId
+        category = get_object_or_404(Category, categoryId=categoryId)
+        
+        # Check if the product has an associated video
+        if category.image:
+            category.image.delete()  # Deletes the related ProductVideo object
+            category.image = None
+            category.save()
+            
+            # Return a success response
+            return JsonResponse({'success': True, 'message': 'Image deleted successfully.'})
+        else:
+            return JsonResponse({'success': False, 'error': 'No image associated with this product.'})
+
+    # If the request method is not POST, return an error response
+    return JsonResponse({'success': False, 'error': 'Invalid request method.'})
+
+
+def update_product_info(request, productId):
+    # Retrieve the product instance using the productId
+    product = get_object_or_404(Product, productId=productId)
+    product_video = product.video
+    print(product_video)
+
+    if request.method == 'POST':
+        # Initialize the main product form
+        print(request.POST)
+        edit_product_form = EditProductForm(request.POST, request.FILES, instance=product)
+
+        # Retrieve all MoreProductVideo instances related to the product
+        more_videos = product.more_product_videos.all()
+        more_images = product.more_product_images.all()
+
+        if edit_product_form.is_valid():
+            print(request.FILES)
+
+            if request.FILES.get('video'):
+                # A new video is uploaded
+                new_video_file = request.FILES['video']
+                
+                # Create a new ProductVideo instance
+                product_video = ProductVideo.objects.create(
+                    created_by=request.user,
+                    video=new_video_file,
+                    description=request.POST.get('video-description', "")  # Get description from POST
+                )
+                product.video = product_video
+
+            else:
+
+                if product_video:
+                    product_video.description = request.POST.get('video-description', product_video.description)
+                    product_video.save()
+                    product.video = product_video
+
+            # Save the product form
+            edit_product_form.save()
+
+            # Loop through the existing MoreProductVideo instances
+            for more_image in more_images:
+                image_file_field = f"image-{more_image.mpiId}"
+
+                # Extract the video file and description for this video
+                new_image_file = request.FILES.get(image_file_field)
+
+                # Check if there is a new video file or description
+                if new_image_file:
+                    more_image.image = new_image_file  # Directly assign the new video file
+                    more_image.save()  # Save to persist the video update
+            
+            # Handling more product images
+            # Collect all uploaded images
+            for index in range(1, len(request.FILES) + 1):
+                image_key = f'image-{index}'  # Assuming fields are named as 'image1', 'image2', etc.
+                if image_key in request.FILES:
+                    image = request.FILES[image_key]
+                    more_product_image = MoreProductImage(
+                        product=product,
+                        image=image
+                    )
+                    more_product_image.save()
+
+            # Loop through the existing MoreProductVideo instances
+            for more_video in more_videos:
+                video_file_field = f"video-{more_video.mpvId}"
+                description_field = f"video-description-{more_video.mpvId}"
+
+                # Extract the video file and description for this video
+                new_video_file = request.FILES.get(video_file_field)
+                new_video_description = request.POST.get(description_field)
+                print(f"Processing MoreVideo: {more_video.mpvId} with new_video_file: {new_video_file} and new_video_description: {new_video_description}")
+
+                # Check if there is a new video file or description
+                if new_video_file or new_video_description:
+                    # Update the existing video instance
+                    if new_video_file:
+                        more_video.video = new_video_file  # Directly assign the new video file
+                        more_video.save()  # Save to persist the video update
+                        print(f"Updated video for MoreVideo: {more_video.mpvId}")
+
+                    if new_video_description:
+                        more_video.description = new_video_description  # Update the description
+                        print(f"Updated description for MoreVideo: {more_video.mpvId}")
+
+                    # Save the updated MoreProductVideo instance
+                    more_video.save()
+                    print(more_video)
+                    print(f"MoreVideo {more_video.mpvId} saved.")
+            
+            # Handling more product videos
+            # Collect all uploaded videos and their descriptions
+            for index in range(1, len(request.FILES) + 1):
+                video_key = f'video-{index}'
+                if video_key in request.FILES:
+                    video = request.FILES[video_key]
+                    description_key = f'video-description-{index}'
+                    video_description = request.POST.get(description_key, "")
+                    
+                    more_product_video = MoreProductVideo(
+                        product=product,
+                        video=video,
+                        description=video_description
+                    )
+                    more_product_video.save()
+
+        print('Product and videos updated successfully.')
+
+    else:
+        edit_product_form = EditProductForm(instance=product)
+
+    # Retrieve existing images and videos for the context
+    more_product_images = product.more_product_images.all()
+
+    context = {
+        'edit_product_form': edit_product_form,
+        'more_product_images': more_product_images,
+        'categories': Category.objects.all(),
+    }
+
+    return render(request, 'core/owner/inventory.html', context)
+
+def get_updated_stock(request):
+    if request.method == 'GET':
+        # Retrieve all products and their stock quantities
+        products = Product.objects.all()
+        product_data = []
+
+        for product in products:
+            product_data.append({
+                'productId': product.productId,  # or product.productId if that's your field name
+                'stock_quantity': product.stock_quantity,
+            })
+
+        return JsonResponse({'success': True, 'products': product_data})
+
+    return JsonResponse({'success': False, 'error': 'Invalid request method.'})
+
+
+def delete_product_video(request):
+    
+    if request.method == "POST":
+        productId = request.POST.get("id")
+        
+        # Find the product by productId
+        product = get_object_or_404(Product, productId=productId)
+        
+        # Check if the product has an associated video
+        if product.video:
+            product.video.delete()  # Deletes the related ProductVideo object
+            product.video = None
+            product.save()
+            
+            # Return a success response
+            return JsonResponse({'success': True, 'message': 'Video deleted successfully.'})
+        else:
+            return JsonResponse({'success': False, 'error': 'No video associated with this product.'})
+
+    # If the request method is not POST, return an error response
+    return JsonResponse({'success': False, 'error': 'Invalid request method.'})
+
+def delete_transaction_log(request):
+    if request.method == "POST":
+        transactionLogId = request.POST.get("id")
+        
+        # Get the transaction log and delete it
+        transaction_log = get_object_or_404(TransactionLog, transactionLogId=transactionLogId)
+        transaction_log.delete()
+        
+        return JsonResponse({"success": True})
+    
+    return JsonResponse({"success": False, "error": "Invalid request method."})
+
+def delete_more_product_image(request):
+    
+    if request.method == "POST":
+        mpiId = request.POST.get("id")
+        print(mpiId)
+        
+        # Get the MoreProductImage object and delete it
+        more_product_image = get_object_or_404(MoreProductImage, mpiId=mpiId)
+        print(f"Found MoreProductImage: {more_product_image}")
+        
+        # Optionally, you can delete the associated image file from storage
+        if more_product_image.image and more_product_image.image.name != "more_product_image.jpg":
+            more_product_image.image.delete(save=False)  # Deletes the file from the filesystem
+
+        more_product_image.delete()
+        
+        return JsonResponse({"success": True})
+
+    return JsonResponse({"success": False, "error": "Invalid request method."})
+
+def delete_more_product_video(request):
+    
+    if request.method == "POST":
+        mpvId = request.POST.get("id")
+        
+        # Get the MoreProductImage object and delete it
+        more_product_video = get_object_or_404(MoreProductVideo, mpvId=mpvId)
+        
+        
+        # Optionally, you can delete the associated image file from storage
+        if more_product_video.video and more_product_video.video.name != "more_product_video.jpg":
+            more_product_video.video.delete(save=False)  # Deletes the file from the filesystem
+
+        more_product_video.delete()
+        
+        return JsonResponse({"success": True})
+
+    return JsonResponse({"success": False, "error": "Invalid request method."})
+
+@login_required
+def delete_product(request):
+    user = request.user
+
+    if request.method == "POST":
+        productId = request.POST.get("id")
+        # Get the product and delete it
+        product = get_object_or_404(Product, productId=productId, created_by=user)
+        product.delete()
+        
+        # Optionally, return the updated product count
+        product_count = Product.objects.filter(created_by=user).count()
+        
+        return JsonResponse({"success": True, "product_count": product_count})
+
+    # Handle GET request
+    products = Product.objects.filter(created_by=user).order_by('-created_at')
+
+    return render(request, "core/owner/inventory.html", {
+        'products': products,
+    })
+
+def add_stock(request):
+    if request.method == "POST":
+        productId = request.POST.get("id")
+        quantity = int(request.POST.get("quantity"))
+        print(productId)
+        print(quantity)
+
+        try:
+            print(quantity)
+            product = Product.objects.get(productId=productId)
+            product.stock_quantity += quantity  # Increase stock by the provided quantity
+            product.save()
+
+            # Log the transaction
+            TransactionLog.objects.create(
+                product=product,
+                action='add',
+                quantity=quantity,
+            )
+
+            return JsonResponse({
+                "success": True, 
+                "new_stock": product.stock_quantity  # Send the updated stock back to the client
+            })
+        except Product.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Product not found."})
+    return JsonResponse({"success": False, "error": "Invalid request."})
+
+def sell_stock(request):
+    if request.method == "POST":
+        productId = request.POST.get("id")
+        quantity = int(request.POST.get("quantity"))
+
+        try:
+            product = Product.objects.get(productId=productId)
+            product.stock_quantity -= quantity  # Decrease stock by the provided quantity
+            product.save()
+
+            # Log the transaction
+            TransactionLog.objects.create(
+                product=product,
+                action='sell',
+                quantity=quantity,
+            )
+
+            return JsonResponse({
+                "success": True, 
+                "new_stock": product.stock_quantity  # Send the updated stock back to the client
+            })
+        except Product.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Product not found."})
+    return JsonResponse({"success": False, "error": "Invalid request."})
+
+def undo_last_transaction(request):
+    if request.method == "POST":
+        productId = request.POST.get("id")  # Get the product ID from the AJAX request
+
+        try:
+            # Retrieve the product using the product_id
+            product = Product.objects.get(productId=productId)
+
+            # Fetch the last transaction for this product, ordered by timestamp
+            last_transaction = TransactionLog.objects.filter(product=product).order_by('-timestamp').first()
+
+            if last_transaction:
+                # Undo the last transaction based on the action type
+                if last_transaction.action == 'add':
+                    product.stock_quantity -= last_transaction.quantity  # Decrease stock if last action was 'add'
+
+                elif last_transaction.action == 'sell':
+                    product.stock_quantity += last_transaction.quantity  # Increase stock if last action was 'sell'
+
+                # Save the updated product stock
+                product.save()
+
+                # Optionally, delete the last transaction since it's undone
+                last_transaction.delete()
+
+                # Return the new stock quantity in the JSON response
+                return JsonResponse({
+                    "success": True, 
+                    "message": "Last transaction undone.", 
+                    "new_stock": product.stock_quantity  # Include the updated stock quantity
+                })
+            else:
+                return JsonResponse({"success": False, "message": "No transaction found to undo."})
+
+        except Product.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Product not found."})
+        except Exception as e:
+            return JsonResponse({"success": False, "message": str(e)})
+
+    print("Invalid request method.")  # Debug log
+    return JsonResponse({"success": False, "message": "Invalid request method."})
+
+@login_required
+def delete_category(request):
+    user = request.user
+
+    if request.method == "POST":
+        categoryId = request.POST.get("id")
+        # Get the product and delete it
+        category = get_object_or_404(Category, categoryId=categoryId, created_by=user)
+        category.delete()
+        
+        # Optionally, return the updated product count
+        category_count = Category.objects.filter(created_by=user).count()
+        
+        return JsonResponse({"success": True, "category_count": category_count})
+
+    # Handle GET request
+    categories = Category.objects.filter(created_by=user).order_by('-created_at')
+
+    return render(request, "core/owner/inventory.html", {
+        'categories': categories,
+    })
+
+
+######################################################################################
+####################################### Common #######################################
+######################################################################################
+
+@login_required
+def account(request):
+    user = request.user
+    profile = Profile.objects.get(created_by=user)
+    notifications = Notification.objects.filter(created_by=user).order_by('-created_at')
+
+    return render(request, "core/owner/account.html", {
+        'user': user,
+        'profile': profile,
+        'notifications': notifications,
     })

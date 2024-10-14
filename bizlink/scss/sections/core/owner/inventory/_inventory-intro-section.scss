@@ -1,0 +1,71 @@
+@use '../../../../custom' as *;
+
+.shop_inventory_intro_section {
+
+    nav .inventory-tabs {
+        display: flex;
+        justify-content: center;
+    }
+
+    .tab-content {
+
+        .products-tab {
+            height: 150vh;
+            overflow-y: scroll;
+            padding: 2.5rem;
+
+            table {
+                td, th {
+                    text-align: center;
+                    width: 14%;
+                }
+
+               .quantity {
+
+                input {
+                    width: 67%;
+                }
+               }
+
+               .btns {
+                width: 100%;
+
+                display: flex;
+                flex-direction: column;
+                row-gap: 0.5rem;
+
+                .add-and-sell {
+                    display: flex;
+                    justify-content: space-between;
+
+                    button {
+                        flex: 0 0 45%;
+                    }
+                }
+
+                .undo {
+                    width: 100%;
+
+                    button {
+                        width: 100%;
+                    }
+                }
+
+               }
+            }
+        }
+
+        .categories-tab {
+            height: 150vh;
+            overflow-y: scroll;
+            padding: 2.5rem;
+
+            table {
+                td, th {
+                    text-align: center;
+                    width: 14%;
+                }
+            }
+        }
+    }
+}

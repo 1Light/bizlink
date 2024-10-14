@@ -1,0 +1,45 @@
+{% load static %}
+
+<div class="chat-window" id="chat-window">
+
+    <div class="other_chat_member">
+        {% if other_chat_user %}
+        <div class="profile-picture">
+            {% if other_chat_user.user_profile.image %}
+                <img src="{{ other_chat_user.user_profile.image }}" alt="{{ other_chat_user.first_name }} profile picture">
+            {% else %}
+                <img src="{% static 'img/default.png' %}" alt="{{other_chat_user.first_name }} profile picture">
+            {% endif %}
+        </div>
+        <div class="user-data">
+            <span>{{ other_chat_user.first_name }}&nbsp;&nbsp;</span>
+            <span>@{{ other_chat_user.username }}</span>
+        </div>
+        {% else %}
+        <p>Chat</p>
+        {% endif %}
+
+    </div>
+    <div class="chat-display" id="chat-display">
+        <ul id='chat_messages'>
+
+            {% for message in chat_messages reversed %}
+            {% include 'chat/chat_message.html' %}
+            {% endfor %}
+        </ul>
+
+    </div>
+    <div class="send-message-box">
+        <form id="chat_message_form"
+        return false 
+        hx-ext="ws"
+        ws-connect="/ws/chatroom/{{ chat_group.chatGroupId }}/"
+        ws-send
+        _="on htmx:wsAfterSend reset() me">
+            {% csrf_token %}
+            {% for field in form %}
+                {{ field }}
+            {% endfor %}
+        </form>
+</div>
+</div>

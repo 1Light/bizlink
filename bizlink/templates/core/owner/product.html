@@ -29,7 +29,11 @@ Products
                         {% if products.count  == 1 %}
                             1 Product
                         {% else %}
-                            {{ products.count  }} Products
+                            {% if products.count == 0 %}
+                                <p>You have no products</p>
+                            {% else %}
+                                {{ products.count }} Products
+                            {% endif %}
                         {% endif %}
 
                     </h3>

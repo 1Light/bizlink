@@ -1,0 +1,20 @@
+- Django automatically comes with wsgi server.
+- WSGI servers have a synchronous connection with the client. Hence, connection is closed after response is sent for the request.
+- Websockets allow asynchronous communication. ASGI servers allows both synchronous and assynchronous connection. (assynchronus by using web sockets.)
+- Common ASGI servers include "Daphne, Uvicorn, Hypercorn"
+- In an asynchronous connection, the connection remains open after the browser and the server chose and agreed to connect.
+- If you are using websocket, this is how connection works. Client sends request to server, teh server and clinet agree with handshake and then resposne is sent back. Then the htmx script on the client sends a websocket requet to the server, teh server and client do a handshake again and the connection is upgraded to websocket connection enabling asynchronous conenction using in our case django connection.
+  - Django conneciton is unique to every user. It offers a one to one connection between cleint and server.
+  - To make the connection one to many, we add another layer called channel layer. A channel layer adds multiple channels to a group.
+  - To facilitate communication, we need in memory data store in the channel layer. For developemtn, you can use the inbuilt data store django channels provides, for production howver, more robust solution like reddis is necessary.
+  - Redis works along side the postgres, mysql or other databses. It doesn't replace it. They compliment eachother.
+- For an svg, it is fill not background color or color like icon.
+- To use django htmx, u need to download django-htmx usign pip and also incldue the cdn. Installing django-htmx will allow you to use commands like if request.htmx whereas teh script cdn will allow you to use the library.
+- If you remove the version number on cdn and unpkg, it will aloways load the recent version. for instane, in here /<script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/ws.js"></script>/ remove "@1.9.12"
+- For htmx, in a form tag, you would pass in hx-post="{% url 'chat:chat' %}" hx-target="#chat_messages" hx-swap="beforeend" instead of method=post. When using websockets, you will remove all these with "hx-ext="ws" ws-connect="/ws/chatroom/Endeavor" ws-send"
+  - with htmx alone, you were using this hperscript " _="on htmx:afterRequest reset() me">". With web socket, you need to use " _="on htmx:wsAfterSend reset() me">"
+- For the chat box, in the channel layer, we are using / "BACKEND": "channels.layers.InMemoryChannelLayer",/ for production, u should default to redis.
+- When you use position: fixed, the element is positioned relative to the viewport, meaning it's completely detached from its container's flow and anchored to a position on the screen. 
+- you can use this {% with chat_group=community_member.chat_groups.first %} when u don't want for loop.
+- If you have a form on modal and you wish to prevent it from closing when or during form submit, you need to inlcude data-backdrop="static" data-keyboard="false" in the button that triggers the modal and also you need to do  event.preventDefault(); in a js script on the button that triggers form submission. 
+- Remeber that to register the custom filters in django /for {% load custom_filters %}/ to work, you need to restart the server.

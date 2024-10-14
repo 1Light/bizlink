@@ -44,7 +44,7 @@ Product({{ product.name }})
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="5" class="text-center">No wishlist products. <a href="#">Click here to go back.</a></td>
+                        <td colspan="5" class="text-center">No wishlist products. <a href="{% url 'core:owner_shop' %}">Click here to go back.</a></td>
                     </tr>
                 {% endif %}
                 </tbody>

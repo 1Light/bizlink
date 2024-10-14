@@ -1,0 +1,151 @@
+@use '../../../../custom' as *;
+
+.category_creation_section {
+    border: 2px solid $black;
+    margin-bottom: 3rem;
+
+    .category-creation-box  {
+        .row1 {
+            display: flex;
+            justify-content: space-between;
+            border: 2px solid $black;
+            height: 80vh;
+
+            .column1 {
+                border: 2px solid $black;
+                padding: 1rem;
+                flex: 0 0 47%;
+
+                input, textarea {
+                    width: 100%;
+                    height: 2.5rem;
+                    margin-top: 5px;
+                    margin-bottom: 1rem;
+                }
+            }
+
+            .column2 {
+                flex: 0 0 47%;
+                padding: 1rem;
+                border: 2px solid $black;
+
+                .field {
+                    width: 100%;
+                    height: 100%;
+
+                    .category-image {
+                        border: 2px solid $black;
+                        width: 100%;
+                        height: 90%;
+                        position: relative;
+
+                        .select-category-image-btn {
+                            display: block;
+                            width: 30%;
+                            margin: auto;
+                            padding: 8px 0;
+                            border-radius: 15px;
+                            background: $primary;
+                            color: #fff;
+                            font-weight: 500;
+                            font-size: 16px;
+                            border: none;
+                            cursor: pointer;
+                            position: absolute;
+                            top: 105%;
+                            left: 50%;
+                            transform: translateX(-50%);
+                        }
+            
+                        .image-preview-box {
+                            width: 100%;
+                            height: 100%;
+                            background: #fff;
+                            border-radius: 15px;
+            
+                            .category-img-area {
+                                position: relative;
+                                width: 100%;
+                                height: 100%;
+                                background: $gray-300;
+                                border-radius: 15px;
+                                overflow: hidden;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                flex-direction: column;
+            
+                                img {
+                                    width: 100%;
+                                    height: 100%;
+                                    object-position: center;
+                                    z-index: 100;
+                                }
+            
+                                i {
+                                    font-size: 100px;
+                                }
+                                
+                                p {
+                                    color: #999;
+            
+                                    span {
+                                        font-weight: 600;
+                                    }
+                                }
+            
+                            }
+                            .category-img-area::before {
+                                content: attr(data-img);
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                                background: rgba(0, 0, 0, .5);
+                                color: #fff;
+                                font-weight: 500;
+                                text-align: center;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                pointer-events: none;
+                                opacity: 0;
+                                transition: all .3s ease;
+                                z-index: 200;
+                            }
+                            .category-img-area.active:hover::before {
+                                opacity: 1;
+                            }
+            
+            
+                            .category-img-area.image-uploaded {
+                                background-color: white;
+            
+                                i, h3, p {
+                                    display: none;
+                                }
+                            }
+                        }
+
+                        .clear-image-btn {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+
+        .create-category-btn {
+            margin-top: 5rem;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: $primary;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 500;
+            border: none;
+        }
+    }
+}

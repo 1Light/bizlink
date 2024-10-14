@@ -1,0 +1,49 @@
+{% extends "core/owner/owner-base.html" %}
+
+{% load custom_filters %}
+
+
+{% load static %}
+
+{% block title %}
+Chat
+{% endblock %}
+
+{% block content %}
+<section class="chat_section">
+    <div class="container">
+        <div class="chat-box">
+
+            {% if chat_groups %}
+
+                    <div class="community">
+                        {% for community_member in community_members %}
+                        <a href="{% url 'chat:get_or_create_chatroom' community_member.username %}" 
+                        hx-get="{% url 'chat:get_or_create_chatroom' community_member.username %}" 
+                        hx-target="#chat-window" 
+                        hx-swap="innerHTML"
+                        class="chat-profile"
+                        data-chat-group-id="{{ community_member.chat_groups.first.chatGroupId }}"
+                        >
+                            <div class="account">
+                                <div class="community-member">{{ community_member.first_name }}</div>
+                                <div class="account-num-of-inbox" id="unread-count-{{ community_member.chat_groups.first.chatGroupId }}">
+                                    {{ unread_messages_per_group|get_item:community_member.chat_groups.first.chatGroupId|default:0 }}
+                                </div>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+
+               
+                {% include 'chat/chat_window.html' %}
+            {% endif %}
+        </div>
+    </div>
+</section>
+<script src="https://unpkg.com/htmx.org@1.9.3"></script>
+<script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
+<script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
+<script src="{% static 'js/custom-scripts/chat/chat.js' %}"></script>  
+
+{% endblock %}

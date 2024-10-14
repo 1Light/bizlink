@@ -36,17 +36,17 @@ Product({{ product.name }})
                 <div class="more-product-images">
                     <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
-                            <div class="carousel-item active" data-img="{{ product.image.url }}">
-                                <img src="{{ product.image.url }}" alt="{{ product.name }} image">
-                            </div>
                             {% if product_images %}
+                                <div class="carousel-item active" data-img="{{ product.image.url }}">
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }} image">
+                                </div>
                                 {% for img in product_images %}
                                     <div class="carousel-item" data-img="{{ img.image.url }}">
                                         <img src="{{ img.image.url }}" class="img-fluid" alt="{{ img.product.name }}">
                                     </div>
                                 {% endfor %}
                             {% else %}
-                                <p>No more images available.</p>
+                                <p class="text-center">No more images available.</p>
                             {% endif %}
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
@@ -76,15 +76,26 @@ Product({{ product.name }})
                 <p><b>Specifications: </b>{{ product.specifications|striptags|truncatechars:100 }}</p>
 
                 <a href="#" class="btn add-btn">Add</a>
-
+        
                 <div class="more-detail">
                     <p><b>Shop:</b> {{ product.shop.name }}</p>
                     <p><b>Category:</b> {{ product.category.name }}</p>
                     <p><b>Date: </b> {{ product.created_at|date:"M d, Y" }}</p>
-                    <p><b>Life:</b> {{ product.life }}</p>
-                    <p><b>MFG:</b> {{ product.mfg|date:"M, Y" }}</p>
+                    <p><b>MFG:</b> 
+                        {% if product.mfg %}
+                            {{ product.mfg|date:"M d, Y" }}
+                        {% else %}
+                            Not Specified
+                        {% endif %}
+                    </p>                        
                     <p><b>In Stock:</b> {{ product.stock_quantity }}</p>
-                    <p class="tag"><b>Tags:</b> {% for tag in product.tags.all %} <a href="{% url 'core:tag' tag.slug %}">#{{ tag.name|lower }}</a> {% endfor %}</p>
+                    <p class="tag"><b>Tags:</b>
+                        {% if product.tags.exists %}
+                            {% for tag in product.tags.all %} <a href="{% url 'core:tag' tag.slug %}">#{{ tag.name|lower }}</a> {% endfor %}
+                        {% else %}
+                            Not Specified
+                        {% endif %}
+                    </p>
                 </div>
             </div>
             <div class="shop-and-discount">

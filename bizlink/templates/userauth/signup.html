@@ -1,5 +1,7 @@
 {% extends 'core/base.html' %}
 
+{% load static %}
+
 {% block title %} {{ title }} {% endblock %}
 
 <!-- Space to Display Error & Success Messages -->
@@ -67,6 +69,7 @@
 
           <div class="field-input">
             {{ field }}
+            
 
             {% if field.errors %}
             <div class="field-error">

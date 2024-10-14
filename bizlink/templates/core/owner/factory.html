@@ -1,0 +1,249 @@
+{% extends "core/owner/owner-base.html" %}
+
+{% load static %}
+
+{% block title %}
+Factory
+{% endblock %}
+
+{% block content %}
+
+<section class="category_creation_section">
+    <h1 class="text-center m-5">Category Factory</h1>
+    <div class="category-creation-box">
+        <div class="container">
+            
+            <form action="{% url 'core:factory' %}" enctype="multipart/form-data" method="POST">
+                {% csrf_token %}
+                <div class="row1">
+                    <!-- Column1 -->
+                    <div class="column1">
+                        {% for field in category_form %}
+                            {% if field.label == "Name" or field.label == "Description" %}
+                                <div class="field">
+                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    <div class="column1-field-box">
+                                        {{ field }}
+                                        {% if field.errors %}
+                                            <div class="field_errors">
+                                                {{ field.errors }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                        {% endfor %}
+                    </div>
+        
+                    <!-- Column2 -->
+                    <div class="column2">
+                        {% for field in category_form %}
+                            {% if field.label == "Image"%}
+                                <div class="field">
+                                    <!-- Image field -->
+                                    <div class="category-image">
+                                        <div class="image-preview-box">
+                                            <input name="image" type="file" id="category-file" accept="image/*" hidden>
+                                            <div class="category-img-area" data-img="hello.jpg">
+                                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                                <h3>Upload Image</h3>
+                                                <p>Image size must be less than <span>2MB</span></p>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="select-category-image-btn">Select Image</button>
+                                        <button type="button" id="clear-image-btn" class="clear-image-btn">Clear Image</button>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <button type="submit" name="category_form_submit" class="create-category-btn">Create Category</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="product_creation_section">
+    <h1 class="text-center m-5">Product Factory</h1>
+
+<div class="product-creation-box">
+    <div class="container">
+
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+        
+            <div class="main-data">
+        
+                <!-- Data-1 section with column1 and column2 -->
+                <div class="data-1">
+        
+                    <!-- Column1 -->
+                    <div class="column1">
+                        {% for field in product_form %}
+                            {% if field.label == "Name" or field.label == "Shop" or field.label == "Price" or field.label == "Tags" or field.label == "In Stock" %}
+                                <div class="field">
+                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    <div class="column1-field-box">
+                                        {{ field }}
+                                        {% if field.errors %}
+                                            <div class="field_errors">
+                                                {{ field.errors }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {% if field.label == "Category" %}
+                                
+                            <div class="field">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                <div class="column1-field-box">
+
+                                    <select name="category" id="id_category">
+                                        {% for category in categories %}
+                                            <option value="{{ category.categoryId }}">{{ category.name }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    {% if field.errors %}
+                                        <div class="field_errors">
+                                            {{ field.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            {% endif %}
+
+                        {% endfor %}
+                    </div>
+        
+                    <!-- Column2 -->
+                    <div class="column2">
+                        {% for field in product_form %}
+                            {% if field.label == "Image"%}
+                                <div class="field">
+                                    <!-- Image field -->
+                                    <div class="product-image">
+                                        <div class="image-preview-box">
+                                            <input name="image" type="file" id="file" accept="image/*" hidden>
+                                            <div class="img-area" data-img="hello.jpg">
+                                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                                <h3>Upload Image</h3>
+                                                <p>Image size must be less than <span>2MB</span></p>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="select-image-btn">Select Image</button>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+        
+                </div>
+        
+                <!-- Data-2 section -->
+                <div class="data-2">
+                    <div class="row2">
+                        <!-- Column 1 for Description and Specifications -->
+                        <div class="column1">
+                            {% for field in product_form %}
+                                {% if field.label == "Description" or field.label == "Specifications" %}
+                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    <div class="row2-field-box">
+                                        {{ field }}
+                                        {% if field.errors %}
+                                            <div class="field_errors">
+                                                {{ field.errors }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <!-- Column 2 for Video field -->
+                        <div class="column2">
+                            <button type="button" id="clear-video-btn" class="clear-video-btn btn">Clear Video</button>
+                            {% for field in product_form %}
+                                {% if field.label == "Video" %}
+                                    <div class="product-video">
+                                        <div class="video-preview-box">
+                                            <input name="video" type="file" id="video-file" accept="video/*" hidden>
+                                            <div class="video-area" data-video="no-video">
+                                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                                <h3>Upload Video</h3>
+                                                <p>Video size must be less than <span>50MB</span></p> 
+                                            </div>
+                                            <div class="video-description" style="display: none;">
+                                                <textarea name="video-description">
+
+                                                </textarea>
+                                            </div>
+                                            <button type="button" class="select-video-btn btn btn-success"><i class="fa-solid fa-square-plus"></i></button>
+                                            <button type="button" class="delete-product-video btn btn-danger">
+                                                <i class="fa-solid fa-square-minus"></i>
+                                            </button> 
+                                            <button type="button" class="toggle-description-btn btn btn-info"><i class="fa-solid fa-circle-info"></i></button>                                                   
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Non-field errors -->
+                {% if product_form.non_field_errors %}
+                    <div class="non_field_errors">
+                        {{ product_form.non_field_errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="more-product-image" id="more-product-image">
+
+                {% for field in more_product_image_form %}
+                    {% if field.label == "Image"%}
+
+                    {% endif %}
+                {% endfor %}
+                <!-- Plus button for adding more image upload fields -->
+                <button type="button" id="add-more-images-btn" class="btn add-more-images-btn btn-primary">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+
+            </div>
+
+            <div class="more-product-video" id="more-product-video">
+
+                {% for field in more_product_video_form %}
+                    {% if field.label == "Video"%}
+
+                    {% endif %}
+                {% endfor %}
+
+                <button type="button" id="add-more-videos-btn" class="btn add-more-videos-btn btn-primary">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
+
+            <button type="submit" name="product_form_submit" class="create-product-btn">Create Product</button>
+        </form>
+
+    </div>
+</div>
+
+</section>
+
+<script>
+    var csrfToken = "{{ csrf_token }}";
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/custom-scripts/owner/factory.js' %}"></script>  
+
+{% endblock %}

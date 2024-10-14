@@ -7,46 +7,79 @@
 @use 'components/mixins';
 @use 'components/typography';
 
-// Import the Sections
+                                /* Styles for the Navbar */
+                                
 @use 'navbar-section';
 
-// Styles for the Userauth
+                                /* Styles for the Userauth */
 
 @use 'sections/userauth/signup';
 @use 'sections/userauth/login';
 
-// Styles for the Core/Owner
+                                /* Styles for the Submenu */
 
-@use 'sections/core/owner/owner-submenu-section';
-@use 'sections/core/owner/owner-home-intro-section';
-@use 'sections/core/owner/home-popular-product-section';
-@use 'sections/core/owner/owner-shop-intro-section';
-@use 'sections/core/owner/shop-banner-section';
-@use 'sections/core/owner/shop-features-section';
-@use 'sections/core/owner/shop-featured-products-section';
-@use 'sections/core/owner/shop-new-arrivals-section';
-@use 'sections/core/owner/shop-discounted-products-section';
-@use 'sections/core/owner/product-intro-section';
-@use 'sections/core/owner/product-detail-intro-section';
-@use 'sections/core/owner/product-detail-tab-section';
-@use 'sections/core/owner/related-products-section';
-@use 'sections/core/owner/category-intro-section';
-@use 'sections/core/owner/category-detail-intro-section';
-@use 'sections/core/owner/tag-intro-section';
-@use 'sections/core/owner/search-result-section';
-@use 'sections/core/owner/owner-account-intro-section';
-@use 'sections/core/owner/account-detail-form';
-@use 'sections/core/owner/account-profile';
-@use 'sections/core/owner/account-notification';
-@use 'sections/core/owner/wishlist-intro-section';
-@use 'sections/core/owner/admin-intro-section';
-@use 'sections/core/owner/admin-social-media-section';
-@use 'sections/core/owner/admin-features-section';
-@use 'sections/core/owner/admin-featured-products-section';
-@use 'sections/core/owner/admin-new-arrivals-section';
+@use 'sections/core/submenu/submenu-section';
+
+                                /* Styles for the Core */
+
+// Styles for the core/account
+
+@use 'sections/core/account/account-detail-form';
+@use 'sections/core/account/account-profile';
+@use 'sections/core/account/account-notification';
+@use 'sections/core/account/account-intro-section';
+
+// Styles for the core/admin
+@use 'sections/core/owner/admin/admin-intro-section';
+@use 'sections/core/owner/admin/admin-social-media-section';
+@use 'sections/core/owner/admin/admin-features-section';
+@use 'sections/core/owner/admin/admin-featured-products-section';
+@use 'sections/core/owner/admin/admin-new-arrivals-section';
+
+// Styles for the Core/category
+@use 'sections/core/owner/category/category-intro-section';
+@use 'sections/core/owner/category/category-detail-intro-section';
+
+// Styles for the Core/factory
+@use 'sections/core/owner/factory/product_creation_section';
+@use 'sections/core/owner/factory/category_creation_section';
+
+// Styles for the Core/inventory
+@use 'sections/core/owner/inventory/inventory-intro-section';
+@use 'sections/core/owner/inventory/inventory-modal-section';
+
+// Styles for the Core/shop
+@use 'sections/core/owner/shop/owner-shop-intro-section';
+@use 'sections/core/owner/shop/shop-inbox-modal-section';
+@use 'sections/core/owner/shop/shop-banner-section';
+@use 'sections/core/owner/shop/shop-features-section';
+@use 'sections/core/owner/shop/shop-featured-products-section';
+@use 'sections/core/owner/shop/shop-new-arrivals-section';
+@use 'sections/core/owner/shop/shop-discounted-products-section';
+
+// Styles for the Core/product
+@use 'sections/core/owner/product/product-intro-section';
+@use 'sections/core/owner/product/product-detail-intro-section';
+@use 'sections/core/owner/product/product-detail-tab-section';
+
+// Styles for the Core/tag
+@use 'sections/core/owner/tag/tag-intro-section';
+
+// Styles for the Core/search
+@use 'sections/core/owner/search/search-result-section';
+
+// Styles for the Core/wishlist
+@use 'sections/core/owner/wishlist/wishlist-intro-section';
+
+                                /* Styles for the Customer */
 
 // Styles for the Core/Customer
 
 @use 'sections/core/customer/customer-submenu-section';
 @use 'sections/core/customer/customer-home-intro-section';
 @use 'sections/core/customer/shop-intro-section';
+
+                                /* Styles for the Chat */
+
+// Styles for the Chat
+@use 'sections/chat/chat-section';
