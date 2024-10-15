@@ -1,15 +1,12 @@
 @use '../../../../custom' as *;
 
 .shop_features_section {
-    margin-bottom: 4rem;
+    margin-bottom: 5rem;
 
-    .feature-title {
+    h1.feature-title {
         text-align: center;
-
-        h1.feature-title {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-        }
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
     }
 
     .shop-feature-collection-box {

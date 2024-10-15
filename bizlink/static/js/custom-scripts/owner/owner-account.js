@@ -77,7 +77,7 @@ $(document).on("click", ".remove-notification", function(event) {
 
     // AJAX request to remove the notification
     $.ajax({
-        url: "/core/owner/account/notification/", // Ensure this matches your URL configuration
+        url: "/core/account/notification/", // Ensure this matches your URL configuration
         type: "POST",
         data: {
             "id": notificationId,

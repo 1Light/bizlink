@@ -1,4 +1,4 @@
-{% extends "core/customer/customer-base.html" %}
+{% extends "core/base.html" %}
 
 {% load static %}
 
@@ -8,10 +8,22 @@ Home
 
 {% block content %}
 
-<!-- Home Intro Section -->
+<!-- ========================================================================================= -->
+<!------------------------------------- Home Intro Section ------------------------------------->
+<!-- ========================================================================================= -->
+
 <section class="home_intro_section">
     <div class="container">
         <div class="intro-section-box">
+
+            <div class="detail">
+                <h1>Welcome to Sammy!</h1>
+                <p>At Sammy, we connect you to a wide variety of shops opened by local business owners. Discover an extensive range of options right at your fingertips.</p>
+            </div>
+
+            <div class="image">
+                <img src="{% static 'img/customer_intro.png' %}" alt="customer-intro image">
+            </div>
 
         </div>
     </div>

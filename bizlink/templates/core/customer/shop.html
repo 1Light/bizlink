@@ -1,11 +1,12 @@
-{% extends "core/customer/customer-base.html" %}
+{% extends "core/base.html" %}
+
+{% load static %}
 
 {% block title %}
 Shops
 {% endblock %}
 
 {% block content %}
-
 <section class="shop-intro-section">
     <div class="container">
         <h1>Shops</h1>
@@ -13,18 +14,14 @@ Shops
         <div class="search-box">
             <div class="search">
                 <form
-                class="d-flex"
-                role="search"
-                method="get"
-                action="."
-                >
+                class="d-flex" role="search" method="GET" action="{% url 'core:search_customer' %}">
                 <input
                     class="form-control me-2 search-bar"
                     type="search"
                     placeholder="Search here"
                     aria-label="Search"
                     name="q"
-                    value=""
+                    value="{{ query }}"
                 />
                 <button
                     class="btn btn-outline-success search-btn"
@@ -95,5 +92,4 @@ Shops
         </div>
     </div>
 </section>
-
 {% endblock %}

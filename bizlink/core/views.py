@@ -20,25 +20,88 @@ from userauth.forms import SocialMediaForm
 from shop.models import Shop, Category, Product, DiscountedProduct, MoreProductImage, MoreProductVideo, CartOrder, CartOrderProduct, ProductReview, Wishlist, Feature, FeaturedProduct, NewArrival, TransactionLog, ProductVideo
 from userauth.models import Profile, SocialMedia, Notification
 
-############################ Views for Business Owners ############################
-############################ Views for Business Owners ############################
-############################ Views for Business Owners ############################
+######################################################################################
+###################################### Customer ######################################
+######################################################################################
+
+""" Home """
 
 @never_cache
-def owner_home(request):
-    user = request.user
-    categories = Category.objects.filter(created_by=user)
-    products = Product.objects.filter(created_by=user).order_by("-created_at")
+def customer_home(request):
 
+    return render(request, "core/customer/home.html")
+
+""" Shop """
+
+def shop_collection(request):
+
+    shops = Shop.objects.all().order_by("name")
+
+    return render(request, "core/customer/shop.html", {
+        'shops': shops
+    })
+
+def search_customer(request):
+    query = request.GET.get('q', '')
+
+    # Initial search based on query
+    shops = Shop.objects.all().order_by("-created_at")
+
+    # Handle cases where query is invalid or trivial
+    if query.strip() in ['.', '', '*']:
+        shops = shops.none()
+
+    # Handle invalid or trivial queries
+    else:
+        if query:
+
+            keywords = [keyword.strip() for keyword in query.split(',') if keyword.strip()]
+            query_filter = Q()
+
+            for keyword in keywords:
+                query_filter |= Q(name__icontains=keyword) | Q(description__icontains=keyword) | Q(address__icontains=keyword)
+
+            shops = shops.filter(query_filter)
+    
+    request.session['searched_shops'] = list(shops.values_list('shopId', flat=True))
+    
+    return render(request, "core/customer/shop.html", {
+        'shops': shops,
+        'query': query,
+    })
+
+@never_cache
+def visit_shop(request, shopId):
+    user = request.user
+    request.session['current_shop_id'] = shopId
+    
+    shop = Shop.objects.get(shopId=shopId)
+
+    # Fetch the same data as before
+    social_media = SocialMedia.objects.filter(created_by=shop.created_by)
+    features = Feature.objects.filter(created_by=shop.created_by)
+    featured_products = FeaturedProduct.objects.filter(shop=shop)
+    new_arrivals = NewArrival.objects.filter(shop=shop)
+    discounted_products = DiscountedProduct.objects.filter(shop=shop)
     wishlist_items = Wishlist.objects.filter(created_by=user).values_list('product__productId', flat=True)
 
-    return render(request, "core/owner/home.html", {
-        'products': products,
-        'categories': categories,
+    return render(request, "core/owner/shop.html", {
+        'shop': shop,
+        'social_media': social_media,
+        'features': features,
+        'featured_products': featured_products,
+        'new_arrivals': new_arrivals,
+        'discounted_products': discounted_products,
         'wishlist_items': wishlist_items,
     })
 
-def search(request):
+######################################################################################
+####################################### Owner ########################################
+######################################################################################
+
+""" Search """
+
+def search_owner(request):
     query = request.GET.get('q', '')
     user = request.user
 
@@ -102,104 +165,8 @@ def filter_searched_product(request):
         "data": data,
     })
 
-@login_required
-def wishlist(request):
-    user = request.user
+""" Shop """
 
-    if request.method == "POST":
-        product_id = request.POST.get("id")
-        # Get the wishlist item and delete it
-        wishlist_item = get_object_or_404(Wishlist, id=product_id, created_by=user)
-        wishlist_item.delete()
-        
-        # Optionally, return the updated wishlist count
-        wishlist_count = Wishlist.objects.filter(created_by=user).count()
-        
-        return JsonResponse({"success": True, "wishlist_count": wishlist_count})
-
-    # Handle GET request
-    wishlist_products = Wishlist.objects.filter(created_by=user)
-
-    return render(request, "core/owner/wishlist.html", {
-        'wishlist_products': wishlist_products,
-    })
-
-@login_required
-def notification(request):
-    user = request.user
-
-    if request.method == "POST":
-        notificationId = request.POST.get("id")
-        # Get the wishlist item and delete it
-        notification = get_object_or_404(Notification, notificationId=notificationId, created_by=user)
-        notification.delete()
-        
-        # Optionally, return the updated notification count
-        notification_count = Notification.objects.filter(created_by=user).count()
-        
-        return JsonResponse({"success": True, "notification_count": notification_count})
-
-    # Handle GET request
-    notifications = Notification.objects.filter(created_by=user).order_by('-created_at')
-
-    return render(request, "core/owner/wishlist.html", {
-        'notifications': notifications,
-    })
-
-@login_required  # Ensure the user is authenticated
-def add_to_wishlist(request):
-    product_id = request.GET.get('id')
-    print(f"Product ID: {product_id}")  # Debug line
-    product = Product.objects.get(productId=product_id)
-    user = request.user
-
-    context = {}
-
-    # Check if the product is already in the user's wishlist
-    wishlist_item = Wishlist.objects.filter(product=product, created_by=user).first()
-
-    if wishlist_item:
-        # If it exists, remove it
-        wishlist_item.delete()
-        context = {
-            "removed": True,  # Indicate the product was removed
-        }
-    else:
-        # If it doesn't exist, add it to the wishlist
-        Wishlist.objects.create(product=product, created_by=user)
-        context = {
-            "added": True,  # Indicate the product was added
-        }
-
-    # Calculate the current wishlist count for the user
-    wishlist_count = Wishlist.objects.filter(created_by=user).count()
-    context["wishlist_count"] = wishlist_count  # Add the count to the response
-
-    return JsonResponse(context)
-
-@login_required
-def wishlist(request):
-    user = request.user
-
-    if request.method == "POST":
-        product_id = request.POST.get("id")
-        # Get the wishlist item and delete it
-        wishlist_item = get_object_or_404(Wishlist, id=product_id, created_by=user)
-        wishlist_item.delete()
-        
-        # Optionally, return the updated wishlist count
-        wishlist_count = Wishlist.objects.filter(created_by=user).count()
-        
-        return JsonResponse({"success": True, "wishlist_count": wishlist_count})
-
-    # Handle GET request
-    wishlist_products = Wishlist.objects.filter(created_by=user)
-
-    return render(request, "core/owner/wishlist.html", {
-        'wishlist_products': wishlist_products,
-    })
-
-############################ Views for Shop ############################
 @never_cache
 def owner_shop(request):
     user = request.user
@@ -239,53 +206,6 @@ def owner_shop(request):
         'categories': categories,
         'wishlist_items': wishlist_items,
     })
-
-############################ Views for Customers ############################
-############################ Views for Customers ############################
-############################ Views for Customers ############################
-
-@never_cache
-def customer_home(request):
-
-    return render(request, "core/customer/home.html")
-
-@never_cache
-def shop(request):
-
-    shops = Shop.objects.all().order_by("name")
-
-    return render(request, "core/customer/shop.html", {
-        'shops': shops
-    }) 
-
-@never_cache
-def visit_shop(request, shopId):
-    user = request.user
-    request.session['current_shop_id'] = shopId
-    
-    shop = Shop.objects.get(shopId=shopId)
-
-    # Fetch the same data as before
-    social_media = SocialMedia.objects.filter(created_by=shop.created_by)
-    features = Feature.objects.filter(created_by=shop.created_by)
-    featured_products = FeaturedProduct.objects.filter(shop=shop)
-    new_arrivals = NewArrival.objects.filter(shop=shop)
-    discounted_products = DiscountedProduct.objects.filter(shop=shop)
-    wishlist_items = Wishlist.objects.filter(created_by=user).values_list('product__productId', flat=True)
-
-    return render(request, "core/owner/shop.html", {
-        'shop': shop,
-        'social_media': social_media,
-        'features': features,
-        'featured_products': featured_products,
-        'new_arrivals': new_arrivals,
-        'discounted_products': discounted_products,
-        'wishlist_items': wishlist_items,
-    })
-
-######################################################################################
-####################################### Owner #######################################
-######################################################################################
 
 """ Admin """
 
@@ -363,6 +283,25 @@ def create_feature(request):
         'form': form
     })
 
+def delete_feature(request):
+    try:
+        # Load the JSON data from the request body
+        data = json.loads(request.body)
+        feature_ids = data.get('feature_ids', [])  # Get the list of feature IDs
+
+        if not feature_ids:
+            return JsonResponse({'success': False, 'message': 'No features selected.'})
+
+        # Get the shop owned by the current user
+        shop = get_object_or_404(Shop, created_by=request.user)
+
+        # Delete the Featured instances associated with the shop
+        Feature.objects.filter(shop=shop, featureId__in=feature_ids).delete()
+
+        return JsonResponse({'success': True})
+
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': str(e)})
 
 def add_featured_product(request):
     if request.method == 'POST':
@@ -370,22 +309,50 @@ def add_featured_product(request):
             # Parse the JSON request body
             data = json.loads(request.body)
             product_ids = data.get('product_ids', [])
-            
+
             # Validate input
             if not product_ids:
                 return JsonResponse({'success': False, 'message': 'No products selected.'})
 
-            # Assuming you have a way to get the current shop and user
-            shop = get_object_or_404(Shop, created_by=request.user) 
+            # Get the current shop and user
+            shop = get_object_or_404(Shop, created_by=request.user)
             user = request.user
 
-            # Create FeaturedProduct instances
-            for product_id in product_ids:
+            # Check how many featured products already exist for the shop
+            existing_featured_count = FeaturedProduct.objects.filter(shop=shop).count()
+            print(existing_featured_count)
+
+            # Calculate how many products can still be featured
+            remaining_slots = 12 - existing_featured_count  
+            print(remaining_slots)
+
+            # Convert product_ids to integers for proper comparison
+            product_ids = [int(pid) for pid in product_ids]
+
+            # Find products that are already featured
+            already_featured = FeaturedProduct.objects.filter(shop=shop, product__id__in=product_ids).values_list('product__id', flat=True)
+            print(already_featured)
+
+            # Filter out the already featured products from the selected products
+            products_to_add = [pid for pid in product_ids if pid not in already_featured]
+            print(products_to_add)
+
+            # Check if the number of products to add exceeds the available slots
+            if len(products_to_add) > remaining_slots:
+                if existing_featured_count == 12:
+                    return JsonResponse({'success': False, 'message': 'A maximum of 12 featured products is allowed.'})
+                else:
+                    return JsonResponse({'success': False, 'message': f'Only {remaining_slots} more products can be featured.'})
+
+            # Check if all selected products are already featured
+            elif len(products_to_add) == 0:
+                return JsonResponse({'success': False, 'message': 'All selected items have already been featured.'})
+
+            # Create FeaturedProduct instances for the new products
+            for product_id in products_to_add:
                 product = Product.objects.get(id=product_id)
-                # Check if the item is already featured
-                if not FeaturedProduct.objects.filter(shop=shop, product=product).exists():
-                    FeaturedProduct.objects.create(shop=shop, created_by=user, product=product)
-            
+                FeaturedProduct.objects.create(shop=shop, created_by=user, product=product)
+
             return JsonResponse({'success': True})
 
         except Product.DoesNotExist:
@@ -417,26 +384,6 @@ def delete_featured_product(request):
     else:
         return JsonResponse({'success': False, 'message': 'Invalid request method.'})
 
-def delete_feature(request):
-    try:
-        # Load the JSON data from the request body
-        data = json.loads(request.body)
-        feature_ids = data.get('feature_ids', [])  # Get the list of feature IDs
-
-        if not feature_ids:
-            return JsonResponse({'success': False, 'message': 'No features selected.'})
-
-        # Get the shop owned by the current user
-        shop = get_object_or_404(Shop, created_by=request.user)
-
-        # Delete the Featured instances associated with the shop
-        Feature.objects.filter(shop=shop, featureId__in=feature_ids).delete()
-
-        return JsonResponse({'success': True})
-
-    except Exception as e:
-        return JsonResponse({'success': False, 'message': str(e)})
-    
 def add_new_arrival(request):
     if request.method == 'POST':
         try:
@@ -452,12 +399,41 @@ def add_new_arrival(request):
             shop = get_object_or_404(Shop, created_by=request.user) 
             user = request.user
 
-            # Create NewArrival instances
-            for product_id in product_ids:
+            # Check how many new arrival products already exist for the shop
+            existing_new_arrival_count = NewArrival.objects.filter(shop=shop).count()
+            print(existing_new_arrival_count)
+
+            # Calculate how many products can still be featured
+            remaining_slots = 12 - existing_new_arrival_count
+            print(remaining_slots)
+
+            # Convert product_ids to integers for proper comparison
+            product_ids = [int(pid) for pid in product_ids]
+
+            # Find products that are already marked as new arrivals
+            already_new_arrivals = NewArrival.objects.filter(shop=shop, product__id__in=product_ids).values_list('product__id', flat=True)
+            print(already_new_arrivals)
+
+            # Filter out the already new arrival products from the selected products
+            new_products_to_add = [pid for pid in product_ids if pid not in already_new_arrivals]
+            print(new_products_to_add)
+
+            # Only check if new products exceed the available slots, not the already existing ones
+            if len(new_products_to_add) > remaining_slots:
+
+                if (existing_new_arrival_count == 12):
+                    return JsonResponse({'success': False, 'message': 'A maximum of 12 new arrivals is allowed.'})
+                
+                else: 
+                    return JsonResponse({'success': False, 'message': f'Only {remaining_slots} more products can be placed as new arrivals.'})
+            
+            elif len(new_products_to_add) == 0:
+                return JsonResponse({'success': False, 'message': 'All selected items have already been added to the new arrival section'})
+            
+            # Create NewArrival instances for the new products
+            for product_id in new_products_to_add:
                 product = Product.objects.get(id=product_id)
-                # Check if the item is already added to new arrival
-                if not NewArrival.objects.filter(shop=shop, product=product).exists():
-                    NewArrival.objects.create(shop=shop, created_by=user, product=product)
+                NewArrival.objects.create(shop=shop, created_by=user, product=product)
             
             return JsonResponse({'success': True})
 
@@ -467,6 +443,7 @@ def add_new_arrival(request):
             return JsonResponse({'success': False, 'message': str(e)})
     else:
         return JsonResponse({'success': False, 'message': 'Invalid request method.'})
+
 
 def delete_new_arrival(request):
     if request.method == 'POST':
@@ -489,6 +466,7 @@ def delete_new_arrival(request):
             return JsonResponse({'success': False, 'message': str(e)})
     else:
         return JsonResponse({'success': False, 'message': 'Invalid request method.'})
+
 
 """ Category """
 
@@ -587,7 +565,8 @@ def product_detail(request, productId):
     
     product_images = product.more_product_images.all()
     product_videos = product.more_product_videos.all()
-    related_products = Product.objects.filter(category=product.category).exclude(productId=productId)
+    print(product_videos)
+    related_products = Product.objects.filter(category=product.category).exclude(productId=productId)[:4]
     
     try:
         discounted_product = DiscountedProduct.objects.get(product=product)
@@ -632,6 +611,12 @@ def apply_discount(request, productId):
             # Validate that the new price is lower than the original price
             if new_price >= product.price:
                 return JsonResponse({'success': False, 'message': 'New price must be lower than the original price.'})
+            
+            # Check how many discounts already exist across all products
+            existing_discounts_count = DiscountedProduct.objects.count()
+
+            if existing_discounts_count >= 13: 
+                return JsonResponse({'success': False, 'message': 'A maximum of 12 discounts can be applied across all products.'})
 
             # Get the shop from the product
             shop = product.shop
@@ -778,9 +763,9 @@ def factory(request):
     })
 
 """ Inventory """
-    
-def inventory(request):
-    user = request.user
+
+def inventory_context(user):
+
     products = Product.objects.filter(created_by=user).order_by("name")
     categories = Category.objects.filter(created_by=user).order_by("name")
     edit_product_form = EditProductForm()
@@ -788,14 +773,20 @@ def inventory(request):
     more_product_image_form = MoreProductImageForm()
     more_product_video_form = MoreProductVideoForm()
 
-    return render(request, "core/owner/inventory.html", {
+    return {
         'products': products,
         'edit_product_form': edit_product_form,
         'edit_category_form': edit_category_form,
         'categories': categories,
         'more_product_image_form': more_product_image_form,
         'more_product_video_form': more_product_video_form,
-    })
+    }
+
+def inventory(request):
+    user = request.user
+    context = inventory_context(user)
+
+    return render(request, "core/owner/inventory.html", context)
 
 def category_inventory_view(request, categoryId):
     category = Category.objects.get(categoryId=categoryId)
@@ -856,6 +847,7 @@ def delete_category_image(request):
 
 def update_product_info(request, productId):
     # Retrieve the product instance using the productId
+    user = request.user
     product = get_object_or_404(Product, productId=productId)
     product_video = product.video
     print(product_video)
@@ -974,6 +966,8 @@ def update_product_info(request, productId):
         'more_product_images': more_product_images,
         'categories': Category.objects.all(),
     }
+
+    context.update(inventory_context(user))
 
     return render(request, 'core/owner/inventory.html', context)
 
@@ -1206,7 +1200,6 @@ def delete_category(request):
         'categories': categories,
     })
 
-
 ######################################################################################
 ####################################### Common #######################################
 ######################################################################################
@@ -1222,3 +1215,78 @@ def account(request):
         'profile': profile,
         'notifications': notifications,
     })
+
+@login_required
+def wishlist(request):
+    user = request.user
+
+    if request.method == "POST":
+        product_id = request.POST.get("id")
+        # Get the wishlist item and delete it
+        wishlist_item = get_object_or_404(Wishlist, id=product_id, created_by=user)
+        wishlist_item.delete()
+        
+        # Optionally, return the updated wishlist count
+        wishlist_count = Wishlist.objects.filter(created_by=user).count()
+        
+        return JsonResponse({"success": True, "wishlist_count": wishlist_count})
+
+    # Handle GET request
+    wishlist_products = Wishlist.objects.filter(created_by=user)
+
+    return render(request, "core/owner/wishlist.html", {
+        'wishlist_products': wishlist_products,
+    })
+
+@login_required
+def notification(request):
+    user = request.user
+
+    if request.method == "POST":
+        notificationId = request.POST.get("id")
+        # Get the wishlist item and delete it
+        notification = get_object_or_404(Notification, notificationId=notificationId, created_by=user)
+        notification.delete()
+        
+        # Optionally, return the updated notification count
+        notification_count = Notification.objects.filter(created_by=user).count()
+        
+        return JsonResponse({"success": True, "notification_count": notification_count})
+
+    # Handle GET request
+    notifications = Notification.objects.filter(created_by=user).order_by('-created_at')
+
+    return render(request, "core/owner/wishlist.html", {
+        'notifications': notifications,
+    })
+
+@login_required  # Ensure the user is authenticated
+def add_to_wishlist(request):
+    product_id = request.GET.get('id')
+    print(f"Product ID: {product_id}")  # Debug line
+    product = Product.objects.get(productId=product_id)
+    user = request.user
+
+    context = {}
+
+    # Check if the product is already in the user's wishlist
+    wishlist_item = Wishlist.objects.filter(product=product, created_by=user).first()
+
+    if wishlist_item:
+        # If it exists, remove it
+        wishlist_item.delete()
+        context = {
+            "removed": True,  # Indicate the product was removed
+        }
+    else:
+        # If it doesn't exist, add it to the wishlist
+        Wishlist.objects.create(product=product, created_by=user)
+        context = {
+            "added": True,  # Indicate the product was added
+        }
+
+    # Calculate the current wishlist count for the user
+    wishlist_count = Wishlist.objects.filter(created_by=user).count()
+    context["wishlist_count"] = wishlist_count  # Add the count to the response
+
+    return JsonResponse(context)

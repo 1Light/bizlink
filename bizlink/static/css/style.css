@@ -11885,7 +11885,7 @@ p {
 /* Styles for the Navbar */
 .navbar_section .navbar {
   min-height: 5rem;
-  padding: 0 3rem 0 3rem;
+  padding: 0 5rem 0 5rem;
 }
 .navbar_section .navbar .company-logo {
   position: relative;
@@ -11902,28 +11902,33 @@ p {
 }
 .navbar_section .navbar .menu-list-items {
   display: flex;
-  justify-content: space-between;
-  column-gap: 3rem;
+  justify-content: flex-end;
 }
 .navbar_section .navbar .menu-list-items .search {
-  margin-left: 11rem;
-  width: 30rem;
+  width: 25rem;
   padding-top: 15px;
+  margin-left: 2rem;
+}
+.navbar_section .navbar .menu-list-items .search form {
+  position: relative;
+}
+.navbar_section .navbar .menu-list-items .search form button {
+  position: absolute;
+  top: 50%;
+  right: 2%;
+  transform: translateY(-50%);
 }
 .navbar_section .navbar .menu-list-items ul.icon-list {
   display: flex;
   justify-content: space-between;
   margin-right: 2.1rem;
-  width: 27%;
+  width: 40%;
   text-transform: none;
   padding-top: 13px;
 }
-.navbar_section .navbar .menu-list-items ul.icon-list li:nth-child(2) {
-  margin-left: 2rem;
-  text-transform: none;
-}
 .navbar_section .navbar .menu-list-items ul.icon-list li {
   text-transform: none;
+  margin-left: 4rem;
 }
 .navbar_section .navbar .menu-list-items ul.icon-list li .nav-link {
   position: relative;
@@ -11956,6 +11961,9 @@ p {
 .navbar_section .navbar .menu-list-items ul.icon-list li .nav-link .num-of-wishlist p, .navbar_section .navbar .menu-list-items ul.icon-list li .nav-link .num-of-notification p, .navbar_section .navbar .menu-list-items ul.icon-list li .nav-link .num-of-inbox p {
   margin: 0;
 }
+.navbar_section .navbar .menu-list-items ul.icon-list li.inbox {
+  margin-left: 5rem;
+}
 .navbar_section .navbar .menu-list-items ul.icon-list li.account-item {
   position: relative;
   cursor: pointer;
@@ -11987,6 +11995,7 @@ p {
   padding: 0.5rem;
   border-radius: 5%;
   border: 1px solid #ced4da;
+  margin-left: 0;
 }
 .navbar_section .navbar .menu-list-items ul.icon-list li.account-item ul.account-submenu .submenu-box a li li:nth-child(2) {
   margin-left: 0rem;
@@ -13024,22 +13033,31 @@ p {
 .category_intro_section .intro-section-box .intro-banner .breadcrumb-box li a {
   text-decoration: none;
   color: #32CD32;
+  font-weight: 500;
 }
 .category_intro_section .intro-section-box .intro-banner .breadcrumb-box .breadcrumb-item + .breadcrumb-item::before {
   content: ">";
+}
+.category_intro_section .intro-section-box .category-collection {
+  /* Custom Scrollbar for WebKit Browsers */
 }
 .category_intro_section .intro-section-box .category-collection h3 {
   margin: 0rem 0rem 1.5rem 1.5rem;
 }
 .category_intro_section .intro-section-box .category-collection .category-collection-box {
+  border: 2px solid #000;
   display: flex;
-  column-gap: 13px;
-  width: 100%;
-  margin-left: 20px;
+  flex-wrap: wrap;
+  gap: 3rem 0.29rem;
+  margin-top: 1rem;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 150vh;
 }
 .category_intro_section .intro-section-box .category-collection .category-collection-box .category-box {
   border: 2px solid #000;
   width: 17rem;
+  height: 27rem;
   border-radius: 15px;
   padding: 0.7rem 1.5rem 1.5rem 1.5rem;
 }
@@ -13054,6 +13072,19 @@ p {
   height: 100%;
   object-fit: cover;
   border-radius: 1rem;
+}
+.category_intro_section .intro-section-box .category-collection .category-collection-box::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+}
+.category_intro_section .intro-section-box .category-collection .category-collection-box::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background of the scrollbar track */
+}
+.category_intro_section .intro-section-box .category-collection .category-collection-box::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+  border-radius: 5px; /* Rounded edges for the thumb */
+}
+.category_intro_section .intro-section-box .category-collection .category-collection-box::-webkit-scrollbar-thumb:hover {
+  background: #32CD32; /* Color when hovered */
 }
 
 .category_detail_intro_section .intro-section-box .intro-banner {
@@ -13898,6 +13929,7 @@ p {
   width: 100%;
   margin-top: 5px;
   margin-bottom: 1rem;
+  max-height: 15rem;
 }
 .shop_inventory_modal_section .product-modal .modal-body .main-data .data-2 .row2 .column2 {
   flex: 0 0 47%;
@@ -14390,7 +14422,7 @@ p {
 
 .shop_intro_section {
   margin-top: 3rem;
-  margin-bottom: 4rem;
+  margin-bottom: 5rem;
 }
 .shop_intro_section .intro-text {
   text-align: center;
@@ -14475,11 +14507,15 @@ p {
 }
 .inbox-modal .modal-dialog .modal-content {
   height: 100%;
+  /* Custom Scrollbar for WebKit Browsers */
 }
 .inbox-modal .modal-dialog .modal-content .chat-window {
-  flex: 1 1 65%;
-  height: 100%;
   position: relative;
+  border: 2px solid #0d6efd;
+  border-radius: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 20rem;
 }
 .inbox-modal .modal-dialog .modal-content .chat-window .other_chat_member {
   position: relative;
@@ -14492,6 +14528,8 @@ p {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-radius: 10px;
+  height: 5rem;
 }
 .inbox-modal .modal-dialog .modal-content .chat-window .other_chat_member .profile-picture {
   width: 50px;
@@ -14508,25 +14546,9 @@ p {
   border: 2px solid #000;
 }
 .inbox-modal .modal-dialog .modal-content .chat-window .chat-display {
-  border-radius: 10px;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: 91%;
-  border: 2px solid #000;
-}
-.inbox-modal .modal-dialog .modal-content .chat-window .chat-display .date {
-  position: sticky;
-  top: 17%;
-  z-index: 1000;
-  background-color: transparent; /* Or any other background color */
-  text-align: center;
-  padding: 0.5rem;
-  border-bottom: 1px solid #e9ecef;
-  font-weight: bold;
-  border: 2px solid #000;
-  color: #000;
+  position: relative;
 }
 .inbox-modal .modal-dialog .modal-content .chat-window .chat-display #chat_messages {
   display: flex;
@@ -14547,10 +14569,12 @@ p {
   justify-content: space-between;
 }
 .inbox-modal .modal-dialog .modal-content .chat-window .chat-display #chat_messages .text-box1 .time, .inbox-modal .modal-dialog .modal-content .chat-window .chat-display #chat_messages .text-box2 .time {
-  font-size: 12px;
   position: absolute;
   bottom: -17px;
   right: 4px;
+}
+.inbox-modal .modal-dialog .modal-content .chat-window .chat-display #chat_messages .text-box1 .time p, .inbox-modal .modal-dialog .modal-content .chat-window .chat-display #chat_messages .text-box2 .time p {
+  font-size: 12px;
 }
 .inbox-modal .modal-dialog .modal-content .chat-window .chat-display #chat_messages .text-box1 .text, .inbox-modal .modal-dialog .modal-content .chat-window .chat-display #chat_messages .text-box2 .text {
   max-width: 84%;
@@ -14628,23 +14652,36 @@ p {
   height: 100%;
   border-radius: 50%;
 }
-.inbox-modal .modal-dialog .modal-content .send-message-box {
-  position: -webkit-sticky; /* For Safari */
-  position: sticky;
+.inbox-modal .modal-dialog .modal-content .chat-window .send-message-box {
+  position: absolute;
+  width: 100%;
   bottom: 0; /* Stick to the bottom */
-  background-color: #fff; /* Optional: Set background color */
   z-index: 9999;
 }
-.inbox-modal .modal-dialog .modal-content .send-message-box #chat_message_form {
-  border: 2px solid #000;
+.inbox-modal .modal-dialog .modal-content .chat-window .send-message-box #chat_message_form {
+  border-radius: 0 0 10px 10px;
 }
-.inbox-modal .modal-dialog .modal-content .send-message-box #chat_message_form input {
+.inbox-modal .modal-dialog .modal-content .chat-window .send-message-box #chat_message_form input {
   width: 100%;
   height: 3rem;
+  border-radius: 0 0 10px 10px;
+}
+.inbox-modal .modal-dialog .modal-content .chat-window::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+}
+.inbox-modal .modal-dialog .modal-content .chat-window::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background of the scrollbar track */
+}
+.inbox-modal .modal-dialog .modal-content .chat-window::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+  border-radius: 5px; /* Rounded edges for the thumb */
+}
+.inbox-modal .modal-dialog .modal-content .chat-window::-webkit-scrollbar-thumb:hover {
+  background: #32CD32; /* Color when hovered */
 }
 
 .shop_banner_section {
-  margin-bottom: 4rem;
+  margin-bottom: 5rem;
 }
 .shop_banner_section .banner-section-box {
   display: flex;
@@ -14735,14 +14772,12 @@ p {
 }
 
 .shop_features_section {
-  margin-bottom: 4rem;
+  margin-bottom: 5rem;
 }
-.shop_features_section .feature-title {
+.shop_features_section h1.feature-title {
   text-align: center;
-}
-.shop_features_section .feature-title h1.feature-title {
-  font-size: 3.5rem;
-  margin-bottom: 1.5rem;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
 }
 .shop_features_section .shop-feature-collection-box {
   border: 2px solid #000;
@@ -14775,13 +14810,18 @@ p {
 }
 
 .shop_featured_products_section {
-  height: 100vh;
+  margin-bottom: 5rem;
+}
+.shop_featured_products_section h1.featured-product-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
 }
 .shop_featured_products_section .featured-product-collection-box {
-  height: 100vh;
+  border: 2px solid #000;
   display: flex;
-  column-gap: 20px;
-  width: 100%;
+  flex-wrap: wrap;
+  gap: 3rem 0.49rem;
   margin-top: 1rem;
 }
 .shop_featured_products_section .featured-product-collection-box .featured-product-box {
@@ -14832,13 +14872,18 @@ p {
 }
 
 .shop_new_arrivals_section {
-  height: 100vh;
+  margin-bottom: 5rem;
+}
+.shop_new_arrivals_section h1.new-arrival-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
 }
 .shop_new_arrivals_section .new-arrival-collection-box {
-  height: 100vh;
+  border: 2px solid #000;
   display: flex;
-  column-gap: 20px;
-  width: 100%;
+  flex-wrap: wrap;
+  gap: 3rem 0.49rem;
   margin-top: 1rem;
 }
 .shop_new_arrivals_section .new-arrival-collection-box .new-arrival-box {
@@ -14889,14 +14934,18 @@ p {
 }
 
 .shop_discounted_product_section {
-  height: 100vh;
-  margin-top: 3rem;
+  margin-bottom: 5rem;
+}
+.shop_discounted_product_section h1.discounted-product-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
 }
 .shop_discounted_product_section .discounted-product-collection-box {
-  height: 100vh;
+  border: 2px solid #000;
   display: flex;
-  column-gap: 20px;
-  width: 100%;
+  flex-wrap: wrap;
+  gap: 3rem 0.49rem;
   margin-top: 1rem;
 }
 .shop_discounted_product_section .discounted-product-collection-box .discounted-product-box {
@@ -14984,6 +15033,7 @@ p {
 .product_intro_section .intro-section-box .intro-banner .breadcrumb-box li a {
   text-decoration: none;
   color: #32CD32;
+  font-weight: 500;
 }
 .product_intro_section .intro-section-box .intro-banner .breadcrumb-box .breadcrumb-item + .breadcrumb-item::before {
   content: ">";
@@ -15104,18 +15154,26 @@ p {
   color: red;
   margin-top: 5px;
 }
+.product_intro_section .intro-section-box .product-collection {
+  /* Custom Scrollbar for WebKit Browsers */
+}
 .product_intro_section .intro-section-box .product-collection h3 {
   margin: 0rem 0rem 1.5rem 1.5rem;
 }
 .product_intro_section .intro-section-box .product-collection .product-collection-box {
+  border: 2px solid #000;
   display: flex;
-  column-gap: 13px;
-  width: 100%;
-  margin-left: 20px;
+  flex-wrap: wrap;
+  gap: 3rem 0.29rem;
+  margin-top: 1rem;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  height: 150vh;
 }
 .product_intro_section .intro-section-box .product-collection .product-collection-box .product-box {
   border: 2px solid #000;
   width: 17rem;
+  height: 27rem;
   border-radius: 15px;
   padding: 0.7rem 1.5rem 1.5rem 1.5rem;
 }
@@ -15145,6 +15203,19 @@ p {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+.product_intro_section .intro-section-box .product-collection .product-collection-box::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+}
+.product_intro_section .intro-section-box .product-collection .product-collection-box::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background of the scrollbar track */
+}
+.product_intro_section .intro-section-box .product-collection .product-collection-box::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+  border-radius: 5px; /* Rounded edges for the thumb */
+}
+.product_intro_section .intro-section-box .product-collection .product-collection-box::-webkit-scrollbar-thumb:hover {
+  background: #32CD32; /* Color when hovered */
+}
 
 .product_detail_intro_section .intro-banner {
   background-color: rgba(25, 135, 84, 0.168627451);
@@ -15156,6 +15227,7 @@ p {
 .product_detail_intro_section .intro-banner .breadcrumb-box li a {
   text-decoration: none;
   color: #32CD32;
+  font-weight: 500;
 }
 .product_detail_intro_section .intro-banner .breadcrumb-box .breadcrumb-item + .breadcrumb-item::before {
   content: ">";
@@ -15354,7 +15426,9 @@ p {
 }
 
 .product_detail_tab_section {
-  margin-bottom: 50vh;
+  border: 2px solid #000;
+  margin-bottom: 5rem;
+  height: 90vh;
 }
 .product_detail_tab_section ul.tab {
   column-gap: 2.5rem;
@@ -15371,34 +15445,61 @@ p {
 .product_detail_tab_section .tab-content {
   margin-top: 3.5rem;
 }
+.product_detail_tab_section .tab-content .shop-tab .product-shop {
+  border: 2px solid #000;
+}
+.product_detail_tab_section .tab-content .shop-tab .product-shop h3 {
+  text-align: center;
+}
+.product_detail_tab_section .tab-content .shop-tab .product-shop .shop-detail {
+  margin-left: 1.5rem;
+}
+.product_detail_tab_section .tab-content .shop-tab .product-shop i {
+  color: #32CD32;
+}
 .product_detail_tab_section .tab-content .video-tab {
   /* Style to hide the scroll bar on chrome, safari and opera */
 }
 .product_detail_tab_section .tab-content .video-tab .video-box {
   display: flex;
+  height: 60vh;
   flex-wrap: wrap;
   border: 2px solid #000;
-  row-gap: 3rem;
-  justify-content: space-between;
-  height: 100vh;
+  gap: 5rem 3rem;
   overflow-y: scroll;
   scroll-behavior: smooth;
 }
-.product_detail_tab_section .tab-content .video-tab .video-box .vid {
+.product_detail_tab_section .tab-content .video-tab .video-box .vid-box {
   border: 2px solid #000;
-  flex: 0 0 45%;
+  flex: 1 1 47%;
+  height: 20rem;
+}
+.product_detail_tab_section .tab-content .video-tab .video-box .vid-box .vid {
+  border: 2px solid #000;
   position: relative;
+  width: 100%;
+  height: 87%;
   cursor: pointer;
 }
-.product_detail_tab_section .tab-content .video-tab .video-box .vid video {
+.product_detail_tab_section .tab-content .video-tab .video-box .vid-box .vid .description-btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  border: 2px solid #000;
+}
+.product_detail_tab_section .tab-content .video-tab .video-box .vid-box .vid video {
   width: 100%;
   object-fit: cover;
-  height: 90%;
+  height: 100%;
 }
-.product_detail_tab_section .tab-content .video-tab .video-box .vid video:hover + i, .product_detail_tab_section .tab-content .video-tab .video-box .vid i:hover {
+.product_detail_tab_section .tab-content .video-tab .video-box .vid-box .vid video:hover + i, .product_detail_tab_section .tab-content .video-tab .video-box .vid-box .vid i:hover {
   opacity: 1;
 }
-.product_detail_tab_section .tab-content .video-tab .video-box .vid i {
+.product_detail_tab_section .tab-content .video-tab .video-box .vid-box .vid i.play {
   position: absolute;
   top: 27%;
   left: 50%;
@@ -15407,10 +15508,16 @@ p {
   color: #32CD32;
   opacity: 0.7;
 }
-.product_detail_tab_section .tab-content .video-tab .video-box .vid .vid-description {
-  padding: 5px 11px 5px 11px;
+.product_detail_tab_section .tab-content .video-tab .video-box .vid-box .vid:hover .description-btn {
+  opacity: 1;
+  visibility: visible;
 }
-.product_detail_tab_section .tab-content .video-tab .video-box .vid .vid-description p {
+.product_detail_tab_section .tab-content .video-tab .video-box .vid-box .vid-description {
+  padding: 5px 11px 5px 11px;
+  height: 3rem;
+  border: 2px solid #000;
+}
+.product_detail_tab_section .tab-content .video-tab .video-box .vid-box .vid-description p {
   margin: 0;
 }
 .product_detail_tab_section .tab-content .video-tab .video-box::-webkit-scrollbar {
@@ -15427,6 +15534,49 @@ p {
 }
 .product_detail_tab_section .tab-content .video-tab .video-box::-webkit-scrollbar-button {
   display: none;
+}
+
+.related_products_section .related-product-section-box h3 {
+  margin: 0rem 0rem 1.5rem 1.5rem;
+}
+.related_products_section .related-product-section-box .related-product-collection-box {
+  border: 2px solid #000;
+  display: flex;
+  margin-top: 1rem;
+  column-gap: 0.5rem;
+}
+.related_products_section .related-product-section-box .related-product-collection-box .product-box {
+  border: 2px solid #000;
+  width: 17rem;
+  height: 27rem;
+  border-radius: 15px;
+  padding: 0.7rem 1.5rem 1.5rem 1.5rem;
+}
+.related_products_section .related-product-section-box .related-product-collection-box .product-box .product-image {
+  width: 13rem;
+  height: 15rem;
+  margin: 0 auto 1rem auto;
+  border-radius: 1rem;
+}
+.related_products_section .related-product-section-box .related-product-collection-box .product-box .product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1rem;
+}
+.related_products_section .related-product-section-box .related-product-collection-box .product-box .price-and-button {
+  display: flex;
+  column-gap: 1.7rem;
+}
+.related_products_section .related-product-section-box .related-product-collection-box .product-box .price-and-button .add-btn {
+  padding: 5px;
+  background-color: #32CD32;
+  color: #fff;
+  width: 110px;
+}
+.related_products_section .related-product-section-box .related-product-collection-box .product-box .price-and-button p {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .tag_intro_section .intro-section-box .intro-banner {
@@ -15662,44 +15812,43 @@ p {
 }
 
 /* Styles for the Customer */
-.customer_submenu_section {
-  border: 2px solid #000;
-  margin: 2rem 0 2rem 0;
-}
-.customer_submenu_section .customer-submenu-section-box {
-  min-height: 3.3rem;
-  position: relative;
-}
-.customer_submenu_section .customer-submenu-section-box .submenu {
-  list-style-type: none;
-  display: flex;
-  align-items: center;
-  column-gap: 3rem;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-}
-.customer_submenu_section .customer-submenu-section-box .submenu a {
-  text-decoration: none;
-  color: #000;
-}
-
-/* Styles for the Error and Success Message */
-.customer_submenu_message_box_section .message-box {
-  min-height: 3.3rem;
-}
-
 .home_intro_section {
-  margin-top: 4rem;
-  height: 70vh;
+  margin-bottom: 5rem;
+}
+.home_intro_section .intro-section-box {
+  display: flex;
+  gap: 3rem;
+}
+.home_intro_section .intro-section-box .detail {
+  flex: 1 1 46%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+}
+.home_intro_section .intro-section-box .detail h1 {
+  margin-bottom: 1.5rem;
+}
+.home_intro_section .intro-section-box .detail p {
+  line-height: 1.5rem;
+}
+.home_intro_section .intro-section-box .image {
+  flex: 1 1 48%;
+}
+.home_intro_section .intro-section-box .image img {
+  height: 100%;
+  width: 100%;
 }
 
+.shop-intro-section {
+  margin-top: 5rem;
+}
 .shop-intro-section h1 {
   text-align: center;
 }
 .shop-intro-section .search-box {
   margin: 3rem auto;
-  width: 25rem;
+  width: 30rem;
 }
 .shop-intro-section .shop-collection .shop-tally {
   margin: 0 0 2rem 3rem;
@@ -15807,6 +15956,9 @@ p {
   flex: 1 1 65%;
   height: 100%;
   position: relative;
+  border: 2px solid #0d6efd;
+  border-radius: 10px;
+  /* Custom Scrollbar for WebKit Browsers */
 }
 .chat_section .chat-box .chat-window .other_chat_member {
   position: relative;
@@ -15819,6 +15971,8 @@ p {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-radius: 10px;
+  height: 5rem;
 }
 .chat_section .chat-box .chat-window .other_chat_member .profile-picture {
   width: 50px;
@@ -15835,25 +15989,12 @@ p {
   border: 2px solid #000;
 }
 .chat_section .chat-box .chat-window .chat-display {
-  border-radius: 10px;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
-  height: 91%;
-  border: 2px solid #000;
-}
-.chat_section .chat-box .chat-window .chat-display .date {
-  position: sticky;
-  top: 17%;
-  z-index: 1000;
-  background-color: transparent; /* Or any other background color */
-  text-align: center;
-  padding: 0.5rem;
-  border-bottom: 1px solid #e9ecef;
-  font-weight: bold;
-  border: 2px solid #000;
-  color: #000;
+  height: 26rem;
+  position: relative;
 }
 .chat_section .chat-box .chat-window .chat-display #chat_messages {
   display: flex;
@@ -15874,10 +16015,12 @@ p {
   justify-content: space-between;
 }
 .chat_section .chat-box .chat-window .chat-display #chat_messages .text-box1 .time, .chat_section .chat-box .chat-window .chat-display #chat_messages .text-box2 .time {
-  font-size: 12px;
   position: absolute;
   bottom: -17px;
   right: 4px;
+}
+.chat_section .chat-box .chat-window .chat-display #chat_messages .text-box1 .time p, .chat_section .chat-box .chat-window .chat-display #chat_messages .text-box2 .time p {
+  font-size: 12px;
 }
 .chat_section .chat-box .chat-window .chat-display #chat_messages .text-box1 .text, .chat_section .chat-box .chat-window .chat-display #chat_messages .text-box2 .text {
   max-width: 84%;
@@ -15955,19 +16098,32 @@ p {
   height: 100%;
   border-radius: 50%;
 }
-.chat_section .chat-box .send-message-box {
-  position: -webkit-sticky; /* For Safari */
-  position: sticky;
+.chat_section .chat-box .chat-window .chat-display::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+}
+.chat_section .chat-box .chat-window .chat-display::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background of the scrollbar track */
+}
+.chat_section .chat-box .chat-window .chat-display::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+  border-radius: 5px; /* Rounded edges for the thumb */
+}
+.chat_section .chat-box .chat-window .chat-display::-webkit-scrollbar-thumb:hover {
+  background: #32CD32; /* Color when hovered */
+}
+.chat_section .chat-box .chat-window .send-message-box {
+  position: absolute;
+  width: 100%;
   bottom: 0; /* Stick to the bottom */
-  background-color: #fff; /* Optional: Set background color */
   z-index: 9999;
 }
-.chat_section .chat-box .send-message-box #chat_message_form {
-  border: 2px solid #000;
+.chat_section .chat-box .chat-window .send-message-box #chat_message_form {
+  border-radius: 0 0 10px 10px;
 }
-.chat_section .chat-box .send-message-box #chat_message_form input {
+.chat_section .chat-box .chat-window .send-message-box #chat_message_form input {
   width: 100%;
   height: 3rem;
+  border-radius: 0 0 10px 10px;
 }
 
 /*# sourceMappingURL=style.css.map */

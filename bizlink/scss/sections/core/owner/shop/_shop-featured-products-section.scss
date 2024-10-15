@@ -1,13 +1,19 @@
 @use '../../../../custom' as *;
 
 .shop_featured_products_section {
-    height: 100vh;
+    margin-bottom: 5rem;
+
+    h1.featured-product-title {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+    }
 
     .featured-product-collection-box {
-        height: 100vh;
+        border: 2px solid $black;
         display: flex;
-        column-gap: 20px;
-        width: 100%;
+        flex-wrap: wrap;
+        gap: 3rem 0.49rem;
         margin-top: 1rem;
 
         .featured-product-box {

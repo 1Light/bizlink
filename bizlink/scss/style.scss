@@ -64,6 +64,7 @@
 @use 'sections/core/owner/product/product-intro-section';
 @use 'sections/core/owner/product/product-detail-intro-section';
 @use 'sections/core/owner/product/product-detail-tab-section';
+@use 'sections/core/owner/product/related_products_section';
 
 // Styles for the Core/tag
 @use 'sections/core/owner/tag/tag-intro-section';
@@ -77,9 +78,7 @@
                                 /* Styles for the Customer */
 
 // Styles for the Core/Customer
-
-@use 'sections/core/customer/customer-submenu-section';
-@use 'sections/core/customer/customer-home-intro-section';
+@use 'sections/core/customer/home-intro-section';
 @use 'sections/core/customer/shop-intro-section';
 
                                 /* Styles for the Chat */

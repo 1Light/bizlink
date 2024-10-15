@@ -5,7 +5,7 @@
 
     .navbar {
         min-height: 5rem;
-        padding: 0 3rem 0 3rem;
+        padding: 0 5rem 0 5rem;
 
         .company-logo {
             position: relative;
@@ -26,30 +26,36 @@
     
         .menu-list-items {
             display: flex;
-            justify-content: space-between;
-            column-gap: 3rem;
+            justify-content: flex-end;
     
             .search {
-                margin-left: 11rem;
-                width: 30rem;
+                width: 25rem;
                 padding-top: 15px;
+                margin-left: 2rem;
+                
+                form {
+                    position: relative;
+
+                    button {
+                        position: absolute;
+                        top: 50%;
+                        right: 2%;
+                        transform: translateY(-50%);
+                    }
+                }
             }
     
             ul.icon-list {
                 display: flex;
                 justify-content: space-between;
                 margin-right: 2.1rem;
-                width: 27%;
+                width: 40%;
                 text-transform: none;
                 padding-top: 13px;
-
-                li:nth-child(2) {
-                    margin-left: 2rem;
-                    text-transform: none;
-                }
     
                 li {
                     text-transform: none;
+                    margin-left: 4rem;
 
                     .nav-link {
                         position: relative;
@@ -89,6 +95,10 @@
                     }
                 }
 
+                li.inbox {
+                    margin-left: 5rem;
+                }
+
                 li.account-item {
                     position: relative;
                     cursor: pointer;
@@ -120,6 +130,7 @@
                                     padding: 0.5rem;
                                     border-radius: 5%;
                                     border: 1px solid $gray-400;
+                                    margin-left: 0;
     
                                     li:nth-child(2) {
                                         margin-left: 0rem;

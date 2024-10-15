@@ -18,7 +18,7 @@ $(document).on("click", ".remove-from-wishlist", function(event) {
 
     // AJAX request to remove the item from the wishlist
     $.ajax({
-        url: "/core/owner/wishlist/", // Ensure this matches your URL configuration
+        url: "/core/wishlist/", // Ensure this matches your URL configuration
         type: "POST",
         data: {
             "id": productId,

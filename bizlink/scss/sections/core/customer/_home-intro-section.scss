@@ -1,0 +1,35 @@
+@use '../../../custom' as *;
+
+.home_intro_section {
+    margin-bottom: 5rem;
+
+    .intro-section-box {
+        display: flex;
+        gap: 3rem;
+
+        .detail {
+            flex: 1 1 46%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: start;
+
+            h1 {
+                margin-bottom: 1.5rem;
+            }
+
+            p {
+                line-height: 1.5rem;
+            }
+        }
+
+        .image {
+            flex: 1 1 48%;
+
+            img {
+                height: 100%;
+                width: 100%;
+            }
+        }
+    }
+}

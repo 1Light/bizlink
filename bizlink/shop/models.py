@@ -220,7 +220,7 @@ class DiscountedProduct(models.Model):
     
     def get_percentage(self):
         if self.new_price > 0:
-            discount = (self.new_price / self.product.price) * 100
+            discount = 100 - ((self.new_price / self.product.price) * 100)
             return discount
         return 0
 

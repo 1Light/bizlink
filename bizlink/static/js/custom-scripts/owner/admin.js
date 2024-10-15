@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('Products added to featured products!');
             location.reload(); // Reload the page to reflect changes
           } else {
-            alert('Failed to add products to featured products.');
+            alert('Error: ' + data.message);
           }
         });
       } else {
@@ -351,7 +351,7 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('Products added to new arrivals!');
             location.reload(); // Reload the page to reflect changes
           } else {
-            alert('Failed to add products to new arrivals.');
+            alert('Error: ' + data.message);
           }
         });
       } else {

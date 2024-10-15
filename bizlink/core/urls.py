@@ -7,8 +7,13 @@ app_name = "core"
 urlpatterns = [
 
     # Path for both
-    path("owner/home/account/", views.account, name="account"),
-    path("owner/account/notification/", views.notification, name="notification"),
+
+    ## Account
+    path("account/", views.account, name="account"),
+    path("account/notification/", views.notification, name="notification"),
+    
+    ## Wishlist
+    path("wishlist/", views.wishlist, name="wishlist"),
 
     # Path for the owner
 
@@ -54,11 +59,8 @@ urlpatterns = [
     path("owner/home/inventory/delete_category_image/", views.delete_category_image, name="delete_category_image"),
 
     ## Search
-    path("owner/home/search/", views.search, name="search"),
+    path("owner/home/search/", views.search_owner, name="search_owner"),
     path("owner/home/search/filter_searched_product/", views.filter_searched_product, name="filter_searched_product"),
-
-    ## Wishlist
-    path("owner/wishlist/", views.wishlist, name="wishlist"),
 
     ## Shop
     path("owner/shop/", views.owner_shop, name="owner_shop"),
@@ -67,6 +69,7 @@ urlpatterns = [
     # Path for the Customer Pages
     
     path("customer/home/", views.customer_home, name="customer_home"),
-    path("customer/shops/", views.shop, name="shop"),
+    path("customer/shop/", views.shop_collection, name="shop_collection"),
+    path("customer/home/shops/search", views.search_customer, name="search_customer"),
     path("customer/shops/visit_shop/<shopId>/", views.visit_shop, name="visit_shop"),
 ]

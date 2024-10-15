@@ -173,56 +173,65 @@ Product({{ product.name }})
               <button class="nav-link rounded-pill" id="pills-shop-tab" data-bs-toggle="pill" data-bs-target="#pills-shop" type="button" role="tab" aria-controls="pills-shop" aria-selected="false">Shop</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link rounded-pill" id="pills-review-tab" data-bs-toggle="pill" data-bs-target="#pills-review" type="button" role="tab" aria-controls="pills-review" aria-selected="false">Review</button>
-            </li>
-            <li class="nav-item" role="presentation">
                 <button class="nav-link rounded-pill" id="pills-video-tab" data-bs-toggle="pill" data-bs-target="#pills-video" type="button" role="tab" aria-controls="pills-video" aria-selected="false">Video</button>
             </li>
         </ul>
         <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="pills-description" role="tabpanel" aria-labelledby="pills-description-tab" tabindex="0">{{ product.description|safe }}</div>
             <div class="tab-pane fade" id="pills-additional-info" role="tabpanel" aria-labelledby="pills-additional-info-tab" tabindex="0">{{ product.specifications|safe }}</div>
-            <div class="tab-pane fade" id="pills-shop" role="tabpanel" aria-labelledby="pills-shop-tab" tabindex="0">
-                <div class="shop">
+            <div class="tab-pane fade shop-tab" id="pills-shop" role="tabpanel" aria-labelledby="pills-shop-tab" tabindex="0">
+                <div class="product-shop">
                     <h3>Shop</h3>
-                    <p class="shop-name">{{ shop.name }}</p>
-                    <p><i class="fa-solid fa-location-dot"></i> {{ shop.address.address }}</p>
-                    <p><i class="fa-solid fa-headphones"></i> {{ shop.contact }}</p>
+                    <p class="shop-name"><i class="fa-solid fa-shop"></i>&nbsp;&nbsp;{{ shop.name }}</p>
+                    <div class="shop-detail">
+                        <p><i class="fa-solid fa-location-dot"></i>&nbsp;&nbsp;{{ shop.address }}</p>
+                        <p><i class="fa-solid fa-headphones"></i>&nbsp;&nbsp;{{ shop.contact }}</p>
+                    </div>
                 </div>
             </div>
-            <div class="tab-pane fade" id="pills-review" role="tabpanel" aria-labelledby="pills-review-tab" tabindex="0"></div>
             <div class="tab-pane fade video-tab" id="pills-video" role="tabpanel" aria-labelledby="pills-video-tab" tabindex="0">
 
-                {% if product.video %}
                 <div class="video-box">
-                    <div class="vid">
-                        <video class="main-video" id="main-video" style="pointer-events: none;">
-                            <source src="{{ product.video.video.url }}">
-                        </video>
-                        <i class="fa-regular fa-circle-play" onclick="playMainVideo(this)"></i>
-                        <div class="vid-description">
-                            <p>{{ product.video.description|safe }}</p>
+                    {% if product.video %}
+                        <div class="vid-box">
+                            <div class="vid">
+                                <video class="main-video" id="main-video" style="pointer-events: none;">
+                                    <source src="{{ product.video.video.url }}">
+                                </video>
+                                <i class="fa-regular fa-circle-play play" onclick="playMainVideo(this)"></i>
+                                {% if product.video.description %}
+                                    <button class="description-btn" onclick="toggleDescription('main-video-desc')"><i class="fa-solid fa-note-sticky"></i></button>
+                                {% endif %}
+                            </div>
+                            <div class="vid-description" id="main-video-desc" style="display: none;">
+                                <p>{{ product.video.description|safe }}</p>
+                            </div>
                         </div>
-                    </div>
-                
+                    {% endif %}
+                    
                     {% if product_videos %}
                         {% for vid in product_videos %}
-                        <div class="vid">
-                            <video class="more-video" id="video-{{ forloop.counter }}" style="pointer-events: none;">
-                                <source src="{{ vid.video.url }}">
-                            </video>
-                            <i class="fa-regular fa-circle-play" onclick="playMoreVideo(this, 'video-{{ forloop.counter }}')"></i>
-                            <div class="vid-description">
+                        <div class="vid-box">
+                            <div class="vid">
+                                <video class="more-video" id="video-{{ forloop.counter }}" style="pointer-events: none;">
+                                    <source src="{{ vid.video.url }}">
+                                </video>
+                                <i class="fa-regular fa-circle-play play" onclick="playMoreVideo(this, 'video-{{ forloop.counter }}')"></i>
+                                {% if vid.description %}
+                                    <button class="description-btn" onclick="toggleDescription('vid-desc-{{ forloop.counter }}')"><i class="fa-solid fa-note-sticky"></i></button>
+                                {% endif %}
+                            </div>
+                            <div class="vid-description" id="vid-desc-{{ forloop.counter }}" style="display: none;">
                                 <p>{{ vid.description|safe }}</p>
                             </div>
                         </div>
                         {% endfor %}
                     {% endif %}
+                
+                    {% if not product.video and not product_videos %}
+                        <p>No demo videos available. Click here to upload.</p>
+                    {% endif %}
                 </div>
-
-                {% else %}
-                    <p>No demo videos available. Click here to upload.</p>
-                {% endif %}
 
             </div>
         </div>

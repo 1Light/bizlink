@@ -1,7 +1,9 @@
 @use '../../../../custom' as *;
 
 .product_detail_tab_section {
-    margin-bottom: 50vh;
+    border: 2px solid $black;
+    margin-bottom: 5rem;
+    height: 90vh;
 
     ul.tab {
         column-gap: 2.5rem;
@@ -24,48 +26,92 @@
     .tab-content {
         margin-top: 3.5rem;
 
+        .shop-tab {
+
+            .product-shop {
+                border: 2px solid $black;
+
+                h3 {
+                    text-align: center;
+                }
+
+                .shop-detail {
+                    margin-left: 1.5rem;
+                }
+
+                i {
+                    color: $primary;
+                }
+            }
+        }
+
         .video-tab {
 
             .video-box {
                 display: flex;
+                height: 60vh;
                 flex-wrap: wrap;
                 border: 2px solid $black;
-                row-gap: 3rem;
-                justify-content: space-between;
-                height: 100vh;
+                gap: 5rem 3rem;
                 overflow-y: scroll;
                 scroll-behavior: smooth;
 
-
-                .vid {
+                .vid-box {
                     border: 2px solid $black;
-                    flex: 0 0 45%;
-                    position: relative;
-                    cursor: pointer;
+                    flex: 1 1 47%;
+                    height: 20rem;
 
-
-                    video {
+                    .vid {
+                        border: 2px solid $black;
+                        position: relative;
                         width: 100%;
-                        object-fit: cover;
-                        height: 90%;
-                    }
-
-                    video:hover + i, i:hover {
-                        opacity: 1;
-                    }
-
-                    i {
-                        position: absolute;
-                        top: 27%;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        font-size: 7rem;
-                        color: $primary;
-                        opacity: 0.7;
+                        height: 87%;
+                        cursor: pointer;
+                        
+                        .description-btn {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            z-index: 9999;
+                            opacity: 0;
+                            visibility: hidden;
+                            transition: opacity 0.3s ease, visibility 0.3s ease;
+                            border: 2px solid $black;
+                        }
+    
+                        video {
+                            width: 100%;
+                            object-fit: cover;
+                            height: 100%;
+                        }
+    
+                        video:hover + i, i:hover {
+                            opacity: 1;
+                        }
+    
+                        i.play {
+                            position: absolute;
+                            top: 27%;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            font-size: 7rem;
+                            color: $primary;
+                            opacity: 0.7;
+                        }
+    
+                        &:hover {
+    
+                            .description-btn { 
+                                opacity: 1;
+                                visibility: visible;
+                            }
+                        }
                     }
 
                     .vid-description {
                         padding: 5px 11px 5px 11px;
+                        height: 3rem;
+                        border: 2px solid $black;
                         
                         p {
                             margin: 0;

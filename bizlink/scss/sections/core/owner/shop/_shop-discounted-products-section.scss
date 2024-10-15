@@ -1,14 +1,19 @@
 @use '../../../../custom' as *;
 
 .shop_discounted_product_section {
-    height: 100vh;
-    margin-top: 3rem;
+    margin-bottom: 5rem;
+
+    h1.discounted-product-title {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+    }
 
     .discounted-product-collection-box {
-        height: 100vh;
+        border: 2px solid $black;
         display: flex;
-        column-gap: 20px;
-        width: 100%;
+        flex-wrap: wrap;
+        gap: 3rem 0.49rem;
         margin-top: 1rem;
 
         .discounted-product-box {

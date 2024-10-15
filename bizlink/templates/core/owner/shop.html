@@ -91,7 +91,7 @@ Shop
 </section>
 
 <!-- ========================================================================================= -->
-<!------------------------------------- Shop Banner Section -------------------------------------->
+<!------------------------------------- Shop Banner Section ------------------------------------->
 <!-- ========================================================================================= -->
 
 <section class="shop_banner_section">
@@ -139,10 +139,10 @@ Shop
 
         </div>
     </div>
-</section>
+    </section>
 
 <!-- ========================================================================================= -->
-<!------------------------------------- Shop Features Section -------------------------------------->
+<!------------------------------------ Shop Features Section ------------------------------------>
 <!-- ========================================================================================= -->
 
 {% if features %}
@@ -173,12 +173,15 @@ Shop
 </section>
 {% endif %}
 
+<!-- ========================================================================================= -->
+<!--------------------------------- Discounted Products Section --------------------------------->
+<!-- ========================================================================================= -->
+
 {% if discounted_products %}
 
-<!-- Discounted Products Section -->
 <section class="shop_discounted_product_section">
     <div class="container">
-        <h3>Discounted Products</h3>
+        <h1 class="discounted-product-title">Discounted Products</h1>
         <div class="discounted-product-collection-box">
 
             {% for discounted_product in discounted_products %}
@@ -217,11 +220,15 @@ Shop
 </section>
 {% endif %}
 
+<!-- ========================================================================================= -->
+<!---------------------------------- Featured Products Section ---------------------------------->
+<!-- ========================================================================================= -->
+
 {% if featured_products %}
 <!-- Featured Products Section -->
 <section class="shop_featured_products_section">
     <div class="container">
-        <h3>Shop Featured Products</h3>
+        <h1 class="featured-product-title">Featured Products</h1>
         <div class="featured-product-collection-box">
 
             {% for featured_product in featured_products %}
@@ -256,12 +263,14 @@ Shop
 </section>
 {% endif %}
 
-<!-- New Arrivals Section -->
+<!-- ========================================================================================= -->
+<!------------------------------------ New Arrivals Section ------------------------------------->
+<!-- ========================================================================================= -->
 
 {% if new_arrivals %}
 <section class="shop_new_arrivals_section">
     <div class="container">
-        <h3>Shop New Arrivals</h3>
+        <h1 class="new-arrival-title">New Arrivals</h1>
         <div class="new-arrival-collection-box">
 
             {% for new_arrival in new_arrivals %}
@@ -303,7 +312,7 @@ Shop
   
   <!-- Modal -->
   <div class="modal fade" id="inboxModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable"">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalLabel">Hi there. What can I do for you?</h1>

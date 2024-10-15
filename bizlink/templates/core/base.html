@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %} {% endblock %} | BizLink</title>
     {% load static %}
+    {% load custom_tags %}
+
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     <link rel="stylesheet" href="{% static 'css/fontawesome.css' %}" />
     <link rel="icon" href="{% static 'images/favicon.png' %}" />
@@ -66,23 +68,86 @@
                     </div>
                     <!-- Offcanvas Dropdown Container Elements -->
                     <div class="offcanvas-body menu-list-items">
+
                         <!-- Search Bar and Button -->
-                        <div class="search">
-                            <form class="d-flex" role="search" method="GET" action="{% url 'core:search' %}">
-                                <input
-                                    class="form-control me-2 search-bar"
-                                    type="search"
-                                    placeholder="Search here"
-                                    aria-label="Search"
-                                    name="q"
-                                    value=""
-                                />
-                                <button class="btn btn-outline-success search-btn" type="submit">
-                                    Search
-                                </button>
-                            </form>
-                        </div>
+                        {% if request.path|startswith:"/core/owner/" or request.path|startswith:"/userauth/" or request.path|startswith:"/core/customer/shops/visit_shop" %}
+                        <!-- Display the search bar -->
+                            <div class="search">
+                                <form class="d-flex" role="search" method="GET" action="{% url 'core:search_owner' %}">
+                                    <input
+                                        class="form-control me-2 search-bar"
+                                        type="search"
+                                        placeholder="Search here"
+                                        aria-label="Search"
+                                        name="q"
+                                        value="{{ query }}"
+                                    />
+                                    <button class="btn btn-outline-success search-btn" type="submit">
+                                        <i class="fa-brands fa-searchengin"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        {% elif request.path|startswith:"/chat/" and user.user_type == "business_owner" %}
+                        <!-- Display the search bar for owners on chat pages -->
+                            <div class="search">
+                                <form class="d-flex" role="search" method="GET" action="{% url 'core:search_owner' %}">
+                                    <input
+                                        class="form-control me-2 search-bar"
+                                        type="search"
+                                        placeholder="Search here"
+                                        aria-label="Search"
+                                        name="q"
+                                        value=""
+                                    />
+                                    <button class="btn btn-outline-success search-btn" type="submit">
+                                        Search
+                                    </button>
+                                </form>
+                            </div>
+                        {% elif request.path|startswith:"/core/account/" and user.user_type == "business_owner" %}
+                        <!-- Display the search bar for owners on chat pages -->
+                            <div class="search">
+                                <form class="d-flex" role="search" method="GET" action="{% url 'core:search_owner' %}">
+                                    <input
+                                        class="form-control me-2 search-bar"
+                                        type="search"
+                                        placeholder="Search here"
+                                        aria-label="Search"
+                                        name="q"
+                                        value=""
+                                    />
+                                    <button class="btn btn-outline-success search-btn" type="submit">
+                                        Search
+                                    </button>
+                                </form>
+                            </div>
+                            {% elif request.path|startswith:"/core/wishlist/" and user.user_type == "business_owner" %}
+                            <!-- Display the search bar for owners on chat pages -->
+                                <div class="search">
+                                    <form class="d-flex" role="search" method="GET" action="{% url 'core:search_owner' %}">
+                                        <input
+                                            class="form-control me-2 search-bar"
+                                            type="search"
+                                            placeholder="Search here"
+                                            aria-label="Search"
+                                            name="q"
+                                            value=""
+                                        />
+                                        <button class="btn btn-outline-success search-btn" type="submit">
+                                            Search
+                                        </button>
+                                    </form>
+                                </div>
+                        {% endif %}                    
                         <ul class="navbar-nav pe-3 icon-list">
+                            {% if user.user_type == 'customer' %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'core:shop_collection' %}">
+                                        <i class="fa-solid fa-shop"></i>
+                                        <span>Shops</span>
+                                    </a>
+                                </li>
+                            {% endif %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'core:wishlist' %}">
                                     <i class="fa-solid fa-heart"></i>
@@ -92,7 +157,7 @@
                                     {% endif %}
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item inbox">
                                 <a class="nav-link" href="{% url 'chat:chat'%}">
                                     <i class="fa-solid fa-message"></i>
                                     <span>Inbox</span>
@@ -111,7 +176,7 @@
                                 </a>
                                 <ul class="account-submenu">
                                     <div class="submenu-box">
-                                        <a href="{% url 'core:account' %}"><li><i class="fa-regular fa-user"></i>My Account</li></a>
+                                        <a href="{% url 'core:account' %}"><li><i class="fa-solid fa-user"></i>My Account</li></a>
                                         <a href="#"><li><i class="fa-solid fa-sliders"></i>Setting</li></a>
     
                                         {% if request.user.is_authenticated %}

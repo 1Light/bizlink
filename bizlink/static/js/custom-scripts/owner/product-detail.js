@@ -1,6 +1,15 @@
 
 /////////////////////////////////////////////////////////////////////////////
 
+function toggleDescription(id) {
+    var element = document.getElementById(id);
+    if (element.style.display === "none") {
+        element.style.display = "block";
+    } else {
+        element.style.display = "none";
+    }
+}
+
 
     const carousel = document.getElementById('carouselExample');
 const mainImage = document.getElementById('main-image');

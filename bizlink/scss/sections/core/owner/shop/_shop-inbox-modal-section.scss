@@ -10,9 +10,12 @@
             height: 100%;
 
             .chat-window {
-                flex: 1 1 65%;
-                height: 100%;
                 position: relative;
+                border: 2px solid $blue;
+                border-radius: 10px;
+                overflow-y: auto;
+                overflow-x: hidden;
+                height: 20rem;
     
                 .other_chat_member {
                     position: relative;
@@ -25,6 +28,8 @@
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
+                    border-radius: 10px;
+                    height: 5rem;
     
                     .profile-picture {
                         width: 50px;
@@ -46,27 +51,9 @@
                 }
     
                 .chat-display {
-                    border-radius: 10px;
                     display: flex;
                     flex-direction: column;
-                    overflow-y: auto;
-                    overflow-x: hidden;
-                    height: 91%;
-                    border: 2px solid $black;
-        
-                    .date {
-                        position: sticky;
-                        top: 17%;
-                        z-index: 1000;
-                        background-color: transparent; /* Or any other background color */
-                        text-align: center;
-                        padding: 0.5rem;
-                        border-bottom: 1px solid $gray-200;
-                        font-weight: bold;
-                        border: 2px solid $black;
-                        color: $black;
-                        
-                    }
+                    position: relative;
     
                     #chat_messages {
                         display: flex;
@@ -88,10 +75,13 @@
                             justify-content: space-between;
     
                             .time {
-                                font-size: 12px;
                                 position: absolute;
                                 bottom: -17px;
                                 right: 4px;
+    
+                                p {
+                                    font-size: 12px;
+                                }
                             }
     
                             .text {
@@ -188,22 +178,41 @@
                         }
                     }
                 }
-            }
-            .send-message-box {
-                position: -webkit-sticky; /* For Safari */
-                position: sticky;
-                bottom: 0; /* Stick to the bottom */
-                background-color: $white; /* Optional: Set background color */
-                z-index: 9999;
-    
-                #chat_message_form {
-                    border: 2px solid $black;
-    
-                    input {
-                        width: 100%;
-                        height: 3rem;
+
+                .send-message-box {
+                    position: absolute;
+                    width: 100%;
+                    bottom: 0; /* Stick to the bottom */
+                    z-index: 9999;
+        
+                    #chat_message_form {
+                        border-radius: 0 0 10px 10px;
+        
+                        input {
+                            width: 100%;
+                            height: 3rem;
+                            border-radius: 0 0 10px 10px;
+                        }
                     }
                 }
+            }
+
+            /* Custom Scrollbar for WebKit Browsers */
+            .chat-window::-webkit-scrollbar {
+                width: 10px;                /* Width of the scrollbar */
+            }
+            
+            .chat-window::-webkit-scrollbar-track {
+                background: #f1f1f1;        /* Background of the scrollbar track */
+            }
+            
+            .chat-window::-webkit-scrollbar-thumb {
+                background: #888;           /* Color of the scrollbar thumb */
+                border-radius: 5px;         /* Rounded edges for the thumb */
+            }
+            
+            .chat-window::-webkit-scrollbar-thumb:hover {
+                background: $primary;           /* Color when hovered */
             }
         }
     }

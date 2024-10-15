@@ -74,6 +74,19 @@ class CreateProductForm(forms.ModelForm):
             'price', 'stock_quantity', 'tags',
         ]
 
+        widgets = {
+            'description': forms.Textarea(attrs= {
+                'Placeholder': 'Add description ...',
+                'class': INPUT_CLASSES,
+                'maxlength': '430',
+            }),
+            'specifications': forms.Textarea(attrs= {
+                'Placeholder': 'Add specifications ...',
+                'class': INPUT_CLASSES,
+                'maxlength': '430',
+            })
+        }
+
         labels = {
             'name': 'Name',
             'category': 'Category',

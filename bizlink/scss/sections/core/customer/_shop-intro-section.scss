@@ -1,6 +1,7 @@
 @use '../../../custom' as *;
 
 .shop-intro-section {
+    margin-top: 5rem;
 
     h1 {
         text-align: center;
@@ -8,7 +9,7 @@
 
     .search-box {
         margin: 3rem auto;
-        width: 25rem; 
+        width: 30rem; 
     }
 
     .shop-collection {
