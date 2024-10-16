@@ -8,6 +8,8 @@ Wishlist
 
 {% block content %}
 <section class="wishlist_intro_section">
+    <h1 class="title">Create Your Personalized Wishlist!</h1>
+    <p class="subtitle">Discover, save, and share the items you love the most!</p>
     <div class="container">
         <div class="wishlist-intro-box">
             <table class="table table-striped">
@@ -44,7 +46,7 @@ Wishlist
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="5" class="text-center">
+                        <td colspan="5" class="text-center no-wishlist-text">
                             No wishlist products.
                             {% if user.user_type == "business_owner" %}
                                 <a href="{% url 'core:owner_shop' %}">Click here to go back.</a>

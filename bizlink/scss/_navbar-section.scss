@@ -9,19 +9,22 @@
         padding: 0 5rem 0 5rem;
 
         .company-logo {
-            position: relative;
-    
-            svg {
-                height: 2.7rem;
-                width: 2.7rem;
-            }
-    
-            .company-name {
-                position: absolute;
-                top: 7px;
-                left: 50px;
-                margin-left: 5px;
+            cursor: pointer;
+
+            a {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                svg {
+                    height: 2.7rem;
+                    width: 2.7rem;
+                }
         
+                .company-name {
+                    margin-left: 15px;
+                    margin-top: 13px;
+                }
             }
         }
     

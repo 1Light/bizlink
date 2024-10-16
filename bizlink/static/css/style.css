@@ -11890,17 +11890,20 @@ p {
   padding: 0 5rem 0 5rem;
 }
 .navbar_section .navbar .company-logo {
-  position: relative;
+  cursor: pointer;
 }
-.navbar_section .navbar .company-logo svg {
+.navbar_section .navbar .company-logo a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.navbar_section .navbar .company-logo a svg {
   height: 2.7rem;
   width: 2.7rem;
 }
-.navbar_section .navbar .company-logo .company-name {
-  position: absolute;
-  top: 7px;
-  left: 50px;
-  margin-left: 5px;
+.navbar_section .navbar .company-logo a .company-name {
+  margin-left: 15px;
+  margin-top: 13px;
 }
 .navbar_section .navbar .menu-list-items {
   display: flex;
@@ -12438,11 +12441,11 @@ p {
   margin-bottom: 3rem;
 }
 .account-detail .account-detail-box {
-  min-width: 50rem;
+  min-width: 40rem;
 }
 .account-detail .account-detail-box .name {
   display: flex;
-  width: 80%;
+  width: 100%;
 }
 .account-detail .account-detail-box .name .field {
   width: 48%;
@@ -12455,7 +12458,7 @@ p {
   margin-left: 2rem;
 }
 .account-detail .account-detail-box input {
-  width: 80%;
+  width: 100%;
   margin-bottom: 1.5rem;
   height: 3rem;
 }
@@ -12625,6 +12628,15 @@ p {
 .owner_account_intro_section {
   padding-top: 5rem;
 }
+.owner_account_intro_section h1.title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+.owner_account_intro_section p.subtitle {
+  text-align: center;
+  margin-bottom: 3rem;
+}
 .owner_account_intro_section .account-intro-box {
   padding: 3rem;
   column-gap: 3rem;
@@ -12642,6 +12654,7 @@ p {
 }
 .owner_account_intro_section .account-intro-box .tab-content {
   border: 2px solid #000;
+  margin-left: 3rem;
 }
 
 .admin_intro_section {
@@ -14466,9 +14479,44 @@ p {
 .shop_inventory_modal_section .product-modal .modal-body .transaction-log {
   margin-top: 3rem;
 }
+.shop_inventory_modal_section .product-modal .modal-body .transaction-log table {
+  width: 100%;
+  /* Custom Scrollbar for WebKit Browsers */
+}
 .shop_inventory_modal_section .product-modal .modal-body .transaction-log table td, .shop_inventory_modal_section .product-modal .modal-body .transaction-log table th {
   text-align: center;
   width: 14%;
+}
+.shop_inventory_modal_section .product-modal .modal-body .transaction-log table thead {
+  position: sticky;
+  top: -1;
+  z-index: 9999;
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+.shop_inventory_modal_section .product-modal .modal-body .transaction-log table tbody {
+  display: block;
+  max-height: 300px;
+  overflow-y: scroll;
+}
+.shop_inventory_modal_section .product-modal .modal-body .transaction-log table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+.shop_inventory_modal_section .product-modal .modal-body .transaction-log table tbody::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+}
+.shop_inventory_modal_section .product-modal .modal-body .transaction-log table tbody::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background of the scrollbar track */
+}
+.shop_inventory_modal_section .product-modal .modal-body .transaction-log table tbody::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+  border-radius: 5px; /* Rounded edges for the thumb */
+}
+.shop_inventory_modal_section .product-modal .modal-body .transaction-log table tbody::-webkit-scrollbar-thumb:hover {
+  background: #32CD32; /* Color when hovered */
 }
 .shop_inventory_modal_section .product-modal .modal-body .save-changes-btn {
   display: block;
@@ -14601,9 +14649,43 @@ p {
 .shop_inventory_modal_section .category-modal .modal-body .product-table {
   margin-top: 3rem;
 }
+.shop_inventory_modal_section .category-modal .modal-body .product-table table {
+  /* Custom Scrollbar for WebKit Browsers */
+}
 .shop_inventory_modal_section .category-modal .modal-body .product-table table td, .shop_inventory_modal_section .category-modal .modal-body .product-table table th {
   text-align: center;
   width: 14%;
+}
+.shop_inventory_modal_section .category-modal .modal-body .product-table table thead {
+  position: sticky;
+  top: -1;
+  z-index: 9999;
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+.shop_inventory_modal_section .category-modal .modal-body .product-table table tbody {
+  display: block;
+  max-height: 300px;
+  overflow-y: scroll;
+}
+.shop_inventory_modal_section .category-modal .modal-body .product-table table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+.shop_inventory_modal_section .category-modal .modal-body .product-table table tbody::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+}
+.shop_inventory_modal_section .category-modal .modal-body .product-table table tbody::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background of the scrollbar track */
+}
+.shop_inventory_modal_section .category-modal .modal-body .product-table table tbody::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+  border-radius: 5px; /* Rounded edges for the thumb */
+}
+.shop_inventory_modal_section .category-modal .modal-body .product-table table tbody::-webkit-scrollbar-thumb:hover {
+  background: #32CD32; /* Color when hovered */
 }
 .shop_inventory_modal_section .category-modal .modal-body .product-table table .quantity input {
   width: 67%;
@@ -14727,15 +14809,13 @@ p {
 }
 .inbox-modal .modal-dialog .modal-content {
   height: 100%;
-  /* Custom Scrollbar for WebKit Browsers */
 }
 .inbox-modal .modal-dialog .modal-content .chat-window {
   position: relative;
   border: 2px solid #0d6efd;
   border-radius: 10px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: 20rem;
+  padding-bottom: 3rem;
+  /* Custom Scrollbar for WebKit Browsers */
 }
 .inbox-modal .modal-dialog .modal-content .chat-window .other_chat_member {
   position: relative;
@@ -14769,6 +14849,9 @@ p {
   display: flex;
   flex-direction: column;
   position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 12.5rem;
 }
 .inbox-modal .modal-dialog .modal-content .chat-window .chat-display #chat_messages {
   display: flex;
@@ -14872,6 +14955,19 @@ p {
   height: 100%;
   border-radius: 50%;
 }
+.inbox-modal .modal-dialog .modal-content .chat-window .chat-display::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+}
+.inbox-modal .modal-dialog .modal-content .chat-window .chat-display::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background of the scrollbar track */
+}
+.inbox-modal .modal-dialog .modal-content .chat-window .chat-display::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+  border-radius: 5px; /* Rounded edges for the thumb */
+}
+.inbox-modal .modal-dialog .modal-content .chat-window .chat-display::-webkit-scrollbar-thumb:hover {
+  background: #32CD32; /* Color when hovered */
+}
 .inbox-modal .modal-dialog .modal-content .chat-window .send-message-box {
   position: absolute;
   width: 100%;
@@ -14885,19 +14981,6 @@ p {
   width: 100%;
   height: 3rem;
   border-radius: 0 0 10px 10px;
-}
-.inbox-modal .modal-dialog .modal-content .chat-window::-webkit-scrollbar {
-  width: 10px; /* Width of the scrollbar */
-}
-.inbox-modal .modal-dialog .modal-content .chat-window::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Background of the scrollbar track */
-}
-.inbox-modal .modal-dialog .modal-content .chat-window::-webkit-scrollbar-thumb {
-  background: #888; /* Color of the scrollbar thumb */
-  border-radius: 5px; /* Rounded edges for the thumb */
-}
-.inbox-modal .modal-dialog .modal-content .chat-window::-webkit-scrollbar-thumb:hover {
-  background: #32CD32; /* Color when hovered */
 }
 
 .shop_banner_section {
@@ -16045,6 +16128,15 @@ p {
   padding-top: 5rem;
   min-height: 100vh;
 }
+.wishlist_intro_section h1.title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+.wishlist_intro_section p.subtitle {
+  text-align: center;
+  margin-bottom: 3rem;
+}
 .wishlist_intro_section .wishlist-intro-box {
   border: 2px solid #000;
 }
@@ -16054,6 +16146,10 @@ p {
 }
 .wishlist_intro_section .wishlist-intro-box table .num {
   width: 5%;
+}
+.wishlist_intro_section .wishlist-intro-box table .no-wishlist-text a {
+  color: #32CD32;
+  text-decoration: none;
 }
 .wishlist_intro_section .wishlist-intro-box table a.remove-from-wishlist i {
   color: #dc3545;
@@ -16161,12 +16257,12 @@ p {
 .chat_section {
   padding-top: 5rem;
 }
-.chat_section h1 {
+.chat_section h1.title {
   text-align: center;
   font-size: 2.5rem;
   margin-bottom: 2rem;
 }
-.chat_section p {
+.chat_section p.subtitle {
   text-align: center;
   margin-bottom: 3rem;
 }

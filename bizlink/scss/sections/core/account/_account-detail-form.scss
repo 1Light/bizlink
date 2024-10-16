@@ -9,11 +9,11 @@
     }
 
     .account-detail-box {
-        min-width: 50rem;
+        min-width: 40rem;
 
         .name {
             display: flex;
-            width: 80%;
+            width: 100%;
 
             .field {
                 width: 48%;
@@ -30,7 +30,7 @@
         }
 
         input {
-            width: 80%;
+            width: 100%;
             margin-bottom: 1.5rem;
             height: 3rem;
         }

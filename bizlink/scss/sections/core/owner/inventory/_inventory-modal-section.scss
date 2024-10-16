@@ -547,9 +547,51 @@
                 margin-top: 3rem;
 
                 table {
+                    width: 100%;
+
                     td, th {
                         text-align: center;
                         width: 14%;
+                    }
+
+                    thead {
+                        position: sticky;
+                        top: -1;
+                        z-index: 9999;
+
+                        display: table;
+                        width: 100%;
+                        table-layout: fixed;
+                    }
+
+                    tbody {
+                        display: block;
+                        max-height: 300px;
+                        overflow-y: scroll;
+
+                        tr {
+                            display: table;
+                            width: 100%;
+                            table-layout: fixed;
+                        }
+                    }
+
+                    /* Custom Scrollbar for WebKit Browsers */
+                    tbody::-webkit-scrollbar {
+                        width: 10px;                /* Width of the scrollbar */
+                    }
+                    
+                    tbody::-webkit-scrollbar-track {
+                        background: #f1f1f1;        /* Background of the scrollbar track */
+                    }
+                    
+                    tbody::-webkit-scrollbar-thumb {
+                        background: #888;           /* Color of the scrollbar thumb */
+                        border-radius: 5px;         /* Rounded edges for the thumb */
+                    }
+                    
+                    tbody::-webkit-scrollbar-thumb:hover {
+                        background: $primary;           /* Color when hovered */
                     }
                 }
             }
@@ -709,6 +751,46 @@
                     td, th {
                         text-align: center;
                         width: 14%;
+                    }
+
+                    thead {
+                        position: sticky;
+                        top: -1;
+                        z-index: 9999;
+
+                        display: table;
+                        width: 100%;
+                        table-layout: fixed;
+                    }
+
+                    tbody {
+                        display: block;
+                        max-height: 300px;
+                        overflow-y: scroll;
+
+                        tr {
+                            display: table;
+                            width: 100%;
+                            table-layout: fixed;
+                        }
+                    }
+
+                    /* Custom Scrollbar for WebKit Browsers */
+                    tbody::-webkit-scrollbar {
+                        width: 10px;                /* Width of the scrollbar */
+                    }
+                    
+                    tbody::-webkit-scrollbar-track {
+                        background: #f1f1f1;        /* Background of the scrollbar track */
+                    }
+                    
+                    tbody::-webkit-scrollbar-thumb {
+                        background: #888;           /* Color of the scrollbar thumb */
+                        border-radius: 5px;         /* Rounded edges for the thumb */
+                    }
+                    
+                    tbody::-webkit-scrollbar-thumb:hover {
+                        background: $primary;           /* Color when hovered */
                     }
     
                    .quantity {

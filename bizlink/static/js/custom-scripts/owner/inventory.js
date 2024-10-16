@@ -687,7 +687,7 @@ function populateTransactionLogs(actionArray, quantityArray, timestampArray, tra
 
 // Function to add a new transaction log row
 function addTransactionLog(action, quantity, timestamp, transactionLogId) {
-    // Create a new row and populate it with the transaction log values
+
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
         <td>${action}</td>
@@ -695,7 +695,7 @@ function addTransactionLog(action, quantity, timestamp, transactionLogId) {
         <td>${timestamp.replace(' at ', '<br>at ')}</td>
      <td><button type="button" class="remove-transaction btn btn-danger" data-transaction-id="${transactionLogId}"><i class="fa-solid fa-trash"></i></button></td>
     `;
-
+    
     // Append the new row to the table body
     document.getElementById('transaction-log-body').appendChild(newRow);
 }

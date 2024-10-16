@@ -13,9 +13,7 @@
                 position: relative;
                 border: 2px solid $blue;
                 border-radius: 10px;
-                overflow-y: auto;
-                overflow-x: hidden;
-                height: 20rem;
+                padding-bottom: 3rem;
     
                 .other_chat_member {
                     position: relative;
@@ -54,6 +52,9 @@
                     display: flex;
                     flex-direction: column;
                     position: relative;
+                    overflow-y: auto;
+                    overflow-x: hidden;
+                    height: 12.5rem;
     
                     #chat_messages {
                         display: flex;
@@ -179,6 +180,24 @@
                     }
                 }
 
+                /* Custom Scrollbar for WebKit Browsers */
+                .chat-display::-webkit-scrollbar {
+                    width: 10px;                /* Width of the scrollbar */
+                }
+                
+                .chat-display::-webkit-scrollbar-track {
+                    background: #f1f1f1;        /* Background of the scrollbar track */
+                }
+                
+                .chat-display::-webkit-scrollbar-thumb {
+                    background: #888;           /* Color of the scrollbar thumb */
+                    border-radius: 5px;         /* Rounded edges for the thumb */
+                }
+                
+                .chat-display::-webkit-scrollbar-thumb:hover {
+                    background: $primary;           /* Color when hovered */
+                }
+
                 .send-message-box {
                     position: absolute;
                     width: 100%;
@@ -195,24 +214,6 @@
                         }
                     }
                 }
-            }
-
-            /* Custom Scrollbar for WebKit Browsers */
-            .chat-window::-webkit-scrollbar {
-                width: 10px;                /* Width of the scrollbar */
-            }
-            
-            .chat-window::-webkit-scrollbar-track {
-                background: #f1f1f1;        /* Background of the scrollbar track */
-            }
-            
-            .chat-window::-webkit-scrollbar-thumb {
-                background: #888;           /* Color of the scrollbar thumb */
-                border-radius: 5px;         /* Rounded edges for the thumb */
-            }
-            
-            .chat-window::-webkit-scrollbar-thumb:hover {
-                background: $primary;           /* Color when hovered */
             }
         }
     }

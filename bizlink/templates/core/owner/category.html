@@ -74,7 +74,10 @@ Products
                         </div>
 
                 {% else %}
-                    <p>No categories available. <a href="#">Click here</a> to create categories</p>
+                    <p>No categories available.
+                        {% if user.user_type == "business_owner" %}
+                            <a href="{% url 'core:factory' %}">Click here</a> to create categories</p>
+                        {% endif %}
                 {% endif %}
             </div>
         </div>
