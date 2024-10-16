@@ -5,5 +5,26 @@
 
     .notification-table {
         width: 100%;
+
+        td, th {
+            text-align: center;
+            width: 14%;
+        }
+
+        .message {
+            width: 30%;
+        }
+
+        .bell-icon {
+            width: 5%;
+        }
+
+        a.remove-notification {
+
+            i {
+                color: $red;
+                font-size: 1.3rem;
+            }  
+        } 
     }
 }

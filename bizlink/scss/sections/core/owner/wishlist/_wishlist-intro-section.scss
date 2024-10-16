@@ -1,8 +1,30 @@
 @use '../../../../custom' as *;
 
 .wishlist_intro_section {
+    padding-top: 5rem;
+    min-height: 100vh;
 
     .wishlist-intro-box {
         border: 2px solid $black;
+
+        table {
+
+            td, th {
+                text-align: center;
+                width: 14%;
+            }
+
+            .num {
+                width: 5%;
+            }
+
+            a.remove-from-wishlist {
+
+                i {
+                    color: $red;
+                    font-size: 1.3rem;
+                }  
+            }
+        }
     }
 }

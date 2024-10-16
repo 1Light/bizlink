@@ -31,6 +31,15 @@ def signup(request):
                     user_type=user_type,
                 )
 
+                # Create a shop for the business owner after user creation
+                Shop.objects.create(
+                    name=f"{user.first_name}'s Shop",  # You can set default or dynamic values here
+                    description='This is my shop',
+                    address=form.cleaned_data['address'],
+                    contact=form.cleaned_data['mobile'],
+                    created_by=user,  # Link the shop to the business owner
+                )
+
             elif user_type == 'customer':
                
                 user = Customer.objects.create_user(

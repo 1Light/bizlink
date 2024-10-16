@@ -11876,6 +11876,7 @@ textarea.form-control-lg {
 /* Styles for the Base */
 body {
   font-family: "Roboto", sans-serif;
+  padding-top: 3rem;
 }
 
 p {
@@ -11884,6 +11885,7 @@ p {
 
 /* Styles for the Navbar */
 .navbar_section .navbar {
+  background-color: #fff;
   min-height: 5rem;
   padding: 0 5rem 0 5rem;
 }
@@ -12013,14 +12015,202 @@ p {
   animation: dropdown-animate 0.5s;
 }
 
+/* Styles for the Footer */
+.footer_section {
+  margin-top: 5rem;
+}
+.footer_section .footer {
+  padding: 1rem;
+  min-height: 21rem;
+  background: #1F3B4D;
+  font-family: "Poppins", sans-serif;
+}
+.footer_section .footer .connect-with-us {
+  background: #495057;
+  border-radius: 7px;
+  border: 2px solid #fff;
+  display: flex;
+  row-gap: 0.3rem;
+  justify-content: space-around;
+  padding: 1rem;
+}
+.footer_section .footer .connect-with-us-content {
+  color: #fff;
+}
+.footer_section .footer .connect-with-us-icons {
+  cursor: pointer;
+}
+.footer_section .footer .connect-with-us-icons a {
+  color: #32CD32;
+  transition: 0.3s ease;
+}
+.footer_section .footer .connect-with-us-icons a i {
+  font-size: 1.5rem;
+  margin-left: 1rem;
+}
+.footer_section .footer .connect-with-us-icons a:hover {
+  color: #fff;
+}
+.footer_section .footer-column {
+  margin-top: 2rem;
+  display: flex;
+}
+.footer_section .footer-column-resources {
+  display: flex;
+  justify-content: start;
+  column-gap: 1.4rem;
+  margin-left: 1rem;
+  overflow: hidden;
+}
+.footer_section .footer-column-resources li {
+  list-style-type: none;
+}
+.footer_section .footer-column-resources li a {
+  color: #fff;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+.footer_section .footer-column-resources li a:hover {
+  color: #32CD32;
+  padding-left: 4px;
+}
+.footer_section .footer-copyright {
+  color: #6c757d;
+}
+.footer_section .footer-copyright a {
+  text-decoration: none;
+  color: #fff;
+}
+.footer_section .footer-copyright a:hover {
+  color: #32CD32;
+}
+
+/* Style the Back to Top Button */
+.back-to-top {
+  position: fixed;
+  width: 3rem;
+  height: 3rem;
+  right: 1.875rem;
+  bottom: 1.875rem;
+  z-index: 9999;
+  background: #32CD32;
+}
+.back-to-top i {
+  color: #fff;
+  font-size: 1rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Making the Footer Responsive */
+@media (max-width: 1210px) {
+  .footer-column {
+    flex-wrap: wrap;
+  }
+  .footer-column-description {
+    width: 100%;
+    margin-left: 2.3rem;
+  }
+  .footer-column-resources {
+    width: 100%;
+    margin-left: 2.3rem;
+    column-gap: 5rem;
+  }
+}
+@media (max-width: 1210px) and (max-width: 992px) {
+  .footer-column-resources .col-lg-4 {
+    width: 20rem;
+  }
+}
+@media (min-width: 637px) and (max-width: 668px) {
+  .footer-column {
+    flex-wrap: wrap;
+  }
+  .footer-column-description {
+    width: 100%;
+    margin-left: 2.3rem;
+  }
+  .footer-column-resources {
+    flex-wrap: wrap;
+    margin-left: 2.3rem;
+    column-gap: 10rem;
+  }
+  .footer-column-resources .col-lg-4 {
+    width: 11rem;
+  }
+}
+@media (min-width: 578px) and (max-width: 607px) {
+  .footer-column {
+    flex-wrap: wrap;
+  }
+  .footer-column-description {
+    width: 100%;
+    margin-left: 2.3rem;
+  }
+  .footer-column-resources {
+    flex-wrap: wrap;
+    margin-left: 2.3rem;
+    column-gap: 9rem;
+  }
+  .footer-column-resources .col-lg-4 {
+    width: 10rem;
+  }
+}
+@media (min-width: 451px) and (max-width: 577px) {
+  .footer-column {
+    flex-wrap: wrap;
+  }
+  .footer-column-description {
+    width: 100%;
+    margin-left: 2.3rem;
+  }
+  .footer-column-resources {
+    flex-wrap: wrap;
+    margin-left: 2.3rem;
+    column-gap: 5rem;
+  }
+  .footer-column-resources .col-lg-4 {
+    width: 10rem;
+  }
+}
+@media (max-width: 450px) {
+  .footer-column {
+    flex-wrap: wrap;
+  }
+  .footer-column-description {
+    width: 100%;
+    margin-left: 2.3rem;
+  }
+  .footer-column-resources {
+    display: block;
+    margin-left: 2.3rem;
+  }
+  .footer-column-resources .col-lg-4 {
+    width: 100%;
+  }
+}
+@media (max-width: 560px) {
+  .connect-with-us {
+    flex-wrap: wrap;
+  }
+  .connect-with-us-icons i {
+    margin-right: 12px;
+  }
+}
+@media (max-width: 560px) and (max-width: 362px) {
+  .connect-with-us-icons i {
+    margin-right: 5px;
+    margin-left: 0px;
+  }
+}
 /* Styles for the Userauth */
 .signup_form {
   display: flex;
   justify-content: center;
   align-items: center;
   column-gap: 4rem;
-  padding-top: 4rem;
-  height: 105vh;
 }
 .signup_form .signup-form-box {
   min-width: 20rem;
@@ -12107,8 +12297,13 @@ p {
 }
 
 /* Styles for the Error and Success Message */
+.signup_message_box_section {
+  margin-top: 3rem;
+}
 .signup_message_box_section .message-box {
   min-height: 3.3rem;
+  padding-left: 5rem;
+  border: 2px solid #000;
 }
 
 .login_form {
@@ -12116,7 +12311,6 @@ p {
   justify-content: center;
   align-items: center;
   column-gap: 4rem;
-  height: 105vh;
 }
 .login_form .login-image {
   width: 350px;
@@ -12154,13 +12348,19 @@ p {
 }
 
 /* Styles for the Error and Success Message */
+.login_message_box_section {
+  margin-top: 3rem;
+}
 .login_message_box_section .message-box {
   min-height: 3.3rem;
+  padding-left: 5rem;
+  border: 2px solid #000;
 }
 
 /* Styles for the Submenu */
 .owner_submenu_section {
   margin: 2rem 0 2rem 0;
+  padding-top: 5rem;
 }
 .owner_submenu_section .owner-submenu-section-box {
   min-height: 3.3rem;
@@ -12218,6 +12418,9 @@ p {
 }
 
 /* Styles for the Error and Success Message */
+.owner_submenu_message_box_section {
+  margin-top: 3rem;
+}
 .owner_submenu_message_box_section .message-box {
   min-height: 3.3rem;
   width: 88%;
@@ -12404,7 +12607,24 @@ p {
 .notification-tab .notification-table {
   width: 100%;
 }
+.notification-tab .notification-table td, .notification-tab .notification-table th {
+  text-align: center;
+  width: 14%;
+}
+.notification-tab .notification-table .message {
+  width: 30%;
+}
+.notification-tab .notification-table .bell-icon {
+  width: 5%;
+}
+.notification-tab .notification-table a.remove-notification i {
+  color: #dc3545;
+  font-size: 1.3rem;
+}
 
+.owner_account_intro_section {
+  padding-top: 5rem;
+}
 .owner_account_intro_section .account-intro-box {
   padding: 3rem;
   column-gap: 3rem;
@@ -15176,6 +15396,20 @@ p {
   height: 27rem;
   border-radius: 15px;
   padding: 0.7rem 1.5rem 1.5rem 1.5rem;
+  position: relative;
+  /* Turn the heart green when clicked */
+}
+.product_intro_section .intro-section-box .product-collection .product-collection-box .product-box .add-to-wishlist {
+  position: absolute;
+  color: #000;
+  top: 0;
+  right: 5px;
+  font-size: 1.3rem;
+  background-color: #fff;
+  transition: color 0.3s ease;
+}
+.product_intro_section .intro-section-box .product-collection .product-collection-box .product-box .green-heart {
+  color: #32CD32;
 }
 .product_intro_section .intro-section-box .product-collection .product-collection-box .product-box .product-image {
   width: 13rem;
@@ -15807,8 +16041,23 @@ p {
   margin-bottom: 5px;
 }
 
+.wishlist_intro_section {
+  padding-top: 5rem;
+  min-height: 100vh;
+}
 .wishlist_intro_section .wishlist-intro-box {
   border: 2px solid #000;
+}
+.wishlist_intro_section .wishlist-intro-box table td, .wishlist_intro_section .wishlist-intro-box table th {
+  text-align: center;
+  width: 14%;
+}
+.wishlist_intro_section .wishlist-intro-box table .num {
+  width: 5%;
+}
+.wishlist_intro_section .wishlist-intro-box table a.remove-from-wishlist i {
+  color: #dc3545;
+  font-size: 1.3rem;
 }
 
 /* Styles for the Customer */
@@ -15909,6 +16158,18 @@ p {
 }
 
 /* Styles for the Chat */
+.chat_section {
+  padding-top: 5rem;
+}
+.chat_section h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+.chat_section p {
+  text-align: center;
+  margin-bottom: 3rem;
+}
 .chat_section .chat-box {
   height: 100vh;
   display: flex;

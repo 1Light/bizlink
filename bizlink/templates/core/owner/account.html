@@ -1,4 +1,4 @@
-{% extends "core/owner/owner-base.html" %}
+{% extends "core/base.html" %}
 
 {% load static %}
 
@@ -24,8 +24,17 @@ Account
 
                 <!-- Dashboard tab -->
                 <div class="tab-pane fade show active" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab" tabindex="0">
-                    <h3>Hello, {{ user.first_name|title }}</h3>
-                    <p>From your account dashboard, you can easily check and view your recent orders, <br>manage your shipping and billing addresses, and edit your password and account details.</p>
+                    {% if user.user_type == "business_owner" %}
+                        <h2>Hello, {{ user.first_name|title }}!<br>Your business is thriving – let's make it even better!</h2>
+                        <blockquote>
+                            "Success isn’t just about what you accomplish; it’s about what you inspire others to do."
+                        </blockquote>
+                    {% elif user.user_type == "customer" %}
+                        <h2>Welcome back, {{ user.first_name|title }}!<br>Ready to discover your next favorite find?</h2>
+                        <blockquote>
+                            "Shopping is a form of self-care. Treat yourself!"
+                        </blockquote>
+                    {% endif %}
                 </div>
 
                 <!-- Notification Tab -->
@@ -33,8 +42,8 @@ Account
                     <table class="table table-striped notification-table">
                         <thead>
                           <tr>
-                            <th scope="col"></th>
-                            <th scope="col">Message</th>
+                            <th scope="col" class="bell-icon">#</th>
+                            <th scope="col" class="message">Message</th>
                             <th scope="col">Date</th>
                             <th scope="col">Remove</th>
                           </tr>
@@ -43,8 +52,8 @@ Account
 
                             {% for notification in notifications %}
                                 <tr>
-                                    <td><i class="fa-solid fa-bell"></i></td>
-                                    <td>{{ notification.message }}</td>
+                                    <td class="bell-icon"><i class="fa-solid fa-bell"></i></td>
+                                    <td class="message">{{ notification.message }}</td>
                                     <td>{{ notification.created_at|date:"Y-m-d H:i" }}</td>
                                     <td>
                                         <a href="#" class="remove-notification" data-notification-id="{{ notification.notificationId }}">

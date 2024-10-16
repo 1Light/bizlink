@@ -1,0 +1,234 @@
+@use 'custom' as *;
+@use 'components/mixins' as *;
+
+.footer_section {
+    margin-top: 5rem;
+
+    .footer {
+        padding: 1rem; 
+        min-height: 21rem;
+        background: #1F3B4D;
+        font-family: "Poppins", sans-serif;
+    
+        .connect-with-us {
+            background: $gray-700;
+            border-radius: 7px;
+            border: 2px solid $white;
+            display: flex;
+            row-gap: 0.3rem;
+            justify-content: space-around;
+            padding: 1rem;
+    
+            &-content {
+                color: $white;
+            }
+            &-icons {
+                cursor: pointer;
+    
+                a {
+                    color: $primary;
+                    transition: 0.3s ease;
+    
+                    i {
+                        font-size: 1.5rem;
+                        margin-left: 1rem;
+                    }
+                }
+    
+                a:hover {
+                    color: $white;
+                }
+            }
+        }
+    
+        &-column {
+            margin-top: 2rem;
+            display: flex;
+    
+            &-resources {
+                display: flex;
+                justify-content: start;
+                column-gap: 1.4rem;
+                margin-left: 1rem;
+                overflow: hidden;
+    
+                li {
+                    list-style-type: none;
+        
+                    a {
+                        color: $white;
+                        text-decoration: none;
+                        transition: 0.3s ease;
+                    }
+    
+                    a:hover {
+                        color: $primary;
+                        padding-left: 4px;
+                    }
+                }
+            }
+        }
+    
+        &-copyright {
+    
+            color: $gray-600;
+            a {
+                text-decoration: none;
+                color: $white;
+    
+                &:hover {
+                    color: $primary;
+                }
+            }
+        }
+    }
+}
+
+/* Style the Back to Top Button */
+.back-to-top {
+    position: fixed;
+    width: 3rem;
+    height: 3rem;
+
+    right: 1.875rem;
+    bottom: 1.875rem;
+    z-index: 9999;
+    background: $primary;
+
+
+        i {
+            color: $white;
+            font-size: 1rem;
+            @include absoluteCenter;
+        }
+
+
+}
+
+/* Making the Footer Responsive */
+@media(max-width: 1210px) {
+    .footer-column {
+        flex-wrap: wrap;
+
+        &-description {
+            width: 100%;
+            margin-left: 2.3rem;
+        }
+
+        &-resources {
+            width: 100%;
+            margin-left: 2.3rem;
+            column-gap: 5rem;
+
+            @media(max-width: 992px) {
+                .col-lg-4 {
+                    width: 20rem;
+                }
+            }
+        }
+    }
+}
+
+@media(min-width: 637px) and (max-width: 668px){
+    .footer-column {
+        flex-wrap: wrap;
+
+        &-description {
+            width: 100%;
+            margin-left: 2.3rem;
+        }
+
+        &-resources {
+            flex-wrap: wrap;
+            margin-left: 2.3rem;
+            column-gap: 10rem;
+
+            .col-lg-4 {
+                width: 11rem;
+            }
+        }
+    }
+}
+
+@media(min-width: 578px) and (max-width: 607px){
+    .footer-column {
+        flex-wrap: wrap;
+
+        &-description {
+            width: 100%;
+            margin-left: 2.3rem;
+        }
+
+        &-resources {
+            flex-wrap: wrap;
+            margin-left: 2.3rem;
+            column-gap: 9rem;
+
+            .col-lg-4 {
+                width: 10rem;
+            }
+        }
+    }
+}
+
+@media(min-width: 451px) and (max-width: 577px){
+    .footer-column {
+        flex-wrap: wrap;
+
+        &-description {
+            width: 100%;
+            margin-left: 2.3rem;
+        }
+
+        &-resources {
+            flex-wrap: wrap;
+            margin-left: 2.3rem;
+            column-gap: 5rem;
+
+            .col-lg-4 {
+                width: 10rem;
+            }
+        }
+    }
+}
+
+@media(max-width: 450px){
+    .footer-column {
+        flex-wrap: wrap;
+
+        &-description {
+            width: 100%;
+            margin-left: 2.3rem;
+        }
+
+        &-resources {
+            display: block;
+            margin-left: 2.3rem;
+
+            .col-lg-4 {
+                width: 100%;
+            }
+        }
+    }
+}
+
+@media(max-width: 560px) {
+
+    .connect-with-us {
+        flex-wrap: wrap;
+
+        &-icons {
+
+            i {
+                margin-right: 12px;
+            }
+
+            @media (max-width: 362px) {
+                i {
+                    margin-right: 5px;
+                    margin-left: 0px;
+                }
+            }
+        }
+    }
+}

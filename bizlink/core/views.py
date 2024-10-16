@@ -538,9 +538,12 @@ def product(request):
             products = Product.objects.filter(shop=shop).order_by("-created_at")
         else:
             messages.error(request, "No products available.")
+    
+    wishlist_items = Wishlist.objects.filter(created_by=user).values_list('product__productId', flat=True)
 
     return render(request, "core/owner/product.html", {
         'products': products,
+        'wishlist_items': wishlist_items,
     })
 
 def product_detail(request, productId):
@@ -1235,6 +1238,7 @@ def wishlist(request):
     wishlist_products = Wishlist.objects.filter(created_by=user)
 
     return render(request, "core/owner/wishlist.html", {
+        'user': user,
         'wishlist_products': wishlist_products,
     })
 

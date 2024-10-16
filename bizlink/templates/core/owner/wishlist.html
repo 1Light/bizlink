@@ -1,9 +1,9 @@
-{% extends "core/owner/owner-base.html" %}
+{% extends "core/base.html" %}
 
 {% load static %}
 
 {% block title %}
-Product({{ product.name }})
+Wishlist
 {% endblock %}
 
 {% block content %}
@@ -13,7 +13,7 @@ Product({{ product.name }})
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">
+                    <th scope="col" class="num">
                         #
                     </th>
                     <th scope="col">Product</th>
@@ -28,9 +28,9 @@ Product({{ product.name }})
                     {% for wishlist in wishlist_products %}
 
                         <tr>
-                            <th scope="row">
+                            <td scope="row" class="num">
                                 {{ forloop.counter }}
-                            </th>
+                            </td>
                             <td>{{ wishlist.product.name|title|truncatechars:30 }}</td>
                             <td>{{ wishlist.product.price }}</td>
                             <td>{{ wishlist.product.check_stock_status }}</td>
@@ -44,7 +44,14 @@ Product({{ product.name }})
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="5" class="text-center">No wishlist products. <a href="{% url 'core:owner_shop' %}">Click here to go back.</a></td>
+                        <td colspan="5" class="text-center">
+                            No wishlist products.
+                            {% if user.user_type == "business_owner" %}
+                                <a href="{% url 'core:owner_shop' %}">Click here to go back.</a>
+                            {% elif user.user_type == "customer" %}
+                                <a href="{% url 'core:customer_home' %}">Click here to go back.</a>
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endif %}
                 </tbody>

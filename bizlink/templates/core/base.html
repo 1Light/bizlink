@@ -17,7 +17,7 @@
   <body>
     <!-- Navbar Section -->
     <section class="navbar_section">
-        <nav class="navbar navbar-expand-lg">
+        <nav class="navbar navbar-expand-lg fixed-top shadow">
             <div class="container">
                 <!-- Company Logo & Name -->
                 <div class="company-logo">
@@ -204,6 +204,81 @@
     </section>
     {% block content %}
     {% endblock %}
+      <!-- Start the Footer Section -->
+  <section class="footer_section">
+    <footer class="footer">
+      <div class="container-fluid">
+        <!-- Connect With Us -->
+        <div class="connect-with-us align-items-center">
+          <div class="connect-with-us-content">
+            connect with us on social media
+          </div>
+          <div class="connect-with-us-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        <!-- Footer Description, Copyright and Resources -->
+        <div class="footer-column">
+          <div class="col-lg-6 footer-column-description">
+            <h5 class="text-capitalize fw-bold text-white">BizLink</h5>
+            <hr class="bg-white" style="width: 90px; height: 5px" />
+            <p class="lh-lg text-white footer-column-content pe-3">
+              "At BizLink, we connect businesses with customers through an
+              innovative platform that simplifies the process of opening and
+              managing online shops.
+            </p>
+          </div>
+          <div class="col-lg-6 footer-column-resources">
+            <div class="col-lg-4">
+              <h5 class="fw-bold text-white">Products</h5>
+              <hr class="bg-white" style="width: 90px; height: 5px" />
+              <ul class="products-list list-unstyled">
+                <li><a href="#">Subscription Plans</a></li>
+                <li><a href="#">Feature Highlights</a></li>
+                <li><a href="#">Integrations</a></li>
+              </ul>
+            </div>
+            <div class="col-lg-4">
+              <h5 class="fw-bold text-white">Useful Links</h5>
+              <hr class="bg-white" style="width: 90px; height: 5px" />
+              <ul class="useful-links-list list-unstyled">
+                <li><a href="#">Help & Support</a></li>
+                <li><a href="#">Hire an Influencer</a></li>
+                <li><a href="#">FAQ</a></li>
+              </ul>
+            </div>
+            <div class="col-lg-4">
+              <h5 class="fw-bold text-white">Contact</h5>
+              <hr class="bg-white" style="width: 90px; height: 5px" />
+              <ul class="contact-list list-unstyled">
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">Feedback</a></li>
+                <li><a href="#">FAQ</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Start the Copyright Info -->
+      <div class="row text-center mt-3">
+        <div class="col-12">
+          <div class="footer-copyright">
+            &COPY; Copyright 2024 <a href="#">Multi-Purpose Company</a> |
+            Created by
+            <a href="https://github.com/1Light" target="_blank">Nasir</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+    </section>
+    <!-- Back to Top Button -->
+    <a href="#" class="shadow rounded-circle back-to-top">
+        <i class="fas fa-chevron-up"></i>
+        </a>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         var csrfToken = "{{ csrf_token }}";

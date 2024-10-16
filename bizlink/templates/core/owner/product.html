@@ -103,6 +103,11 @@ Products
                                         </div>
                                     </a>
 
+                                    <a href="#" class="add-to-wishlist" data-product-item="{{ product.productId }}">
+                                        <i class="fa-solid fa-heart {% if product.productId in wishlist_items %}green-heart{% endif %}">
+                                        </i>
+                                    </a>
+
                                     <p>{{ product.category.name }}</p>
                                     <h4>{{ product.name }}</h4>
                                     <p>By {{ product.shop.name }}</p>
