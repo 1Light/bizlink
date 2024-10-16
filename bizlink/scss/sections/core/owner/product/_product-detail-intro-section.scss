@@ -39,11 +39,10 @@
         .product-image {
             border: 2px solid $black;
             width: 33%;
-            height: 30.9rem;
 
             .image-box {
                 width: 100%;
-                height: 15rem;
+                height: 20rem;
 
                 img {
                     width: 100%;
@@ -54,16 +53,25 @@
 
             .more-product-images {
                 border: 2px solid $black;
-                margin: 5rem 0 5rem 0;
+                margin: 5rem 0 1rem 0;
                 padding: 10px;
                 
                 .carousel-inner {
+                    height: 10rem;
+
+                    .no-more-images-text {
+                        text-align: center;
+                        margin-bottom: 0;
+                    }
 
                     .carousel-item {
                         width: 7rem;
                         height: 7rem;
                         margin-left: calc(50% - 50px);
                         padding: 0.7rem;
+                        margin-top: 1.3rem;
+                        border: 2px solid $gray-200;
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     
                         img {
                             width: 100%;
@@ -134,20 +142,15 @@
 
             }
 
-            .add-btn {
-                padding: 5px;
-                background-color: $primary;
-                color: $white;
-                width: 110px;
-            }
-
             .more-detail {
-                display: flex;
-                flex-wrap: wrap;
                 border: 2px solid $black;
                 margin-top: 3rem;
                 padding: 7px;
-                justify-content: space-between;
+
+                .row1 {
+                    display: flex;
+                    gap: 5rem;
+                }
 
                 p {
                     flex: 1 1 37%;
