@@ -360,5 +360,8 @@ addMoreVideosBtn.addEventListener('click', function () {
     createVideoUploadField();
 });
 
+/* Preventing form submission on reload */
 
-
+if ( window.history.replaceState ) {
+window.history.replaceState( null, null, window.location.href );
+}

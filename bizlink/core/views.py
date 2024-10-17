@@ -706,6 +706,11 @@ def factory(request):
                 category.shop = request.user.user_shop
                 category.save()
 
+                messages.success(request, 'Category created successfully!')
+
+                # Re-initialize the form to clear inputs after saving
+                category_form = CreateCategoryForm()
+
         # Handling product form submission
         elif 'product_form_submit' in request.POST:
             product_form = CreateProductForm(request.POST, request.FILES)
@@ -755,6 +760,11 @@ def factory(request):
                             description=video_description
                         )
                         more_product_video.save()
+                
+                messages.success(request, 'Product created successfully!')
+
+                # Re-initialize the form to clear inputs after saving
+                product_form = CreateProductForm()
 
     return render(request, "core/owner/factory.html", {
         'category_form': category_form,

@@ -12220,6 +12220,7 @@ p {
 }
 .signup_form .signup-form-box p a {
   text-decoration: none;
+  color: #32CD32;
 }
 .signup_form .signup-form-box .progressbar {
   position: relative;
@@ -12333,6 +12334,7 @@ p {
 }
 .login_form form a {
   text-decoration: none;
+  color: #32CD32;
 }
 .login_form form .login-form-box {
   transform-origin: top;
@@ -13411,6 +13413,11 @@ p {
 .category_detail_intro_section .intro-section-box .product-collection .product-collection-box .product-box .price-and-button {
   display: flex;
   column-gap: 1.7rem;
+}
+.category_detail_intro_section .intro-section-box .product-collection .product-collection-box .product-box .price-and-button .price {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #32CD32;
 }
 .category_detail_intro_section .intro-section-box .product-collection .product-collection-box .product-box .price-and-button .add-btn {
   padding: 5px;

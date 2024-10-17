@@ -238,7 +238,7 @@ Admin
               <ul class="list-group">
                 {% for product in products %}
                   <li class="list-group-item">
-                    <input type="checkbox" name="featured-products" value="{{ product.id }}" id="modal-featured-product-{{ product.id }}" {% if product.product_new_arrival.exists %} checked {% endif %}>
+                    <input type="checkbox" name="featured-products" value="{{ product.id }}" id="modal-featured-product-{{ product.id }}" {% if product.product_featured_product.exists %} checked {% endif %}>
                     <label for="modal-featured-product-{{ product.id }}">
                       <div class="product">
                         <div class="product-image">

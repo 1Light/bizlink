@@ -1315,3 +1315,7 @@ $(document).on("click", "#nav-products-tab", function(event) {
         }
     });
 });
+
+if ( window.history.replaceState ) {
+    window.history.replaceState( null, null, window.location.href );
+  }
