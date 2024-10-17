@@ -1,18 +1,17 @@
 @use '../../../../custom' as *;
 
 .category_creation_section {
-    border: 2px solid $black;
     margin-bottom: 3rem;
 
     .category-creation-box  {
         .row1 {
             display: flex;
             justify-content: space-between;
-            border: 2px solid $black;
             height: 80vh;
 
             .column1 {
-                border: 2px solid $black;
+                border: 2px solid $gray-300;
+                border-radius: 15px;
                 padding: 1rem;
                 flex: 0 0 47%;
 
@@ -27,14 +26,16 @@
             .column2 {
                 flex: 0 0 47%;
                 padding: 1rem;
-                border: 2px solid $black;
+                border: 2px solid $gray-300;
+                border-radius: 15px;
 
                 .field {
                     width: 100%;
                     height: 100%;
 
                     .category-image {
-                        border: 2px solid $black;
+                        border: 2px solid $gray-300;
+                        border-radius: 15px;
                         width: 100%;
                         height: 90%;
                         position: relative;
@@ -130,6 +131,14 @@
 
                         .clear-image-btn {
                             display: none;
+                            position: absolute;
+                            z-index: 9999;
+                            top: 0;
+                            right: 0;
+                            background-color: $red;
+                            color: $white;
+                            border-radius: 15px;
+                            border: none;
                         }
                     }
                 }
@@ -138,6 +147,7 @@
 
         .create-category-btn {
             margin-top: 5rem;
+            border-radius: 15px;
             display: block;
             margin-left: auto;
             margin-right: auto;

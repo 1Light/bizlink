@@ -9,7 +9,8 @@
         }
 
         .related-product-collection-box {
-            border: 2px solid $black;
+            border: 2px solid $gray-300;
+            border-radius: 10px;
             display: flex;
             margin-top: 1rem;
             column-gap: 0.5rem;

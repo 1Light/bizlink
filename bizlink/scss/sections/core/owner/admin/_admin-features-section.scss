@@ -3,6 +3,10 @@
 .admin_features_section {
     margin-bottom: 5rem;
 
+    .modal-btn {
+        margin-bottom: 2rem;
+    }
+
     h1.title {
         text-align: center;
         margin-bottom: 3rem;
@@ -13,14 +17,12 @@
         justify-content: start;
         flex-direction: column;
         gap: 3rem;
-        border: 2px solid $black;
 
         ul {
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
             gap: 1.83rem;
-            margin-top: 2rem;
 
             li {
                 border: 2px solid $black;
@@ -79,12 +81,23 @@
         .modal-content {
             height: 100%;
 
+            .create-feature-btn {
+                background-color: $primary;
+                color: $white;
+                border: none;
+                padding: 5px;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
             .feature-image-preview-box {
                 max-width: 400px;
                 width: 100%;
                 background: #fff;
                 border-radius: 15px;
                 margin: 30px auto;
+                position: relative;
 
                 .feature-img-area {
                     position: relative;
@@ -156,18 +169,17 @@
                 }
 
                 .select-feature-image-btn {
-                    display: block;
-                    width: 30%;
-                    margin: auto;
-                    padding: 8px 0;
-                    border-radius: 15px;
+                    position: absolute;
+                    top: 0%;
+                    right: 0%;
+                    z-index: 9999;
                     background: $blue;
-                    color: #fff;
                     font-weight: 500;
-                    font-size: 16px;
+                    font-size: 1.5rem;
                     border: none;
                     cursor: pointer;
-                    transition: all .3s ease;
+                    border-radius: 10px;
+                    color: $white;
                 }
             }
         }

@@ -5,6 +5,10 @@
     nav .inventory-tabs {
         display: flex;
         justify-content: center;
+
+        button {
+            color: $primary;
+        }
     }
 
     .tab-content {

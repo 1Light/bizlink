@@ -1,10 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
-from django.utils import timezone
-from django.utils.timezone import make_aware
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from datetime import timedelta
 import json
 from django.contrib import messages
 from django.db.models import Q
@@ -17,7 +13,7 @@ from django.utils.dateparse import parse_datetime
 from shop.forms import EditShop, CreateFeature, EditProductForm, MoreProductImageForm, MoreProductVideoForm, EditCategoryForm, CreateCategoryForm, CreateProductForm
 from userauth.forms import SocialMediaForm
 
-from shop.models import Shop, Category, Product, DiscountedProduct, MoreProductImage, MoreProductVideo, CartOrder, CartOrderProduct, ProductReview, Wishlist, Feature, FeaturedProduct, NewArrival, TransactionLog, ProductVideo
+from shop.models import Shop, Category, Product, DiscountedProduct, MoreProductImage, MoreProductVideo, Wishlist, Feature, FeaturedProduct, NewArrival, TransactionLog, ProductVideo
 from userauth.models import Profile, SocialMedia, Notification
 
 ######################################################################################
@@ -264,7 +260,7 @@ def create_feature(request):
         if form.is_valid():
             # Check if the feature limit is reached
             if features.count() >= 5:  # Changed to >= to enforce the limit
-                messages.error(request, "Feature limit reached. You can only create up to 6 features.")
+                messages.error(request, "Feature limit reached. You can only create up to 5 features.")
                 return redirect("core:admin")
 
             feature = form.save(commit=False)
@@ -512,10 +508,12 @@ def category_detail(request, categoryId):
             messages.error(request, "No products available.")
     
     products = Product.objects.filter(shop=shop, category=category)
+    wishlist_items = Wishlist.objects.filter(created_by=user).values_list('product__productId', flat=True)
 
     return render(request, "core/owner/category-detail.html", {
         'category': category,
         'products': products,
+        'wishlist_items': wishlist_items,
     })
 
 """ Product """

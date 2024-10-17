@@ -1,7 +1,6 @@
 @use '../../../../custom' as *;
 
 .product_detail_tab_section {
-    border: 2px solid $black;
     margin-bottom: 5rem;
     height: 90vh;
 
@@ -29,7 +28,7 @@
         .shop-tab {
 
             .product-shop {
-                border: 2px solid $black;
+                padding: 10px;
 
                 h3 {
                     text-align: center;
@@ -51,7 +50,9 @@
                 display: flex;
                 height: 60vh;
                 flex-wrap: wrap;
-                border: 2px solid $black;
+                border: 2px solid $gray-300;
+                border-radius: 10px;
+                padding: 10px;
                 gap: 5rem 3rem;
                 overflow-y: scroll;
                 scroll-behavior: smooth;

@@ -9,6 +9,7 @@ from chat.models import ReadReceipt, ChatGroup
 
 def base(request):
     user = request.user
+    print(user)
     
     # Initialize default values for both authenticated and anonymous users
     categories = []

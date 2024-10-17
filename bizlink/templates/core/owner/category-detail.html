@@ -40,10 +40,18 @@ Products
                             {% for product in products %}
 
                                 <div class="product-box">
+
+                                    <a href="{% url 'core:product_detail' product.productId %}">
+                                        <div class="product-image">
+                                            <img src="{{ product.image.url }}" alt="{{ product.name }} image">
+                                        </div>
+                                    </a>
+
+                                    <a href="#" class="add-to-wishlist" data-product-item="{{ product.productId }}">
+                                        <i class="fa-solid fa-heart {% if product.productId in wishlist_items %}green-heart{% endif %}">
+                                        </i>
+                                    </a>
                                 
-                                    <div class="product-image">
-                                        <img src="{{ product.image.url }}" alt="{{ product.name }} image">
-                                    </div>
                                     <p>{{ product.category.name }}</p>
                                     <h4>{{ product.name }}</h4>
                                     <p>By {{ product.shop.name }}</p>
@@ -51,7 +59,6 @@ Products
                                     <div class="price-and-button">
                                         <p>{{ product.price }}</p>
                                         <p>{{ product.old_price }}</p>
-                                        <a href="#" class="btn add-btn">Add</a>
                                     </div>
 
                                 </div>
@@ -61,7 +68,7 @@ Products
 
                 {% else %}
                     {% if user.user_type == 'business_owner' %}
-                        <p>No products available. <a href="#">Click here</a> to create products</p>
+                        <p class="no-products-text">No products available. <a href="#">Click here</a> to create products</p>
                     {% else %}
                         <p>No products available.</p>
                     {% endif %}

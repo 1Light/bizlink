@@ -12,11 +12,12 @@
 
                 .data-1 {
                     display: flex;
-                    border: 2px solid $black;
                     justify-content: space-between;
+                    margin-bottom: 2.5rem;
 
                     .column1 {
                         border: 2px solid $black;
+                        border-radius: 15px;
                         padding: 1rem;
                         flex: 0 0 47%;
 
@@ -32,13 +33,15 @@
                         flex: 0 0 47%;
                         padding: 1rem;
                         border: 2px solid $black;
+                        border-radius: 15px;
 
                         .field {
                             width: 100%;
                             height: 100%;
 
                             .product-image {
-                                border: 2px solid $black;
+                                border: 2px solid $gray-300;
+                                border-radius: 15px;
                                 width: 100%;
                                 height: 90%;
                                 position: relative;
@@ -82,7 +85,6 @@
                                         img {
                                             width: 100%;
                                             height: 100%;
-                                            object-position: center;
                                             z-index: 100;
                                         }
                     
@@ -137,15 +139,16 @@
                 }
 
                 .data-2 {
-                    border: 2px solid $black;
 
                     .row2 {
                         display: flex;
                         justify-content: space-between;
+                        margin-bottom: 2.5rem;
 
                         .column1 {
                             flex: 0 0 47%;
                             border: 2px solid $black;
+                            border-radius: 15px;
                             padding: 1rem;
 
                             textarea {
@@ -160,6 +163,7 @@
                             flex: 0 0 47%;
                             padding: 1rem;
                             border: 2px solid $black;
+                            border-radius: 15px;
                             width: 100%;
                             height: 39.30rem;
                             display: flex;
@@ -170,6 +174,7 @@
                                 border: 2px solid $black;
                                 height: 48.5%;
                                 width: 100%;
+                                border-radius: 15px;
                                 
 
                                 &:hover {
@@ -271,11 +276,11 @@
             }
 
             .more-data {
-                border: 2px solid $black;
                 position: relative;
 
                 .more-product-image {
                     position: relative;
+                    margin-bottom: 2.5rem;
 
                     .add-more-images-btn-box {
                         position: absolute;
@@ -285,8 +290,9 @@
 
                     .more-product-image-box {
                         min-height: 11rem;
+                        border: 2px solid $gray-300;
+                        border-radius: 15px;
                         padding: 4rem;
-                        border: 2px solid $black;
                         display: flex;
                         flex-wrap: wrap;
                         gap: 3.1rem 2.621rem;
@@ -294,6 +300,7 @@
                         .product-image {
                             border: 2px solid $black;
                             height: 15rem;
+                            border-radius: 15px;
                             flex: 0 0 46.8%;
                             position: relative;
 
@@ -413,8 +420,9 @@
 
                     .more-product-video-box {
                         min-height: 11rem;
+                        border: 2px solid $gray-300;
+                        border-radius: 15px;
                         padding: 5rem 3rem;
-                        border: 2px solid $black;
                         display: flex;
                         flex-wrap: wrap;
                         gap: 5rem 2.621rem;
@@ -424,7 +432,7 @@
                             height: 19rem;
                             flex: 0 0 47.3%;
                             border: 2px solid $gray-300;
-                            border-radius: 10px;
+                            border-radius: 15px;
                             position: relative;
 
                             &:hover {
@@ -620,11 +628,11 @@
             .row1 {
                 display: flex;
                 gap: 2rem;
-                border: 2px solid $black;
                 height: 80vh;
 
                 .column1 {
-                    border: 2px solid $black;
+                    border: 2px solid $gray-300;
+                    border-radius: 15px;
                     padding: 1rem;
                     flex: 0 0 47%;
     
@@ -639,14 +647,16 @@
                 .column2 {
                     flex: 0 0 47%;
                     padding: 1rem;
-                    border: 2px solid $black;
+                    border: 2px solid $gray-300;
+                    border-radius: 15px;
     
                     .field {
                         width: 100%;
                         height: 100%;
     
                         .category-image {
-                            border: 2px solid $black;
+                            border: 2px solid $gray-300;
+                            border-radius: 15px;
                             width: 100%;
                             height: 90%;
                             position: relative;
@@ -667,6 +677,21 @@
                                 top: 105%;
                                 left: 50%;
                                 transform: translateX(-50%);
+                            }
+
+                            .delete-category-image {
+                                position: absolute;
+                                top: 0%;
+                                right: 0%;
+                                z-index: 9999;
+                                background: $red;
+                                font-weight: 500;
+                                width: 2.5rem;
+                                font-size: 1.5rem;
+                                border: none;
+                                cursor: pointer;
+                                border-radius: 10px;
+                                color: $white;
                             }
                 
                             .image-preview-box {
@@ -690,7 +715,7 @@
                                     img {
                                         width: 100%;
                                         height: 100%;
-                                        object-position: center;
+                                        border-radius: 15px;
                                         z-index: 100;
                                     }
                 
@@ -751,6 +776,11 @@
                     td, th {
                         text-align: center;
                         width: 14%;
+                    }
+
+                    .remove-product-categoryModal {
+                        font-size: 1.3rem;
+                        color: $red;
                     }
 
                     thead {

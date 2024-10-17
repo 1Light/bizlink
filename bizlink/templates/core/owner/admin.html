@@ -89,7 +89,7 @@ Admin
       <h1 class="title">Features Section</h1>
   
       <!-- Modal Button for Creating a Feature -->
-      <button type="button" class="btn btn-lg btn-danger" data-bs-toggle="modal" data-bs-target="#feature-creation-form">
+      <button type="button" class="btn btn-lg btn-danger modal-btn" data-bs-toggle="modal" data-bs-target="#feature-creation-form">
         Create Feature
       </button>
   
@@ -148,7 +148,7 @@ Admin
                               <h3>Upload Feature Image</h3>
                               <p>Image size must be less than <span>2MB</span></p>
                           </div>
-                          <button type="button" class="select-feature-image-btn">Select Feature Image</button>
+                          <button type="button" class="select-feature-image-btn"><i class="fa-solid fa-camera"></i></button>
                         </div>                      
   
                         {% else %}
@@ -167,7 +167,7 @@ Admin
                         {{ create_feature_form.non_field_errors }}
                     </div>
                 {% endif %}
-                <button type="submit">Submit</button>
+                <button type="submit" class="create-feature-btn rounded-pill">Create Feature</button>
               </form>
             </div>
           </div>
@@ -182,7 +182,7 @@ Admin
       <h1 class="title">Featured Products</h1>
   
       <!-- Modal Button for Creating a Featured Product -->
-      <button type="button" class="btn btn-lg btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#featured-product">
+      <button type="button" class="btn btn-lg btn-danger modal-btn" data-bs-toggle="modal" data-bs-target="#featured-product">
         Add Featured Product
       </button>
   
@@ -272,7 +272,7 @@ Admin
       <h1 class="title">New Arrivals</h1>
   
       <!-- Modal Button for Creating a New Arrival -->
-      <button type="button" class="btn btn-lg btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#new-arrival">
+      <button type="button" class="btn btn-lg btn-danger modal-btn" data-bs-toggle="modal" data-bs-target="#new-arrival">
         Add New Arrival
       </button>
   

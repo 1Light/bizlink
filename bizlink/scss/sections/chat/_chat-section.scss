@@ -21,7 +21,8 @@
         margin-bottom: 3rem;
 
         .community {
-            border: 2px solid $black;
+            border: 2px solid $gray-300;
+            border-radius: 15px;
             flex: 1 1 30%;
             border-radius: 10px;
             height: 100%;
@@ -35,14 +36,13 @@
                 .account {
                     padding: 1.5rem;
                     position: relative;
-                    border: 2px solid $black;
+                    border-bottom: 2px solid $gray-300;
     
                     .community-member {
                         position: absolute;
                         left: 50%;
                         top: 50%;
                         transform: translate(-50%, -50%);
-                        border: 2px solid $black;
                     }
     
                     .account-num-of-inbox {
@@ -66,7 +66,7 @@
             flex: 1 1 65%;
             height: 100%;
             position: relative;
-            border: 2px solid $blue;
+            border: 2px solid $gray-300;
             border-radius: 10px;
 
             .other_chat_member {
@@ -87,7 +87,7 @@
                     width: 50px;
                     height: 50px;
                     border-radius: 50%;
-                    border: 2px solid $black;
+                    border: 2px solid $primary;
 
                     img {
                         width: 100%;
@@ -97,7 +97,6 @@
                 }
 
                 .user-data {
-                    border: 2px solid $black;
                     
                 }
             }

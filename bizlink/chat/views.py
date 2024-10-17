@@ -1,13 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
 from .models import *
-from django.http import Http404
+from django.contrib.auth.decorators import login_required
 from .forms import ChatMessageCreateForm
 from userauth.models import CustomUser
 from django.db.models import Exists, OuterRef
 
 # Create your views here.
 
+@login_required
 def chat(request):
     user = request.user
     # Get all chat groups the user is a member of

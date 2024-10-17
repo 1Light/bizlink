@@ -1,7 +1,6 @@
 @use '../../../../custom' as *;
 
 .product_creation_section {
-    border: 2px solid $black;
     margin-bottom: 3rem;
 
     .product-creation-box {
@@ -10,11 +9,12 @@
 
             .data-1 {
                 display: flex;
-                border: 2px solid $black;
                 justify-content: space-between;
+                margin-bottom: 2.5rem;
 
                 .column1 {
-                    border: 2px solid $black;
+                    border: 2px solid $gray-300;
+                    border-radius: 15px;
                     padding: 1rem;
                     flex: 0 0 47%;
 
@@ -29,14 +29,16 @@
                 .column2 {
                     flex: 0 0 47%;
                     padding: 1rem;
-                    border: 2px solid $black;
+                    border: 2px solid $gray-300;
+                    border-radius: 15px;
 
                     .field {
                         width: 100%;
                         height: 100%;
 
                         .product-image {
-                            border: 2px solid $black;
+                            border: 2px solid $gray-300;
+                            border-radius: 15px;
                             width: 100%;
                             height: 90%;
                             position: relative;
@@ -135,7 +137,7 @@
             }
 
             .data-2 {
-                border: 2px solid $black;
+                margin-bottom: 2.5rem;
 
                 .row2 {
                     display: flex;
@@ -143,7 +145,8 @@
 
                     .column1 {
                         flex: 0 0 47%;
-                        border: 2px solid $black;
+                        border: 2px solid $gray-300;
+                        border-radius: 15px;
                         padding: 1rem;
 
                         textarea {
@@ -156,7 +159,8 @@
                     .column2 {
                         flex: 0 0 47%;
                         padding: 1rem;
-                        border: 2px solid $black;
+                        border: 2px solid $gray-300;
+                        border-radius: 15px;
                         width: 100%;
                         height: 39.30rem;
                         display: flex;
@@ -175,7 +179,8 @@
                         }
 
                         .product-video {
-                            border: 2px solid $black;
+                            border: 2px solid $gray-300;
+                            border-radius: 15px;
                             height: 48.5%;
                             width: 100%;
 
@@ -267,7 +272,9 @@
 
         .more-product-image {
             min-height: 11rem;
-            border: 2px solid $black;
+            border: 2px solid $gray-300;
+            border-radius: 15px;
+            margin-bottom: 2.5rem;
             display: flex;
             padding: 3.5rem;
             flex-wrap: wrap;
@@ -278,11 +285,11 @@
                 position: absolute;
                 top: 0;
                 right: 0;
-                z-index: 9999;
             }
 
             .product-image {
-                border: 2px solid $black;
+                border: 2px solid $gray-300;
+                border-radius: 15px;
                 height: 15rem;
                 flex: 0 0 30.7%;
                 position: relative;
@@ -340,7 +347,7 @@
                         img {
                             width: 100%;
                             height: 100%;
-                            object-position: center;
+                            border-radius: 15px;
                             z-index: 100;
                         }
     
@@ -394,7 +401,8 @@
 
         .more-product-video {
             min-height: 11rem;
-            border: 2px solid $black;
+            border: 2px solid $gray-300;
+            border-radius: 15px;
             display: flex;
             padding: 3rem 3rem 5rem 3rem;
             flex-wrap: wrap;
@@ -405,7 +413,6 @@
                 position: absolute;
                 top: 0;
                 right: 0;
-                z-index: 9999;
             }
             
             .product-video {
@@ -513,6 +520,7 @@
 
         .create-product-btn {
             margin-top: 5rem;
+            border-radius: 15px;
             display: block;
             margin-left: auto;
             margin-right: auto;
