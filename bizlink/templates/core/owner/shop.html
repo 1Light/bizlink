@@ -207,8 +207,8 @@ Shop
                     <p>By {{ discounted_product.product.shop.name }}</p>
 
                     <div class="price-and-button">
-                        <p class="old-price">{{ discounted_product.product.price }}</p>
-                        <p class="new-price">{{ discounted_product.new_price }}</p>
+                        <p class="old-price">${{ discounted_product.product.price }}</p>
+                        <p class="new-price">${{ discounted_product.new_price }}</p>
                     </div>
 
                 </div>
@@ -249,8 +249,7 @@ Shop
                     <p>By {{ featured_product.product.shop.name }}</p>
 
                     <div class="price-and-button">
-                        <p>{{ featured_product.product.price }}</p>
-                        <p>{{ featured_product.product.old_price }}</p>
+                        <p class="price">${{ featured_product.product.price }}</p>
                     </div>
 
                 </div>
@@ -291,8 +290,7 @@ Shop
                 <p>By {{ new_arrival.product.shop.name }}</p>
 
                 <div class="price-and-button">
-                    <p>{{ new_arrival.product.price }}</p>
-                    <p>{{ new_arrival.product.old_price }}</p>
+                    <p class="price">${{ new_arrival.product.price }}</p>
                 </div>
 
             </div>

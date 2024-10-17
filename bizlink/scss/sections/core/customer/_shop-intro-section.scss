@@ -26,7 +26,8 @@
     
             .shop-box {
                 display: flex;
-                border: 2px solid $black;
+                border: 2px solid $gray-300;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                 border-radius: 2rem;
                 width: 48.1%;
                 padding: 15px;

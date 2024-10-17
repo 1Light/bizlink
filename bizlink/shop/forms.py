@@ -13,16 +13,20 @@ class CreateShop(forms.ModelForm):
 
         widgets = {
             'name': forms.TextInput(attrs={
-                'class': INPUT_CLASSES
+                'class': INPUT_CLASSES,
+                'placeholder': 'Enter shop name',
             }),
             'description': forms.Textarea(attrs={
-                'class': INPUT_CLASSES
+                'class': INPUT_CLASSES,
+                'placeholder': 'Enter a brief description of your shop',
             }),
             'address': forms.TextInput(attrs={
-                'class': INPUT_CLASSES
+                'class': INPUT_CLASSES,
+                'placeholder': 'Enter shop address',
             }),
             'contact': forms.TextInput(attrs={
-                'class': INPUT_CLASSES
+                'class': INPUT_CLASSES,
+               'placeholder': 'Enter phone number',
             }),
             'image': forms.FileInput(attrs={
                 'class': INPUT_CLASSES
@@ -75,15 +79,31 @@ class CreateProductForm(forms.ModelForm):
         ]
 
         widgets = {
+            'name': forms.TextInput(attrs={
+                'placeholder': 'Enter product name',
+                'class': INPUT_CLASSES,
+            }),
             'description': forms.Textarea(attrs= {
-                'Placeholder': 'Add description ...',
+                'placeholder': 'Add product description ...',
                 'class': INPUT_CLASSES,
                 'maxlength': '430',
             }),
             'specifications': forms.Textarea(attrs= {
-                'Placeholder': 'Add specifications ...',
+                'placeholder': 'Add product specifications ...',
                 'class': INPUT_CLASSES,
                 'maxlength': '430',
+            }),
+            'price': forms.NumberInput(attrs={
+                'placeholder': 'Enter price',
+                'class': INPUT_CLASSES,
+            }),
+            'stock_quantity': forms.NumberInput(attrs={
+                'placeholder': 'Enter quantity in stock',
+                'class': INPUT_CLASSES,
+            }),
+            'tags': forms.TextInput(attrs={
+                'placeholder': 'Add tags (comma-separated)',
+                'class': INPUT_CLASSES,
             })
         }
 
@@ -116,6 +136,13 @@ class MoreProductVideoForm(forms.ModelForm):
         model = MoreProductVideo
         fields = ['video', 'description']
 
+        widgets = {
+            'description': forms.Textarea(attrs={
+                'placeholder': 'Add a brief description for the video',
+                'class': INPUT_CLASSES,
+            })
+        }
+
         labels = {
             'video': 'Video',
             'description': 'Description'
@@ -129,11 +156,24 @@ class CreateCategoryForm(forms.ModelForm):
             'name', 'image', 'description'
         ]
 
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'placeholder': 'Enter category name',
+                'class': INPUT_CLASSES,
+            }),
+            'description': forms.Textarea(attrs={
+                'placeholder': 'Add a description for the category',
+                'class': INPUT_CLASSES,
+                'maxlength': '230',
+            })
+        }
+
         labels = {
             'name': 'Name',
             'image': 'Image',
             'description': 'Description',
         }
+
 class EditCategoryForm(CreateCategoryForm):
     pass
         

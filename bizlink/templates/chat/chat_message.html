@@ -20,9 +20,9 @@
 <li class="text-box2 fad-in-out">
     <div class="profile-picture">
         {% if message.author.user_profile.image %}
-            <img src="{{ message.author.user_profile.image }}" alt="{{ message.author.name }} profile picture">
+            <img src="{{ message.author.user_profile.image.url }}" alt="{{ message.author.name }} profile picture">
         {% else %}
-            <img src="{% static 'img/default.png' %}" alt="{{ message.author.name }} profile picture">
+            <img src="{% static 'img/default_profile.png' %}" alt="{{ message.author.name }} profile picture">
         {% endif %}
     </div>
     <div class="text-tail" >

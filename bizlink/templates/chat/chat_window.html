@@ -6,9 +6,9 @@
         {% if other_chat_user %}
         <div class="profile-picture">
             {% if other_chat_user.user_profile.image %}
-                <img src="{{ other_chat_user.user_profile.image }}" alt="{{ other_chat_user.first_name }} profile picture">
+                <img src="{{ other_chat_user.user_profile.image.url }}" alt="{{ other_chat_user.first_name }} profile picture">
             {% else %}
-                <img src="{% static 'img/default.png' %}" alt="{{other_chat_user.first_name }} profile picture">
+                <img src="{% static 'img/default_profile.png' %}" alt="{{other_chat_user.first_name }} profile picture">
             {% endif %}
         </div>
         <div class="user-data">

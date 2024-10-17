@@ -65,6 +65,7 @@
                     .no-more-images-text {
                         text-align: center;
                         margin-bottom: 0;
+                        margin-top: 4.25rem;
                     }
 
                     .carousel-item {
@@ -152,9 +153,22 @@
                 margin-top: 3rem;
                 padding: 7px;
 
+                p.title {
+                    color: $primary;
+                    font-size: 1.2rem;
+                }
+
                 .row1 {
                     display: flex;
                     gap: 5rem;
+                }
+
+                .row2 {
+
+                    p.title {
+                        color: $primary;
+                        font-size: 1.2rem;
+                    }
                 }
 
                 p {
@@ -208,7 +222,8 @@
 
             .discount-timer {
                 position: relative;
-                border: 2px solid $black;
+                border: 2px solid $gray-300;
+                border-radius: 15px;
                 height: 6.5rem;
 
                 #countdown {

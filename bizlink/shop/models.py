@@ -77,7 +77,7 @@ class Tag(models.Model):
 
 class ProductVideo(models.Model):
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user_videos', on_delete=models.CASCADE)
-    description = models.TextField(blank=True, null=True, default="This is a demo video for the product")
+    description = models.TextField(blank=True, null=True)
     video = models.FileField(upload_to='product_video_directory_path', null=True, blank=True)
 
     class Meta:
@@ -89,12 +89,12 @@ class ProductVideo(models.Model):
 class Shop(models.Model):
     shopId = ShortUUIDField(unique=True, length=10, max_length=21, prefix="shop", alphabet="ABCDEF0123456789")
 
-    name = models.CharField(max_length=255, default="Nestify")
-    description = models.TextField(blank=False, null=False, default="This is a shop")
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=False, null=False)
     image = models.ImageField(upload_to='shop_directory_path', blank=True, null=True)
 
-    address = models.TextField(blank=False, null=False, default="This is my address")
-    contact = models.CharField(max_length=255, default="+251 97 654 2331")
+    address = models.TextField(blank=False, null=False)
+    contact = models.CharField(max_length=255)
 
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_shop")
@@ -116,8 +116,8 @@ class Shop(models.Model):
 class Category(models.Model):
     categoryId =  ShortUUIDField(unique=True, length=10, max_length=21, prefix="category", alphabet="ABCDEF0123456789")
 
-    name = models.CharField(max_length=255, default="Food")
-    description = models.TextField(blank=False, null=False, default="This is a category")
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=False, null=False)
     image = models.ImageField(upload_to='category_directory_path', blank=True, null=True)
     shop = models.ForeignKey(Shop, related_name='shop_categories', on_delete=models.CASCADE)
 
@@ -143,21 +143,21 @@ class Category(models.Model):
 class Product(models.Model):
     productId =  ShortUUIDField(unique=True, length=10, max_length=21, prefix="product", alphabet="ABCDEF0123456789")
 
-    name = models.CharField(max_length=255, default="Fresh Pear")
+    name = models.CharField(max_length=255)
     category = models.ForeignKey(Category, related_name='category_products', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='product_directory_path', blank=True, null=True, default="product.jpg")
+    image = models.ImageField(upload_to='product_directory_path', blank=True, null=True)
     video = models.ForeignKey(ProductVideo, null=True, blank=True, on_delete=models.SET_NULL, related_name="product_on_the_video")
 
     shop = models.ForeignKey(Shop, related_name='shop_products', on_delete=models.CASCADE)
 
-    description = models.TextField(blank=True, null=True, default="This is the product")
+    description = models.TextField(blank=True, null=True)
     specifications = models.TextField(blank=True, null=True)
     
     mfg = models.DateTimeField(auto_now_add=False, null=True, blank=True)  
 
-    price = models.DecimalField(max_digits=15, decimal_places=2, default=1.99)
+    price = models.DecimalField(max_digits=15, decimal_places=2)
 
-    stock_quantity = models.PositiveIntegerField(default="5")
+    stock_quantity = models.PositiveIntegerField()
 
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user_products', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -194,7 +194,7 @@ class DiscountedProduct(models.Model):
     shop = models.ForeignKey(Shop, related_name='shop_discounted_products', on_delete=models.CASCADE)
 
     product = models.OneToOneField(Product, on_delete=models.CASCADE, related_name='discounted_product')
-    new_price = models.DecimalField(max_digits=15, decimal_places=2, default=3.99)
+    new_price = models.DecimalField(max_digits=15, decimal_places=2)
     discount_until = models.DateTimeField(null=True, blank=True) 
     has_discount_ended = models.BooleanField(default=False)
 
@@ -246,7 +246,7 @@ class MoreProductVideo(models.Model):
     mpvId = ShortUUIDField(unique=True, length=10, max_length=21, prefix="mpv", alphabet="ABCDEF0123456789")
 
     video = models.FileField(upload_to='mpv_directory_path', null=True, blank=True)
-    description = models.TextField(blank=True, null=True, default="This is an additional demo video for the product")
+    description = models.TextField(blank=True, null=True)
 
     product = models.ForeignKey(Product, related_name='more_product_videos', on_delete=models.CASCADE)
 

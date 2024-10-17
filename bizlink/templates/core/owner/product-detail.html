@@ -78,7 +78,7 @@ Product({{ product.name }})
                 <p><b>Specifications: </b>{{ product.specifications|striptags|truncatechars:100 }}</p>
         
                 <div class="more-detail">
-                    <p class="text-center">Manufacturing and Inventory</p>
+                    <p class="text-center title">Manufacturing and Inventory</p>
                     <div class="row1">
                         <div>
                             <p><b>Date: </b> {{ product.created_at|date:"M d, Y" }}</p>
@@ -93,7 +93,7 @@ Product({{ product.name }})
                         <div><p><b>In Stock:</b> {{ product.stock_quantity }}</p></div>                      
                     </div>
                     <div class="row2">
-                        <p class="text-center">Category and Tags</p>
+                        <p class="text-center title">Category and Tags</p>
                         <p><b>Category:</b> {{ product.category.name }}</p>
                         <p class="tag"><b>Tags:</b>
                             {% if product.tags.exists %}
@@ -236,7 +236,7 @@ Product({{ product.name }})
                     {% endif %}
                 
                     {% if not product.video and not product_videos %}
-                        <p>No demo videos available. Click here to upload.</p>
+                        <p>No demo videos available.</p>
                     {% endif %}
                 </div>
 

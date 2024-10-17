@@ -103,7 +103,7 @@ Inventory
                                             </button>
                                         </td>
                                         <td>{{ product.category.name }}</td>
-                                        <td>{{ product.price }}</td>
+                                        <td>${{ product.price }}</td>
                                         <td>
                                             {{ product.created_at|date:"M j, Y" }}<br>
                                             at {{ product.created_at|date:"g:i a" }}
@@ -172,7 +172,7 @@ Inventory
                                                     data-category-image="{% if category.image %}{{ category.image.url }}{% else %}null{% endif %}">
                                                     {{ category.name }}</button></td>
                                             <td>{{ category.category_products.count }}</td>
-                                            <td>{{ category.total_value|floatformat:3 }}</td>
+                                            <td>${{ category.total_value|floatformat:3 }}</td>
                                             <td>
                                                 {{ category.created_at|date:"M j, Y" }}<br>
                                                 at {{ category.created_at|date:"g a" }}

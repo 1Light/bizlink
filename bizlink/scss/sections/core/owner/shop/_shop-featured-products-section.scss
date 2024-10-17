@@ -57,6 +57,12 @@
                 display: flex;
                 column-gap: 1.7rem;
 
+                .price {
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                    color: $primary;
+                }
+
                 .add-btn {
                     padding: 5px;
                     background-color: $primary;
