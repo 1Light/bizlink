@@ -473,7 +473,7 @@ def category(request):
         categories = Category.objects.filter(created_by=user).order_by("-created_at")
 
         if not categories.exists():  # Check if the queryset is empty
-            messages.error(request, "You don't have any categories yet.")
+            messages.info(request, "You don't have any categories yet.")
 
     elif user.user_type == 'customer':
         # Customer: Use session-stored shopId to view a shop
@@ -526,7 +526,7 @@ def product(request):
         products = Product.objects.filter(created_by=user).order_by("-created_at")
 
         if not products.exists():  # Check if the queryset is empty
-            messages.error(request, "You don't have any products yet.")
+            messages.info(request, "You don't have any products yet.")
 
     elif user.user_type == 'customer':
         # Customer: Use session-stored shopId to view a shop
@@ -722,9 +722,15 @@ def factory(request):
                 # Save the product first
                 product.save()
 
+                # Process tags if they exist in the POST data
+                tags = request.POST.get('tags', '')  # Assuming the tags are passed as a comma-separated string
+                if tags:
+                    tag_list = [tag.strip() for tag in tags.split(',')]  # Split the tags by comma and remove extra spaces
+                    product.tags.set(tag_list)  # Correct usage: pass the list directly to `set()`
+
                 # Handle main video upload
                 if 'video' in request.FILES:  
-                    video_description = product_form.cleaned_data.get('video-description', "")
+                    video_description = request.POST.get('video-description', "").strip()
                     product_video = ProductVideo(
                         created_by=request.user,
                         video=request.FILES['video'],
@@ -732,6 +738,7 @@ def factory(request):
                     )
                     product_video.save()
                     product.video = product_video  # Link the Product to the ProductVideo instance
+                    product.save() 
 
                 # Handling more product images
                 # Collect all uploaded images

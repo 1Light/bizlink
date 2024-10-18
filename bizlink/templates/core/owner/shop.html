@@ -26,18 +26,21 @@ Shop
                 <div class="shop-description content">
                     <p>{{ shop.description|striptags }}</p>
                 </div>
-                <div class="inbox-button">
-                    <!-- Button trigger modal -->
-                    <a type="button" 
-                    class="btn btn-primary" 
-                    hx-get="{% url 'chat:get_or_create_chatroom' shop.created_by.username %}" 
-                    hx-target="#modal-body" 
-                    hx-swap="innerHTML" 
-                    data-bs-toggle="modal" 
-                    data-bs-target="#inboxModal" data-backdrop="static" data-keyboard="false"> 
-                    Inbox
-                    </a>
-                </div>
+
+                {% if user.user_type == "customer" %}
+                    <div class="inbox-button">
+                        <!-- Button trigger modal -->
+                        <a type="button" 
+                        class="btn btn-primary" 
+                        hx-get="{% url 'chat:get_or_create_chatroom' shop.created_by.username %}" 
+                        hx-target="#modal-body" 
+                        hx-swap="innerHTML" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#inboxModal" data-backdrop="static" data-keyboard="false"> 
+                        Inbox
+                        </a>
+                    </div>
+                {% endif %}
 
                 <div class="shop-address content">
                     <p><i class="fa-solid fa-location-pin"></i>&nbsp;&nbsp;{{ shop.address }}</p>
@@ -84,7 +87,11 @@ Shop
                 {% endif %}
             </div>
             <div class="shop-image">
-                <img src="{{ shop.image.url }}" alt="{{ shop.name }} image">
+                {% if shop.image %}
+                    <img src="{{ shop.image.url }}" alt="{{ shop.name }} image">
+                {% else %}
+                    <img src="{% static 'img/shop.jpeg' %}" alt="shop image">
+                {% endif %}
             </div>
         </div>
     </div>
@@ -122,7 +129,7 @@ Shop
                     </div>
                     
                     {% else %}
-                        <p>No Categories. <a href="#">Click here</a> to create categories.</p>
+                        <p class="mt-3">No Categories. <a href="#">Click here</a> to create categories.</p>
 
                     {% endif %}
 

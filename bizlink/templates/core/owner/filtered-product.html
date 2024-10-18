@@ -19,9 +19,7 @@
                     <h4>{{ product.name }}</h4>
                     <p>By {{ product.shop.name }}</p>
                     <div class="price-and-button">
-                        <p>{{ product.price }}</p>
-                        <p>{{ product.old_price }}</p>
-                        <a href="#" class="btn add-btn">Add</a>
+                        <p class="price">${{ product.price }}</p>
                     </div>
                 </div>
             {% endfor %}
