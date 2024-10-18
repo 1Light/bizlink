@@ -120,36 +120,34 @@ $(document).ready(function() {
   });
 
   $('#save-social-media').on('click', function() {
-      const socialMediaData = [];
-      $('.url-collection-box .form-row').each(function() {  // Update to target the correct class
-          const platform = $(this).find('input').attr('name').split('_')[0];
-          const url = $(this).find('input').val();
+    const socialMediaData = [];
+    $('.url-collection-box .form-row').each(function() {
+        const platform = $(this).find('input').attr('name').split('_')[0];
+        const url = $(this).find('input').val();
 
-          if (platform && url) {
-              socialMediaData.push({ platform: platform, url: url });
+        if (platform && url) {
+            socialMediaData.push({ platform: platform, url: url });
+        }
+    });
+
+    if (socialMediaData.length > 0) {
+      $.ajax({
+          type: 'POST',
+          url: '/userauth/manage_social_media/',
+          data: {
+              'social_media_data': JSON.stringify(socialMediaData),
+              'action': 'save',  // Specify action
+              'csrfmiddlewaretoken': csrfToken  // Ensure this is set correctly
+          },
+          success: function(response) {
+              alert(response.message);  // Will show only once
+          },
+          error: function(xhr) {
+              const errorMessage = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : 'An error occurred.';
+              alert(errorMessage);
           }
       });
-
-      socialMediaData.forEach(function(data) {
-          $.ajax({
-              type: 'POST',
-              url: '/userauth/manage_social_media/',  // Adjust URL to your view
-              data: {
-                  'platform': data.platform,
-                  'url': data.url,
-                  'action': 'save',  // Specify action
-                  'csrfmiddlewaretoken': csrfToken  // Ensure this is set correctly
-              },
-              success: function(response) {
-                  alert(response.message);
-              },
-              error: function(xhr) {
-                  // Check if xhr.responseJSON exists before accessing its properties
-                  const errorMessage = xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : 'An error occurred.';
-                  alert(errorMessage);
-              }
-          });
-      });
+  }
   });
 });
 

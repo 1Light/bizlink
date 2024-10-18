@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+import json
 from django.http import JsonResponse
 
 from .forms import SignUpForm, LogInForm, EditProfileForm
@@ -154,26 +155,33 @@ def manage_social_media(request):
         return JsonResponse(list(social_media_entries), safe=False)
 
     if request.method == 'POST':
-        platform = request.POST.get('platform')
-        url = request.POST.get('url')
         action = request.POST.get('action')
+        if action == 'save':
+            # Handle saving multiple social media entries
+            social_media_data = json.loads(request.POST.get('social_media_data', '[]'))
+            
+            for entry in social_media_data:
+                platform = entry.get('platform')
+                url = entry.get('url')
+                
+                if platform and url:
+                    social_media_instance, created = SocialMedia.objects.get_or_create(
+                        created_by=request.user,
+                        platform=platform,
+                        defaults={'url': url}
+                    )
+                    if not created:  # If the instance already exists, update the URL
+                        social_media_instance.url = url
+                        social_media_instance.save()
 
-        if action == 'save' and platform and url:
-            # Save or update the social media entry
-            social_media_instance, created = SocialMedia.objects.get_or_create(
-                created_by=request.user,
-                platform=platform,
-                defaults={'url': url}
-            )
-            if not created:  # If the instance already exists, update the URL
-                social_media_instance.url = url
-                social_media_instance.save()
-            return JsonResponse({'message': 'Social media URL saved successfully!'}, status=200)
+            return JsonResponse({'message': 'Social media URLs saved successfully!'}, status=200)
 
-        elif action == 'delete' and platform:
-            # Delete the social media entry
-            SocialMedia.objects.filter(created_by=request.user, platform=platform).delete()
-            return JsonResponse({'message': 'Social media URL deleted successfully!'}, status=200)
+        elif action == 'delete':
+            platform = request.POST.get('platform')
+            if platform:
+                # Delete the social media entry
+                SocialMedia.objects.filter(created_by=request.user, platform=platform).delete()
+                return JsonResponse({'message': 'Social media URL deleted successfully!'}, status=200)
 
     return JsonResponse({'error': 'Invalid request method or missing parameters.'}, status=400)
 
